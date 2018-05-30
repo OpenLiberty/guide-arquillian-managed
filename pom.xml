@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.jboss.arquillian.examples</groupId>
+	<artifactId>arquillian-tutorial</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>liberty-assembly</packaging>
+
+	<name>arquillian-tutorial</name>
+	<url>http://arquillian.org/guides/getting_started/</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>1.4.0.Final</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.openliberty.arquillian</groupId>
+			<artifactId>arquillian-liberty-managed-junit</artifactId>
+			<version>1.0</version>
+			<type>pom</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.shrinkwrap</groupId>
+			<artifactId>shrinkwrap-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+        <plugins>
+
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.20</version>
+				<configuration>
+					<runOrder>alphabetical</runOrder>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-integration-test</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-verify</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>net.wasdev.wlp.maven.plugins</groupId>
+				<artifactId>liberty-maven-plugin</artifactId>
+				<version>2.3</version>
+				<extensions>true</extensions>
+				<!-- Specify configuration, executions for liberty-maven-plugin -->
+				<configuration>
+					<serverName>LibertyProjectServer</serverName>
+					<assemblyArtifact>
+						<groupId>com.ibm.websphere.appserver.runtime</groupId>
+						<artifactId>wlp-webProfile7</artifactId>
+						<version>[17.0.0.4,)</version>
+						<type>zip</type>
+					</assemblyArtifact>
+					<assemblyInstallDirectory>${project.build.directory}</assemblyInstallDirectory>
+					<packageFile>${project.build.directory}/package.jar</packageFile>
+					<bootstrapProperties>
+						<default.http.port>9080</default.http.port>
+						<default.https.port>9443</default.https.port>
+						<build.directory>${project.build.directory}</build.directory>
+					</bootstrapProperties>
+					<features>
+						<acceptLicense>true</acceptLicense>
+					</features>
+					<include>runnable</include>
+					<installAppPackages>all</installAppPackages>
+					<appsDirectory>apps</appsDirectory>
+					<stripVersion>true</stripVersion>
+					<looseApplication>true</looseApplication>
+					<skipTestServer>true</skipTestServer>
+					<!-- begin configure-arquillian -->
+					<arquillianProperties>
+					</arquillianProperties>
+					<skipIfArquillianXmlExists>false</skipIfArquillianXmlExists>
+					<!-- end configure-arquillian -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>configure-arquillian-xml</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>configure-arquillian</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
