@@ -5,10 +5,16 @@
         http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>net.wasdev.wlp.maven.parent</groupId>
+		<artifactId>liberty-maven-app-parent</artifactId>
+		<version>2.4</version>
+	</parent>
+
 	<groupId>org.jboss.arquillian.examples</groupId>
 	<artifactId>arquillian-tutorial</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>liberty-assembly</packaging>
+	<packaging>war</packaging>
 
 	<name>arquillian-tutorial</name>
 	<url>http://arquillian.org/guides/getting_started/</url>
@@ -67,12 +73,34 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.21.0</version>
+				<executions>
+					<execution>
+						<id>failsafe-integration-test</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>failsafe-verify</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.1.0</version>
 				<configuration>
-					<additionalClasspathElements>
-						<additionalClasspathElement>target/classes</additionalClasspathElement>
-					</additionalClasspathElements>
+					<packagingExcludes>pom.xml</packagingExcludes>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>net.wasdev.wlp.maven.plugins</groupId>
 				<artifactId>liberty-maven-plugin</artifactId>
