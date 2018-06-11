@@ -30,12 +30,6 @@ public class Greeter {
     @Inject
     private PhraseBuilder phraseBuilder;
 
-//    @Inject
-//    public Greeter(PhraseBuilder phraseBuilder) {
-//        System.out.println("Greeter <init> " + phraseBuilder);
-//        this.phraseBuilder = phraseBuilder;
-//    }
-
     public void greet(PrintStream to, String name) {
         to.println(createGreeting(name));
     }
