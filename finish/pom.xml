@@ -16,8 +16,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>arquillian-tutorial</name>
-	<url>http://arquillian.org/guides/getting_started/</url>
+	<name>guide-arquillian-managed</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -108,7 +107,7 @@
 				<extensions>true</extensions>
 				<!-- Specify configuration, executions for liberty-maven-plugin -->
 				<configuration>
-					<serverName>LibertyProjectServer</serverName>
+					<serverName>ArquillianManagedServer</serverName>
 					<assemblyArtifact>
 						<groupId>io.openliberty</groupId>
 						<artifactId>openliberty-runtime</artifactId>
