@@ -26,8 +26,7 @@ import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -39,9 +38,8 @@ import org.junit.runner.RunWith;
 public class GreeterIT {
 
     @Deployment
-    public static WebArchive createDeployment() {
-        File[] files = Maven.resolver().loadPomFromFile("pom.xml").importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
-        WebArchive archive = ShrinkWrap.create(WebArchive.class).addClasses(Greeter.class, PhraseBuilder.class).addAsLibraries(files);
+    public static JavaArchive createDeployment() {
+        JavaArchive archive = ShrinkWrap.create(JavaArchive.class).addClasses(Greeter.class, PhraseBuilder.class);
         System.out.println(archive.toString(true));
         return archive;
     }
@@ -51,17 +49,8 @@ public class GreeterIT {
 
     @Test
     public void should_create_greeting() {
-        System.out.println("should_create_greeting entry");
-        try {
-            System.out.println("greeter = " + greeter);
-            String greeting = greeter.createGreeting("Earthling");
-            System.out.println("should_create_greeting entry acquired greeting " + greeting);
-            Assert.assertEquals("Hello, Earthling!", greeting);
-            greeter.greet(System.out, "Earthling");
-        } catch (Throwable t) {
-            t.printStackTrace();
-        } finally {
-            System.out.println("should_create_greeting exit");
-        }
+        String greeting = greeter.createGreeting("Earthling");
+        Assert.assertEquals("Hello, Earthling!", greeting);
+        greeter.greet(System.out, "Earthling");
     }
 }

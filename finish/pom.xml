@@ -14,7 +14,7 @@
 	<groupId>org.jboss.arquillian.examples</groupId>
 	<artifactId>arquillian-tutorial</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>guide-arquillian-managed</name>
 
@@ -37,11 +37,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>1</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
 			<version>1.2</version>
@@ -57,11 +52,6 @@
 		<dependency>
 			<groupId>org.jboss.shrinkwrap</groupId>
 			<artifactId>shrinkwrap-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.shrinkwrap.resolver</groupId>
-			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -91,16 +81,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<packagingExcludes>pom.xml</packagingExcludes>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>net.wasdev.wlp.maven.plugins</groupId>
 				<artifactId>liberty-maven-plugin</artifactId>
 				<version>2.4</version>
@@ -114,29 +94,18 @@
 						<version>[17.0.0.4,)</version>
 						<type>zip</type>
 					</assemblyArtifact>
-					<assemblyInstallDirectory>${project.build.directory}</assemblyInstallDirectory>
-					<packageFile>${project.build.directory}/package.jar</packageFile>
-					<bootstrapProperties>
-						<default.http.port>9080</default.http.port>
-						<default.https.port>9443</default.https.port>
-						<build.directory>${project.build.directory}</build.directory>
-					</bootstrapProperties>
 					<features>
 						<acceptLicense>true</acceptLicense>
 					</features>
-					<include>runnable</include>
-					<installAppPackages>all</installAppPackages>
-					<appsDirectory>apps</appsDirectory>
-					<stripVersion>true</stripVersion>
-					<looseApplication>true</looseApplication>
+					<bootstrapProperties>
+					</bootstrapProperties>
 					<skipTestServer>true</skipTestServer>
-					<!-- begin configure-arquillian -->
-					<arquillianProperties>
-					</arquillianProperties>
-					<skipIfArquillianXmlExists>false</skipIfArquillianXmlExists>
-					<!-- end configure-arquillian -->
 				</configuration>
 				<executions>
+					<execution>
+						<id>install-apps</id>
+						<phase>none</phase>
+					</execution>
 					<execution>
 						<id>configure-arquillian-xml</id>
 						<phase>pre-integration-test</phase>
