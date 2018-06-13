@@ -27,8 +27,8 @@ repositories {
     
 ext {
     // Liberty server properties
-    wlpServerName = 'ArquillianManagedServer'
-    serverDirectory = "${project.buildDir}/wlp/usr/servers/${wlpServerName}"
+    libertyServerName = 'ArquillianManagedServer'
+    serverDirectory = "${project.buildDir}/wlp/usr/servers/${libertyServerName}"
     testServerHttpPort = 9080
     testServerHttpsPort = 9443
 }
@@ -36,7 +36,7 @@ ext {
 liberty {
     server {
         configFile = file("${rootProject.projectDir}/src/test/resources/server.xml")
-        name = wlpServerName
+        name = libertyServerName
      }
 }
 
