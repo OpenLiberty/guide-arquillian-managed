@@ -40,7 +40,6 @@ public class GreeterIT {
     @Deployment
     public static JavaArchive createDeployment() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class).addClasses(Greeter.class, PhraseBuilder.class);
-        System.out.println(archive.toString(true));
         return archive;
     }
 

@@ -11,7 +11,6 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'liberty'
-
 apply plugin: "io.spring.dependency-management"
 
 sourceCompatibility = 1.8
@@ -25,18 +24,10 @@ repositories {
     mavenCentral()
 }
     
-ext {
-    // Liberty server properties
-    libertyServerName = 'ArquillianManagedServer'
-    serverDirectory = "${project.buildDir}/wlp/usr/servers/${libertyServerName}"
-    testServerHttpPort = 9080
-    testServerHttpsPort = 9443
-}
-    
 liberty {
     server {
         configFile = file("${rootProject.projectDir}/src/test/resources/server.xml")
-        name = libertyServerName
+        name = 'ArquillianManagedServer'
      }
 }
 
@@ -50,16 +41,15 @@ dependencies {
     compile ('javax.enterprise:cdi-api:1.2')
    
     testCompile group: "io.openliberty.arquillian", name: "arquillian-liberty-managed-junit", version: "1.1"
-    testCompile files("${System.properties['java.home']}/../lib/tools.jar")
     testCompile ('org.jboss.shrinkwrap:shrinkwrap-api')
-
+    testCompile files("${System.properties['java.home']}/../lib/tools.jar")
+    
     libertyRuntime "io.openliberty:openliberty-runtime:18.0.0.1"
 }
 
 tasks.withType(Test) {
     group 'Verification'
     testLogging.showStandardStreams = true
-    dependsOn 'installApps', 'testClasses'
     reports.html.destination = file("$buildDir/reports/")
     reports.junitXml.destination = file("$buildDir/test-results/")
     include '**/*'
