@@ -243,9 +243,9 @@ tasks.withType(Test) {
 
 == Adding your Arquillian test
 
-Now that you're done configuring the build tool of your choice, it's time to write your test. Notice that the source of the starting project includes two classes, `Greeter` and `PhraseBuilder`. Now you will create a test that uses Arquillian and JUnit to test both of these classes.
+Now that you're done configuring the build tool of your choice, it's time to write your test. Notice that the source of the starting project includes two classes, `Greeter` and `PhraseBuilder`. The `Greeter` class injects an instance of the `PhraseBuilder` class, and invokes a method on it to create a greeting. Your test class will use Arquillian and JUnit to test this functionality. 
 
-Create a test file at `src/test/java/org/arquillian/example/GreeterIT.java`. The core contents of the file are reproduced below. A detailed explanation follows.
+Create the test file at `src/test/java/org/arquillian/example/GreeterIT.java`. The core contents of the file are reproduced below. A detailed explanation follows.
 
 ```
 @RunWith(Arquillian.class)
