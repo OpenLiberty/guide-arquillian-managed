@@ -26,6 +26,9 @@
 // Example title: Creating a RESTful web service
 = Testing Open Liberty applications using the Arquillian Managed container
 
+[.hidden]
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+
 Learn how to run integration tests for your Open Liberty application using the Arquillian Liberty Managed container. 
 // Write no more than two sentences, or about fifty words with meaningful information on what the user can accomplish with this guide.
 // Do not start the introduction with "This guide...".
