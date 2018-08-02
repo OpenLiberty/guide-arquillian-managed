@@ -17,14 +17,14 @@
 // INSTRUCTION: Specify the unique name of the guide that is used in the permalink.  For example below, it is rest-service
 :page-related-guides: ['']
 // INSTRUCTION: Specify the slug in the website. This must be unique.
-:page-permalink: /guides/rest-service
+:page-permalink: /guides/liberty-arquillian-managed
 // INSTRUCTION: You should have this to source the common page elements, clone git@github.com:OpenLiberty/guides-common.git
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 // INSTRUCTION: You can't have a new line between the attributes and the title.
 // The details of what to fill in for this template are in the comments. So, read the source for this template to see the comments.
 //
 // Example title: Creating a RESTful web service
-= Testing Open Liberty applications using the Arquillian Managed container
+= Testing on Open Liberty with the Arquillian Managed container
 
 Learn how to run integration tests for your Open Liberty application using the Arquillian Liberty Managed container. 
 // Write no more than two sentences, or about fifty words with meaningful information on what the user can accomplish with this guide.
