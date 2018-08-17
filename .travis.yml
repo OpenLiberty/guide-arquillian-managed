@@ -1,0 +1,11 @@
+nguage: java
+
+jdk:
+    - openjdk8
+
+env:
+    - TEST_COMMAND="cd finish; gradle build"
+    - TEST_COMMAND="cd finish; mvn install"
+
+script:
+- (eval "$TEST_COMMAND")
