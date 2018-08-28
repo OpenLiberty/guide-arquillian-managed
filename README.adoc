@@ -211,7 +211,7 @@ liberty {
 }
 ```
 
-Next, add the Arquillian BOM. A BOM is a Maven artifact which defines versions of dependencies to make dependency management easier.
+Next, add the Arquillian Bill of Materials (BOM). A BOM is a Maven artifact which defines versions of dependencies to make dependency management easier.
 
 ```
 dependencyManagement {
@@ -252,47 +252,12 @@ Now that you're done configuring the build tool of your choice, edit the `src/te
 
 You're now ready to write your test. Notice that the source of the starting project includes two classes, `Greeter` and `PhraseBuilder`. The `Greeter` class injects an instance of the `PhraseBuilder` class, and invokes a method on it to create a greeting. Your test class will use Arquillian and JUnit to test this functionality. 
 
-Create the test file at `src/test/java/org/arquillian/example/GreeterIT.java`. The contents of the file are reproduced below. A detailed explanation follows.
+Create the test file at `src/test/java/org/arquillian/example/GreeterIT.java`:
 
-```
-package org.arquillian.example;
-
-import org.arquillian.example.Greeter;
-import org.arquillian.example.PhraseBuilder;
-
-import java.io.File;
-
-import javax.inject.Inject;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Test;
-import org.junit.Assert;
-import org.junit.runner.RunWith;
-
-@RunWith(Arquillian.class)
-public class GreeterIT {
-
-    @Deployment
-    public static JavaArchive createDeployment() {
-        JavaArchive archive = ShrinkWrap.create(JavaArchive.class).addClasses(Greeter.class, PhraseBuilder.class);
-        return archive;
-    }
-
-    @Inject
-    Greeter greeter;
-
-    @Test
-    public void should_create_greeting() {
-        String greeting = greeter.createGreeting("Earthling");
-        Assert.assertEquals("Hello, Earthling!", greeting);
-        greeter.greet(System.out, "Earthling");
-    }
-}
-```
-
-
+[source, Java]
+----
+include::finish/src/test/java/org/arquillian/example/GreeterIT.java[tags=**;!copyright;]
+----
 
 The first thing you should notice is that the JUnit Arquillian runner is being used to run the tests, instead of the standard JUnit runner. This is specified using the `RunWith` annotation at the top of the class, and tells JUnit to run the tests using Arquillian. 
 
