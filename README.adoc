@@ -246,7 +246,13 @@ tasks.withType(Test) {
 
 == Configuring the server.xml
 
-Now that you're done configuring the build tool of your choice, edit the `src/test/resources/server.xml` file to add the `localConnector-1.0` feature to the `featureManager` block. This is a feature that is required by the Arquillian Liberty Managed container in order to connect to and communicate with the Open Liberty runtime. 
+Now that you're done configuring the build tool of your choice, edit the `src/test/resources/server.xml` file:
+
+----
+include::finish/src/test/resources/server.xml[]
+----
+
+Add the `localConnector-1.0` feature to the `featureManager` block. This is a feature that is required by the Arquillian Liberty Managed container in order to connect to and communicate with the Open Liberty runtime. 
 
 == Adding your Arquillian test
 
