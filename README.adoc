@@ -58,7 +58,7 @@ mvn install # If you're using Maven
 gradle build # If you're using Gradle
 ```
 
-Between the server start and stop messages, you will see the following console output indicating that your test has passed. This will be followed shortly by a message indicating a successful build.
+Between the server start and stop messages, you will see the following console output indicating that your test has passed. 
 
 ```
 PhraseBuilder <init>
@@ -66,6 +66,8 @@ PhraseBuilder <init>
 PhraseBuilder initialize
 Hello, Earthling!
 ```
+
+This will be followed shortly by a message indicating a successful build.
 
 == Configuring your test build
 
@@ -287,7 +289,7 @@ For Gradle:
 gradle clean build
 ```
 
-In either case, you will notice that the server is created and started, with a test application built from your ShrinkWrap archive that is deployed and available at `http://localhost:9080/test/`. You will then see the initialization and execution of the test:
+In either case, you will notice that the server is created and started, with a test application built from your ShrinkWrap archive that is deployed at `http://localhost:9080/test/`. You will then see the initialization and execution of the test:
 
 ```
 PhraseBuilder <init>
