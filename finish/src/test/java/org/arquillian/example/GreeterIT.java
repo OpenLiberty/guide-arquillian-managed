@@ -1,3 +1,4 @@
+// tag::copyright[]
 /*
  * Copyright 2012, 2018, IBM Corporation, Red Hat Middleware LLC, and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
@@ -15,6 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// end::copyright[]
+// tag::greeter[]
 package org.arquillian.example;
 
 import org.arquillian.example.Greeter;
@@ -53,3 +56,4 @@ public class GreeterIT {
         greeter.greet(System.out, "Earthling");
     }
 }
+// end::greeter[]
