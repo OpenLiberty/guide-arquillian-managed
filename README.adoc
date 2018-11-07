@@ -73,19 +73,114 @@ This will be followed shortly by a message indicating a successful build.
 
 === Using Maven
 
-Open the `pom.xml` file to see how the Arquillian and Liberty dependencies are added. For instructions on doing this with Gradle, skip to the "Using Gradle" section below.
+To configure your build to run your Arquillian tests using Maven, modify the `start/pom.xml` file to add your Arquillian and Liberty dependencies. For instructions on doing this with Gradle, skip to the "Using Gradle" section below.
 
-[source, xml, indent=0]
-----
-include::finish/pom.xml[tags=pom]
-----
+All of the Maven configuration will take place in the `pom.xml` file. Start by adding the Liberty Maven App Parent POM. This will configure the Liberty Maven Plugin with the default executions necessary for setting up your managed Liberty server.
 
-|===
-| `<parent>` | The Liberty Maven Application Parent POM configures the Liberty Maven Plugin with default executions necessary for setting up your managed Liberty server.
-| `arquillian-bom` | The Arquillian Bill of Materials (BOM) is a Maven Artifact which defines versions of dependencies to make dependency management easier.
-| `maven-failsafe-plugin` | The Maven Failsafe Plugin is used to run your JUnit integration tests.
-| `liberty-maven-plugin` | The Liberty Maven Plugin configuration specifies your Open Liberty runtime and uses the `configure-arquillian` goal to automatically create and configure your `arquillian.xml`. This goal will retrieve the core `wlpHome`, `serverName`, and `httpPort` parameter values automatically from the Liberty Maven Plugin configuration, and also allows you to specify additional `arquillian.xml` parameters directly in your POM in an `arquillianProperties` dictionary. Complete documentation for this goal can be found https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[here]. Also notice in the configuration that `skipTestServer` is set to true to skip the `test-start-server` and `test-stop-server` goals defined in the Liberty Maven App Parent, this is because Arquillian will be managing the server lifecycle when it runs the tests.
-|===
+```
+<parent>
+	<groupId>net.wasdev.wlp.maven.parent</groupId>
+	<artifactId>liberty-maven-app-parent</artifactId>
+	<version>2.4.2</version>
+</parent>
+```
+
+Next, add the Arquillian Bill of Materials (BOM). A BOM is a Maven artifact which defines versions of dependencies to make dependency management easier.
+
+```
+<dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.jboss.arquillian</groupId>
+			<artifactId>arquillian-bom</artifactId>
+			<version>1.4.0.Final</version>
+			<scope>import</scope>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
+</dependencyManagement>
+```
+
+Next, add the Arquillian Liberty Managed JUnit dependency bundle and the Arquillian Shrinkwrap API. The dependency bundle includes all the core dependencies for running Arquillian tests on a managed Liberty container using JUnit. You can learn more about the Arquillian Liberty dependency bundles https://github.com/OpenLiberty/arquillian-liberty-dependencies[here]. Adding the Shrinkwrap API will allow you to create your test archive which will be packaged into a WAR and deployed to the Open Liberty server.
+
+```
+<dependency>
+	<groupId>io.openliberty.arquillian</groupId>
+	<artifactId>arquillian-liberty-managed-junit</artifactId>
+	<version>1.1</version>
+	<type>pom</type>
+	<scope>test</scope>
+</dependency>
+<dependency>
+	<groupId>org.jboss.shrinkwrap</groupId>
+	<artifactId>shrinkwrap-api</artifactId>
+	<scope>test</scope>
+</dependency>
+```
+
+Finally, add the Maven Failsafe Plugin and the Liberty Maven Plugin. The Failsafe plugin is used to run your JUnit integration tests, while the Liberty Maven Plugin configuration specifies your Open Liberty runtime and uses the `configure-arquillian` goal to automatically create and configure your `arquillian.xml`. This goal will retrieve the core `wlpHome`, `serverName`, and `httpPort` parameter values automatically from the Liberty Maven Plugin configuration, and also allows you to specify additional `arquillian.xml` parameters directly in your POM in an `arquillianProperties` dictionary. Complete documentation for this goal can be found https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[here]. Also notice in the configuration that `skipTestServer` is set to true to skip the `test-start-server` and `test-stop-server` goals defined in the Liberty Maven App Parent. This is because Arquillian will be managing the server lifecycle when it runs the tests.
+
+```
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-failsafe-plugin</artifactId>
+			<version>2.21.0</version>
+			<executions>
+				<execution>
+					<id>failsafe-integration-test</id>
+					<phase>integration-test</phase>
+					<goals>
+						<goal>integration-test</goal>
+					</goals>
+				</execution>
+				<execution>
+					<id>failsafe-verify</id>
+					<phase>verify</phase>
+					<goals>
+						<goal>verify</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+
+		<plugin>
+			<groupId>net.wasdev.wlp.maven.plugins</groupId>
+			<artifactId>liberty-maven-plugin</artifactId>
+			<version>2.4.2</version>
+			<extensions>true</extensions>
+			<!-- Specify configuration, executions for liberty-maven-plugin -->
+			<configuration>
+				<serverName>ArquillianManagedServer</serverName>
+				<assemblyArtifact>
+					<groupId>io.openliberty</groupId>
+					<artifactId>openliberty-runtime</artifactId>
+					<version>[17.0.0.4,)</version>
+					<type>zip</type>
+				</assemblyArtifact>
+				<features>
+					<acceptLicense>true</acceptLicense>
+				</features>
+				<skipTestServer>true</skipTestServer>
+			</configuration>
+			<executions>
+				<execution>
+					<id>install-apps</id>
+					<phase>none</phase>
+				</execution>
+				<execution>
+					<id>configure-arquillian-xml</id>
+					<phase>pre-integration-test</phase>
+					<goals>
+						<goal>configure-arquillian</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</build>
+```
 
 === Using Gradle
 
@@ -153,7 +248,7 @@ tasks.withType(Test) {
 
 == Configuring the server.xml
 
-Now that you're done configuring the build tool of your choice, open the `src/test/resources/server.xml` file:
+Now that you're done configuring the build tool of your choice, edit the `src/test/resources/server.xml` file:
 
 ----
 include::finish/src/test/resources/server.xml[]
