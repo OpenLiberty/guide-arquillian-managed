@@ -8,274 +8,189 @@
 //
 :page-layout: guide
 :projectid: arquillian-managed
-:page-duration: 30 minutes
-:page-releasedate: 2018-11-17
-// INSTRUCTION: Provide a description for the guide index page.
-:page-description: Learn how to test your Open Liberty application using the Arquillian Liberty Managed container and JUnit. 
-// INSTUCTION: Please provide relevant tags, try to avoid inventing new ones, tags where there is 1 guide for the tag isn't useful.
-:page-tags: ['Testing', 'Arquillian', 'JUnit']
-// INSTRUCTION: Specify the unique name of the guide that is used in the permalink.  For example below, it is rest-service
-:page-related-guides: ['']
-// INSTRUCTION: Specify the slug in the website. This must be unique.
-:page-permalink: /guides/liberty-arquillian-managed
-// INSTRUCTION: You should have this to source the common page elements, clone git@github.com:OpenLiberty/guides-common.git
+:page-duration: 15 minutes
+:page-releasedate: 2018-11-30
+:page-guide-category: none
+:page-description: Learn how to test your application using the Arquillian Liberty Managed container and JUnit.
+:page-tags: ['Maven', 'Gradle']
+:page-related-guides: ['cdi-intro']
+:page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
-// INSTRUCTION: You can't have a new line between the attributes and the title.
-// The details of what to fill in for this template are in the comments. So, read the source for this template to see the comments.
-//
-// Example title: Creating a RESTful web service
+:page-seo-title: Arquillian Managed container testing
+:page-seo-description: Testing your application with Arquillian Liberty Managed container
 = Testing with the Arquillian Managed container
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to run integration tests for your Open Liberty application using the Arquillian Liberty Managed container. 
-// Write no more than two sentences, or about fifty words with meaningful information on what the user can accomplish with this guide.
-// Do not start the introduction with "This guide...".
+Learn how to run integration tests for your application using the Arquillian Liberty Managed container in Open Liberty.
 
 == What you'll learn
-You will learn how to run integration tests for your Open Liberty application using the Arquillian Liberty Managed container and JUnit with Maven or Gradle. For either of these build tools, you will also learn how to take advantage of features in the Liberty plugin that will simplify the process of managing Arquillian dependencies and setting up your Liberty Managed container. 
+You will learn how to run integration tests for your application using the https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md[Arquillian Liberty Managed container] and JUnit with Maven or Gradle in Open Liberty. For either of the build tools, you will also learn how to take advantage of features in the Liberty plugin that simplifies the process of managing Arquillian dependencies and setting up your managed container.
 
+http://arquillian.org/[Arquillian] is a testing platform to develop automated integration, functional and acceptance tests for your java applications. Arquillian Liberty Managed container is an adaptor that implements the Arquillian's `DeployableContainer`. It's capable of managing the local Liberty server operations, packaging the tests as a `WAR` to be deployed to the Liberty server and then running the tests on the server.
 
-// You'll next add the various sections that are needed for a particular guide.
-
-
-// Add this getting started section to your guide if it is applicable. Use the following include to pull in the git clone instructions from the guides-common repo.
+You will learn to configure a example application to use the Liberty Arquillian Managed container adaptor with the Maven or Gradle build tool and develop an integration test for the application to run in Open Liberty.
 
 include::{common-includes}/gitclone.adoc[]
 
-// This is a subsection of the "Getting started" section above. It should briefly walk the user through
-// how to setup everything in the "finish" directory and try out the finished version of what
-// they will be building.
-
 === Try what you'll build
 
-To try running the finished Arquillian test, navigate to the `finish` folder and execute the Maven or Gradle build:
+To try running the finished application with the Arquillian test, navigate to the `finish` folder and execute the Maven or Gradle build.
+
+If you're using Maven, run these commands:
 
 ```
 cd finish
-mvn install # If you're using Maven
-gradle build # If you're using Gradle
+mvn install
 ```
 
-Between the server start and stop messages, you will see the following console output indicating that your test has passed. 
+If you're using Gradle, run these commands:
 
 ```
+cd finish
+gradle build
+```
+
+Between the server start and stop messages, you should see the following console output indicating that your test has passed.
+
+[source, text, indent=0, role="no_copy"]
+----
 PhraseBuilder <init>
 PhraseBuilder <init>
 PhraseBuilder initialize
 Hello, Earthling!
-```
+----
 
-This will be followed shortly by a message indicating a successful build.
+A message indicating a successful build follows shortly after the test outputs.
 
 == Configuring your test build
 
+For instructions on configuring your test build with Gradle, go to the "Using Gradle" section below.
+
+Navigate to the `start` directory to begin.
+
 === Using Maven
 
-To configure your build to run your Arquillian tests using Maven, modify the `start/pom.xml` file to add your Arquillian and Liberty dependencies. For instructions on doing this with Gradle, skip to the "Using Gradle" section below.
+All of the Maven configuration will take place in the `pom.xml` file.
 
-All of the Maven configuration will take place in the `pom.xml` file. Start by adding the Liberty Maven App Parent POM. This will configure the Liberty Maven Plugin with the default executions necessary for setting up your managed Liberty server.
+[source, xml, indent=0, role="no_copy"]
+----
+include::finish/pom.xml[tags=**]
+----
 
-```
-<parent>
-	<groupId>net.wasdev.wlp.maven.parent</groupId>
-	<artifactId>liberty-maven-app-parent</artifactId>
-	<version>2.4.2</version>
-</parent>
-```
+Let's look into each of the required elements for this configuration. First, the Liberty Maven App Parent POM configures the Liberty Maven Plugin with the default executions necessary for setting up your managed Liberty server.
 
-Next, add the Arquillian Bill of Materials (BOM). A BOM is a Maven artifact which defines versions of dependencies to make dependency management easier.
+[source, xml, indent=0, role="no_copy"]
+----
+include::finish/pom.xml[tags=AddLibertyMavenAppParent]
+----
 
-```
-<dependencyManagement>
-	<dependencies>
-		<dependency>
-			<groupId>org.jboss.arquillian</groupId>
-			<artifactId>arquillian-bom</artifactId>
-			<version>1.4.0.Final</version>
-			<scope>import</scope>
-			<type>pom</type>
-		</dependency>
-	</dependencies>
-</dependencyManagement>
-```
+Next, the Arquillian Bill of Materials (BOM) is a Maven artifact which defines versions of dependencies to make dependency management easier.
 
-Next, add the Arquillian Liberty Managed JUnit dependency bundle and the Arquillian Shrinkwrap API. The dependency bundle includes all the core dependencies for running Arquillian tests on a managed Liberty container using JUnit. You can learn more about the Arquillian Liberty dependency bundles https://github.com/OpenLiberty/arquillian-liberty-dependencies[here]. Adding the Shrinkwrap API will allow you to create your test archive which will be packaged into a WAR and deployed to the Open Liberty server.
+[source, xml, indent=0, role="no_copy"]
+----
+include::finish/pom.xml[tags=AddArquillianBOM]
+----
 
-```
-<dependency>
-	<groupId>io.openliberty.arquillian</groupId>
-	<artifactId>arquillian-liberty-managed-junit</artifactId>
-	<version>1.1</version>
-	<type>pom</type>
-	<scope>test</scope>
-</dependency>
-<dependency>
-	<groupId>org.jboss.shrinkwrap</groupId>
-	<artifactId>shrinkwrap-api</artifactId>
-	<scope>test</scope>
-</dependency>
-```
+Next, refer to the Arquillian Liberty Managed JUnit dependency bundle and the Arquillian Shrinkwrap API. The dependency bundle includes all the core dependencies for running Arquillian tests on a managed Liberty container using JUnit. You can learn more about the https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles]. The Shrinkwrap API allows you to create your test archive which is packaged into a WAR and deployed to the Open Liberty server.
 
-Finally, add the Maven Failsafe Plugin and the Liberty Maven Plugin. The Failsafe plugin is used to run your JUnit integration tests, while the Liberty Maven Plugin configuration specifies your Open Liberty runtime and uses the `configure-arquillian` goal to automatically create and configure your `arquillian.xml`. This goal will retrieve the core `wlpHome`, `serverName`, and `httpPort` parameter values automatically from the Liberty Maven Plugin configuration, and also allows you to specify additional `arquillian.xml` parameters directly in your POM in an `arquillianProperties` dictionary. Complete documentation for this goal can be found https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[here]. Also notice in the configuration that `skipTestServer` is set to true to skip the `test-start-server` and `test-stop-server` goals defined in the Liberty Maven App Parent. This is because Arquillian will be managing the server lifecycle when it runs the tests.
+[source, xml, indent=0, role="no_copy"]
+----
+include::finish/pom.xml[tags=AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency]
+----
 
-```
-<build>
-	<plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-failsafe-plugin</artifactId>
-			<version>2.21.0</version>
-			<executions>
-				<execution>
-					<id>failsafe-integration-test</id>
-					<phase>integration-test</phase>
-					<goals>
-						<goal>integration-test</goal>
-					</goals>
-				</execution>
-				<execution>
-					<id>failsafe-verify</id>
-					<phase>verify</phase>
-					<goals>
-						<goal>verify</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
+Finally, refer to the Maven Failsafe Plugin and the Liberty Maven Plugin. The failsafe plugin is used to run your JUnit integration tests, while the Liberty Maven Plugin configuration specifies your Open Liberty runtime and uses the `configure-arquillian` goal to automatically create and configure your `arquillian.xml`. This goal retrieves the core `wlpHome`, `serverName`, and `httpPort` parameter values automatically from the Liberty Maven Plugin configuration, and also allows you to specify additional `arquillian.xml` parameters directly in your POM in an `arquillianProperties` dictionary. You can learn more about the the `configure-arquillian` goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[complete documentation]. Also notice in the configuration that `skipTestServer` is set to true to skip the `test-start-server` and `test-stop-server` goals defined in the Liberty Maven Application Parent. This is because Arquillian is managing the server lifecycle when it runs the tests.
 
-		<plugin>
-			<groupId>net.wasdev.wlp.maven.plugins</groupId>
-			<artifactId>liberty-maven-plugin</artifactId>
-			<version>2.4.2</version>
-			<extensions>true</extensions>
-			<!-- Specify configuration, executions for liberty-maven-plugin -->
-			<configuration>
-				<serverName>ArquillianManagedServer</serverName>
-				<assemblyArtifact>
-					<groupId>io.openliberty</groupId>
-					<artifactId>openliberty-runtime</artifactId>
-					<version>[17.0.0.4,)</version>
-					<type>zip</type>
-				</assemblyArtifact>
-				<features>
-					<acceptLicense>true</acceptLicense>
-				</features>
-				<skipTestServer>true</skipTestServer>
-			</configuration>
-			<executions>
-				<execution>
-					<id>install-apps</id>
-					<phase>none</phase>
-				</execution>
-				<execution>
-					<id>configure-arquillian-xml</id>
-					<phase>pre-integration-test</phase>
-					<goals>
-						<goal>configure-arquillian</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
-</build>
-```
+[source, xml, indent=0, role="no_copy"]
+----
+include::finish/pom.xml[tags=AddMavenFailsafeAndLibertyMavenPlugins]
+----
 
 === Using Gradle
 
-To configure your build to run your Arquillian tests using Gradle, modify the `start/build.gradle` file to add your Arquillian and Liberty dependencies. For instructions on doing this with Maven, scroll up to the "Using Maven" section above.
+For instructions on configuring the test build with Maven, scroll up to the "Using Maven" section above.
 
-All of the Gradle configuration will take place in the `build.gradle` file. Start by adding the Liberty Gradle Plugin and Gradle dependency management plugin as part of the buildscript dependencies. The Liberty Gradle Plugin allows you to manage your Liberty server, while the dependency management plugin brings support for Maven BOMs (Bill of Materials) to Gradle. You can learn more about the dependency management plugin https://spring.io/blog/2015/02/23/better-dependency-management-for-gradle[here].
+All of the Gradle configuration will take place in the `build.gradle` file.
 
-```
-dependencies {
-    classpath group: 'net.wasdev.wlp.gradle.plugins', name: 'liberty-gradle-plugin', version: '2.4.1'
-    classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
-}
-```
+[source, text, indent=0, role="no_copy"]
+----
+include::finish/build.gradle[tags=**]
+----
 
-Next, apply the two plugins that you just added:
+Let's look into each of the required elements for this configuration. First, refer to the Liberty Gradle Plugin and Gradle dependency management plugin as part of the buildscript dependencies. The Liberty Gradle Plugin allows you to manage your Liberty server, while the dependency management plugin brings support for Maven BOMs (Bill of Materials) to Gradle. You can learn more about the https://spring.io/blog/2015/02/23/better-dependency-management-for-gradle[dependency management plugin].
 
-```
-apply plugin: 'liberty'
-apply plugin: "io.spring.dependency-management"
-```
+[source, text, indent=0, role="no_copy"]
+----
+include::finish/build.gradle[tags=AddLibertyAndDependencyManagementPlugins]
+----
 
-Now add the Liberty server configuration. All that's needed is to point the plugin to the location of your `server.xml`. You can also optionally assign a server name as shown below.
+Next, the apply action is a required for the Liberty Gradle Plugin and the Gradle dependency management plugin.
 
-```
-liberty {
-    server {
-        configFile = file("${rootProject.projectDir}/src/test/resources/server.xml")
-        name = 'ArquillianManagedServer'
-     }
-}
-```
+[source, text, indent=0, role="no_copy"]
+----
+include::finish/build.gradle[tags=ApplyLibertyAndDependencyManagementPlugins]
+----
 
-Next, add the Arquillian Bill of Materials (BOM). A BOM is a Maven artifact which defines versions of dependencies to make dependency management easier.
+Next, the Liberty server configuration is needed to point the plugin to the location of your `server.xml`. You can also optionally assign a server name as shown below.
 
-```
-dependencyManagement {
-    imports {
-        mavenBom "org.jboss.arquillian:arquillian-bom:1.4.0.Final"
-    }
-}
-```
+[source, text, indent=0, role="no_copy"]
+----
+include::finish/build.gradle[tags=AddLibertyServerConfiguration]
+----
 
-Then, add your test dependencies and the Open Liberty runtime to the `dependencies` section. The Arquillian Liberty Managed JUnit dependency bundle includes all the core dependencies for running Arquillian tests on a managed Liberty container using JUnit. You can learn more about the Arquillian Liberty dependency bundles https://github.com/OpenLiberty/arquillian-liberty-dependencies[here]. Adding the Shrinkwrap API will allow you to create your test archive which will be packaged into a WAR and deployed to the Open Liberty server. You will also need to point to the `tools.jar` file provided by the JDK. 
+Next, the Arquillian Bill of Materials (BOM) is a Maven artifact which defines versions of dependencies to make dependency management easier.
 
-```
-testCompile group: "io.openliberty.arquillian", name: "arquillian-liberty-managed-junit", version: "1.1"
-testCompile ('org.jboss.shrinkwrap:shrinkwrap-api')
-testCompile files("${System.properties['java.home']}/../lib/tools.jar")
+[source, text, indent=0, role="no_copy"]
+----
+include::finish/build.gradle[tags=AddArquillianBOMDependency]
+----
 
-libertyRuntime "io.openliberty:openliberty-runtime:18.0.0.1"
-```
+Then, refer to the test dependencies and the Open Liberty runtime to the `dependencies` section. The Arquillian Liberty Managed JUnit dependency bundle includes all the core dependencies for running Arquillian tests on a managed Liberty container using JUnit. You can learn more about the https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles]. The Shrinkwrap API allows you to create your test archive which is packaged into a WAR and deployed to the Open Liberty server. You also need to point to the `tools.jar` file provided by the JDK.
 
-Finally, add your test configuration. Notice that the tests depend on the `configureArquillian` task. This task will automatically create and configure your `arquillian.xml` by retrieving the core `wlpHome`, `serverName`, and `httpPort` parameter values from the Liberty Gradle Plugin configuration. It also allows you to specify additional `arquillian.xml` parameters directly in your `build.gradle` file in an `arquillianConfiguration` dictionary. Complete documentation for this goal can be found https://github.com/WASdev/ci.gradle/blob/master/docs/configureArquillian.md[here].
+[source, text, indent=0, role="no_copy"]
+----
+include::finish/build.gradle[tags=AddTestDependencyAndOpenLibertyRuntime]
+----
 
-```
-tasks.withType(Test) {
-    group 'Verification'
-    testLogging.showStandardStreams = true
-    reports.html.destination = file("$buildDir/reports/")
-    reports.junitXml.destination = file("$buildDir/test-results/")
-    include '**/*'
-    dependsOn 'installApps', 'testClasses', 'configureArquillian'
-} 
-```
+Finally, refer to the test configuration. Notice that the tests depend on the `configureArquillian` task. This task automatically creates and configures your `arquillian.xml` by retrieving the core `wlpHome`, `serverName`, and `httpPort` parameter values from the Liberty Gradle Plugin configuration. It also allows you to specify additional `arquillian.xml` parameters directly in your `build.gradle` file in an `arquillianConfiguration` dictionary. You can learn more about the `configureArquillian` goal in the https://github.com/WASdev/ci.gradle/blob/master/docs/configureArquillian.md[complete documentation].
+
+[source, text, indent=0, role="no_copy"]
+----
+include::finish/build.gradle[tags=AddTestConfiguration]
+----
 
 == Configuring the server.xml
 
-Now that you're done configuring the build tool of your choice, edit the `src/test/resources/server.xml` file:
+Now that you're done configuring the build tool of your choice, open the `src/test/resources/server.xml` file:
 
+[source, xml, indent=0, role="no_copy"]
 ----
-include::finish/src/test/resources/server.xml[]
+include::finish/src/test/resources/server.xml[tags=**]
 ----
 
-Add the `localConnector-1.0` feature to the `featureManager` block. This is a feature that is required by the Arquillian Liberty Managed container in order to connect to and communicate with the Open Liberty runtime. 
+The `localConnector` feature in the `featureManager` block is required by the Arquillian Liberty Managed container in order to connect to and communicate with the Open Liberty runtime. The `servlet` feature is required during the deployment of the Aquillian tests in which servlets are created to perform the in-container testing.
 
 == Adding your Arquillian test
 
-You're now ready to write your test. Notice that the source of the starting project includes two classes, `Greeter` and `PhraseBuilder`. The `Greeter` class injects an instance of the `PhraseBuilder` class, and invokes a method on it to create a greeting. Your test class will use Arquillian and JUnit to test this functionality. 
+You're now ready to write your test. Notice that the source of the starting project includes two classes, `Greeter` and `PhraseBuilder`. The `Greeter` class injects an instance of the `PhraseBuilder` class, and invokes a method on it to create a greeting. Your test class will use Arquillian and JUnit to test this functionality.
 
-Create the test file at `src/test/java/org/arquillian/example/GreeterIT.java`:
+Create the `GreeterIT` test class in the `src/test/java/it/io/openliberty/guides/arquillian/example/GreeterIT.java` file:
 
-[source, Java]
+[source, Java, indent=0]
 ----
-include::finish/src/test/java/org/arquillian/example/GreeterIT.java[tags=**;!copyright;]
+include::finish/src/test/java/it/io/openliberty/guides/arquillian/example/GreeterIT.java[tags=**;!copyright;!comment]
 ----
 
-The first thing you should notice is that the JUnit Arquillian runner is being used to run the tests, instead of the standard JUnit runner. This is specified using the `RunWith` annotation at the top of the class, and tells JUnit to run the tests using Arquillian. 
+The first thing you should notice is that the JUnit Arquillian runner is being used to run the tests, instead of the standard JUnit runner. This is specified using the `RunWith` annotation at the top of the class, and tells JUnit to run the tests using Arquillian.
 
-The next important item is the `@Deployment` block. The ShrinkWrap test archive's contents are defined here, which is going to be deployed to Open Liberty to run the in-container tests. Notice the inclusion of the `Greeter` and `PhraseBuilder` classes. Without these, the code will compile successfully but fail at runtime when the injection of the `Greeter` class takes place.
+The next important item is the `@Deployment` block. The ShrinkWrap test archive's contents are defined here, which is going to be deployed to Open Liberty to run the in-container tests. Notice the inclusion of the `Greeter` and `PhraseBuilder` classes. Without these, the code compiles successfully but fails at runtime when the injection of the `Greeter` class takes place.
 
-CDI is used to inject an instance of the Greeter class. It is then tested by the `should_create_greeting` method, which validates that it creates the correct greeting based on the input. 
+CDI is used to inject an instance of the Greeter class. It is then tested by the `should_create_greeting` method, which validates that it creates the correct greeting based on the input.
 
 == Running the tests
 
-This concludes the code changes. It's now time to build and run your project. Run the command below that corresponds to your build tool of choice.
+It's now time to build and run your Arquillian test. Run the command below that corresponds to your build tool of choice.
 
 For Maven:
 
@@ -289,7 +204,7 @@ For Gradle:
 gradle clean build
 ```
 
-In either case, you will notice that the server is created and started, with a test application built from your ShrinkWrap archive that is deployed at `http://localhost:9080/test/`. You will then see the initialization and execution of the test:
+In either case, notice that the server is created and started, with a test application built from your ShrinkWrap archive that is deployed at `http://localhost:9080/test/` during the build process. You should see the initialization and execution of the test:
 
 ```
 PhraseBuilder <init>
@@ -298,16 +213,8 @@ PhraseBuilder initialize
 Hello, Earthling!
 ```
 
-Following the execution of the test, the test application is automatically undeployed and the server is shut down. You should then get a message indicating that the build was successful. 
+Following the execution of the test, the test application is automatically undeployed and the server is shut down. You should then get a message indicating that the build was successful.
 
 == Great work! You're done!
 
-// Briefly summarize what the user achieved in this guide (1-2 sentences).
-
-// OPTIONAL: briefly state what the user could do next now that they've learned the technologies in this guide.
-
-// Include the below from the guides-common repo to tell users how they can contribute to the guide
 include::{common-includes}/finish.adoc[]
-
-// DO NO CREATE ANYMORE SECTIONS AT THIS POINT
-// Related guides will be added in automatically here if you included them in ":page-related-guides"
