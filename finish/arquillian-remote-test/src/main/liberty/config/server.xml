@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<server description="Sample Liberty server">
+
+    <featureManager>
+        <feature>jaxrs-2.1</feature>
+        <feature>jsonp-1.1</feature>
+        <feature>localConnector-1.0</feature>
+        <feature>jpa-2.1</feature>
+        <feature>jaxrs-2.0</feature>
+        <feature>ejbLite-3.2</feature>
+        <feature>transportSecurity-1.0</feature>
+        <feature>restConnector-1.0</feature>
+    </featureManager>
+
+    <!-- <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" sslProtocol="TLSv1.2"
+        clientAuthenticationSupported="true" />
+
+    <keyStore id="defaultKeyStore" type="JKS"
+        location="/Users/dblitz/liberty-crypto-microservice/gdax.jks" password="password" />
+
+    <quickStartSecurity userName="admin" userPassword="admin" />
+
+    <dataSource id="mydb" jndiName="jdbc/mydb" type="javax.sql.ConnectionPoolDataSource">
+        <jdbcDriver javax.sql.ConnectionPoolDataSource="org.h2.jdbcx.JdbcDataSource"
+            javax.sql.DataSource="org.h2.jdbcx.JdbcDataSource" javax.sql.XADataSource="org.h2.jdbcx.JdbcDataSource"
+            libraryRef="SharedLibrary_H2" />
+        <properties URL="jdbc:h2:~/liberty-crypto-db;DB_CLOSE_ON_EXIT=FALSE"
+            user="" password="sa" />
+    </dataSource>
+
+    <library id="SharedLibrary_H2">
+        <fileset dir="${shared.resource.dir}/h2" id="Fileset_H2" />
+    </library>
+
+    <cors domain="/myLibertyApp" allowedOrigins="http://localhost:8081"
+        allowedMethods="GET, POST, PUT, DELETE, OPTIONS, HEAD" allowedHeaders="origin, content-type, accept, authorization"
+        allowCredentials="true" maxAge="1209600" /> -->
+
+    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+        id="defaultHttpEndpoint" />
+
+    <!-- <cdi12 enableImplicitBeanArchives="false" /> -->
+
+    <!-- <remoteFileAccess>
+        <writeDir>${server.config.dir}/dropins</writeDir>
+    </remoteFileAccess> -->
+
+</server>
