@@ -1,4 +1,4 @@
-package it.io.openliberty.guides.system;
+package src.test.java.it.io.openliberty.guides.system;
 
 import java.net.URL;
 

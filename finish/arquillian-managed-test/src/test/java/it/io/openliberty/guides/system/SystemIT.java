@@ -26,19 +26,31 @@
 * limitations under the License.
 *******************************************************************************/
 // end::copyright[]
-package it.io.openliberty.guides.system;
+package src.test.java.it.io.openliberty.guides.system;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
 
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.MessageBodyReader;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,10 +64,17 @@ public class SystemIT {
     @ArquillianResource
     private URL deploymentURL;
     
-    @Deployment
-    public static JavaArchive createDeployment() {
+    @Deployment(name = "systemservice_functional_test")
+    public static JavaArchive createSystemSrvFuncTestDeployment() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
                                         .addClasses(SystemApplication.class, SystemResource.class);
+        return archive;
+    }
+    
+    @Deployment(name = "systemservice_web_test", testable = false)
+    public static WebArchive createSystemSrvWebTestDeployment() {
+        WebArchive archive = ShrinkWrap.create(WebArchive.class)
+                        .addClasses(SystemResource.class, SystemApplication.class, JsonObject.class, MessageBodyReader.class); 
         return archive;
     }
     
@@ -64,7 +83,9 @@ public class SystemIT {
     
     @Test
     @InSequence(1)
-    public void test_getProperties() {
+    @OperateOnDeployment("systemservice_functional_test")
+    public void testGetPropertiesFromFunction() {
+        System.out.println("******************************");
         Properties prop = system.getProperties();
         String expectedOS = System.getProperty("os.name");
         System.out.println("Expected OS name: " + expectedOS);
@@ -78,5 +99,36 @@ public class SystemIT {
                      expectedOS, 
                      serviceOS);
         System.out.println("Test the system property for the local and service JVM should match.");
+        System.out.println("******************************");
+    }
+    
+    @Test
+    @InSequence(2)
+    @OperateOnDeployment("systemservice_web_test")
+    public void testGetPropertiesFromWeb(@ArquillianResteasyResource("system") WebTarget webTarget) {
+        System.out.println("******************************");
+        System.out.println("System URL test started.");
+        final Response response = webTarget
+                        .path("/properties")
+                        .request(MediaType.APPLICATION_JSON)
+                        .get();
+        System.out.println("Client deployment URI is: " + deploymentURL + "system");
+        System.out.println("WebTarget URI is: " + webTarget.getUri().toASCIIString());
+        Assert.assertEquals(deploymentURL + "system", webTarget.getUri().toASCIIString());
+        
+        System.out.println("Client response type is: " + response.getMediaType().toString());
+        Assert.assertEquals(MediaType.APPLICATION_JSON, response.getMediaType().toString());
+        
+        System.out.println("Client response is: " + response.getStatus());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        
+        String obj = response.readEntity(MediaType.APPLICATION_JSON.getClass());        
+        System.out.println("Client response read entity is: " + obj);
+        JsonObject jObj = Json.createReader(new StringReader(obj)).readObject();
+
+        Assert.assertEquals("The system property for the local and service JVM should match",
+                     System.getProperty("os.name"), jObj.getString("os.name"));
+        response.close();
+        System.out.println("******************************");
     }
 }

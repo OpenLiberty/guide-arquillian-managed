@@ -21,6 +21,7 @@
     <!-- tag::modules[] -->
     <modules>
         <module>system-jar</module>
+        <module>inventory-jar</module>
         <module>war-test</module>
         <module>arquillian-managed-test</module>
     </modules>

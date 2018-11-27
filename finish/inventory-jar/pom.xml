@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.openliberty.guides</groupId>
+    <artifactId>inventory-jar</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <!-- tag::parent[] -->
+    <parent>
+        <groupId>io.openliberty.guides</groupId>
+        <artifactId>io.openliberty.guides.system.parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <!-- end::parent[] -->
+
+    <dependencies>
+        <dependency>
+            <groupId>io.openliberty.guides</groupId>
+            <artifactId>system-jar</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
