@@ -40,9 +40,9 @@ public class InventoryResource {
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
     // Get properties for host
     Properties props = manager.get(hostname);
-    System.out.println("InventoryResource hostname: " + hostname);
-    System.out.println("InventoryResource manager: " + manager);
-    System.out.println("InventoryResource props: " + props);
+    //System.out.println("InventoryResource hostname: " + hostname);
+    //System.out.println("InventoryResource manager: " + manager);
+    //System.out.println("InventoryResource props: " + props);
     if (props == null) {
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                      .entity("ERROR: Unknown hostname or the system service may not be running on "

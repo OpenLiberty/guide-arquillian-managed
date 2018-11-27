@@ -54,28 +54,29 @@ public class InventoryURLIT {
     public void testEmptyInventory(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
-        System.out.println("Inventory URL test 1 started.");
+        //System.out.println("Inventory URL test 1 started.");
         final Response response = webTarget.path("/systems")
                                            .request(MediaType.APPLICATION_JSON).get();
-        System.out.println("Client deployment URI is: " + deploymentURL + "inventory");
-        System.out.println("WebTarget URI is: " + webTarget.getUri().toASCIIString());
+        //System.out.println("Client deployment URI is: " + deploymentURL + "inventory");
+        //System.out.println("WebTarget URI is: " + webTarget.getUri().toASCIIString());
         Assert.assertEquals(deploymentURL + "inventory",
                             webTarget.getUri().toASCIIString());
 
-        System.out.println("Client response type is: "
-                        + response.getMediaType().toString());
+        //System.out.println("Client response type is: "
+        //                + response.getMediaType().toString());
         Assert.assertEquals(MediaType.APPLICATION_JSON,
                             response.getMediaType().toString());
 
-        System.out.println("Client response is: " + response.getStatus());
+        //System.out.println("Client response is: " + response.getStatus());
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        System.out.println("Test the endpoint response status code is OK.");
 
         String obj = response.readEntity(MediaType.APPLICATION_JSON.getClass());
-        System.out.println("Client response read entity is: " + obj);
-        Assert.assertTrue(obj.contains("{\"systems\":[],\"total\":0}"));
-
+        //System.out.println("Client response read entity is: " + obj);
+        //Assert.assertTrue(obj.contains("{\"systems\":[],\"total\":0}"));
         JsonObject jObj = Json.createReader(new StringReader(obj)).readObject();
         Assert.assertEquals(0, jObj.getInt("total"));
+        System.out.println("Test the inventory is empty on application start.");
 
         response.close();
         System.out.println("******************************");
@@ -86,28 +87,29 @@ public class InventoryURLIT {
     public void testHostRegistration(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
-        System.out.println("Inventory URL test 2 started.");
+        //System.out.println("Inventory URL test 2 started.");
         Response response = webTarget.path("/systems/{hostname}")
                                      .resolveTemplate("hostname", "localhost")
                                      .request(MediaType.APPLICATION_JSON).get();
 
-        System.out.println("WebTarget URI is: " + webTarget.getUri());
+        //System.out.println("WebTarget URI is: " + webTarget.getUri());
 
-        System.out.println("Client response type is: "
-                        + response.getMediaType().toString());
+        //System.out.println("Client response type is: "
+        //                + response.getMediaType().toString());
         Assert.assertEquals(MediaType.APPLICATION_JSON,
                             response.getMediaType().toString());
 
-        System.out.println("Client response is: " + response.getStatus());
+        //System.out.println("Client response is: " + response.getStatus());
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        System.out.println("Test the endpoint response status code is OK.");
 
         String obj = response.readEntity(MediaType.APPLICATION_JSON.getClass());
-        System.out.println("Client response read entity is: " + obj);
-
+        //System.out.println("Client response read entity is: " + obj);
         JsonObject jObj = Json.createReader(new StringReader(obj)).readObject();
-
         Assert.assertEquals("The system property for the local and service JVM should match",
                             System.getProperty("os.name"), jObj.getString("os.name"));
+        System.out.println("Test localhost is registered successfully.");
+        
         response.close();
         System.out.println("******************************");
     }
@@ -117,17 +119,18 @@ public class InventoryURLIT {
     public void testSystemPropertiesMatch(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
-        System.out.println("Inventory URL test 3 started.");
+        //System.out.println("Inventory URL test 3 started.");
         Response response = webTarget.path("/systems")
                                      .request(MediaType.APPLICATION_JSON).get();
 
-        System.out.println("WebTarget URI is: " + webTarget.getUri());
+        //System.out.println("WebTarget URI is: " + webTarget.getUri());
 
-        System.out.println("Client response is: " + response.getStatus());
+        //System.out.println("Client response is: " + response.getStatus());
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        System.out.println("Test the endpoint response status code is OK.");
 
         String obj = response.readEntity(MediaType.APPLICATION_JSON.getClass());
-        System.out.println("Client response read entity is: " + obj);
+        //System.out.println("Client response read entity is: " + obj);
         JsonObject jObj = Json.createReader(new StringReader(obj)).readObject();
         // {"systems":[{"hostname":"localhost","properties":{"user.name":"evelinec","os.name":"Mac
         // OS X"}}],"total":1}
@@ -136,17 +139,22 @@ public class InventoryURLIT {
         int actual = jObj.getInt("total");
         Assert.assertEquals("The inventory should have one entry for localhost",
                             expected, actual);
+        System.out.println("Test the inventory should have one entry.");
 
         boolean localhostExists = jObj.getJsonArray("systems").getJsonObject(0)
                                       .get("hostname").toString().contains("localhost");
         Assert.assertTrue("A host was registered, but it was not localhost",
                           localhostExists);
+        System.out.println("Test the inventory should have localhost registered.");
 
         String expectedOS = System.getProperty("os.name");
-        JsonObject jProps = (JsonObject) jObj.getJsonArray("systems").getJsonObject(0).get("properties");
+        JsonObject jProps = (JsonObject) jObj.getJsonArray("systems").getJsonObject(0)
+                                             .get("properties");
         String serviceOS = jProps.getString("os.name");
         Assert.assertEquals("The system property for the local and service JVM should match",
                             expectedOS, serviceOS);
+        System.out.println("Test system property for the local and service JVM should match.");
+        
         response.close();
         System.out.println("******************************");
     }
@@ -156,22 +164,25 @@ public class InventoryURLIT {
     public void testUnknownHost(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
-        System.out.println("Inventory URL test 4 started.");
+        //System.out.println("Inventory URL test 4 started.");
         Response response = webTarget.path("/systems/{hostname}")
                                      .resolveTemplate("hostname", "badhostname")
                                      .request(MediaType.APPLICATION_JSON).get();
 
-        System.out.println("WebTarget URI is: " + webTarget.getUri());
+        //System.out.println("WebTarget URI is: " + webTarget.getUri());
 
-        System.out.println("Client response is: " + response.getStatus());
+        //System.out.println("Client response is: " + response.getStatus());
         Assert.assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
                             response.getStatus());
+        System.out.println("Test the endpoint response status code is ERROR.");
 
         String obj = response.readEntity(String.class);
-        System.out.println("Client response read entity is: " + obj);
+        //System.out.println("Client response read entity is: " + obj);
         boolean isError = obj.contains("ERROR");
         Assert.assertTrue("badhostname is not a valid host but it didn't raise an error",
                           isError);
+        System.out.println("Test the endpoint response message is ERROR.");
+        
         response.close();
         System.out.println("******************************");
     }

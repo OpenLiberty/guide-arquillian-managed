@@ -34,14 +34,14 @@ public class SystemClient {
 
     // Wrapper function that gets properties
     public Properties getProperties(String hostname) {
-        System.out.println("SystemClient hostname: " + hostname);
+        //System.out.println("SystemClient hostname: " + hostname);
         String url;
         if (WARNAME == null) {
             url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, SYSTEM_PROPERTIES);
         } else {
             url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, "/" + WARNAME + SYSTEM_PROPERTIES);
         }
-        System.out.println("SystemClient url: " + url);
+        //System.out.println("SystemClient url: " + url);
         Builder clientBuilder = buildClientBuilder(url);
         return getPropertiesHelper(clientBuilder);
     }

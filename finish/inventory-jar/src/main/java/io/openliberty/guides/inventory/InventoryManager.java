@@ -35,16 +35,9 @@ public class InventoryManager {
     private List<SystemData> systems = Collections.synchronizedList(new ArrayList<SystemData>());
 
     public Properties get(String hostname) {
-        System.out.println("InvetoryManager hostname: " + hostname);
-        System.out.println("InvetoryManager systemClient: " + systemClient);
+        //System.out.println("InvetoryManager hostname: " + hostname);
+        //System.out.println("InvetoryManager systemClient: " + systemClient);
         return systemClient.getProperties(hostname);
-    }
-    
-    public Properties get(String hostname, String warName) {
-        System.out.println("InvetoryManager hostname: " + hostname);
-        System.out.println("InvetoryManager warName: " + warName);
-        System.out.println("InvetoryManager systemClient: " + systemClient);
-        return systemClient.getProperties(hostname, warName);
     }
 
     public void add(String hostname, Properties systemProps) {
