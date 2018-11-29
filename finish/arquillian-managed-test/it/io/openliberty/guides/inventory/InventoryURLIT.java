@@ -2,10 +2,7 @@ package it.io.openliberty.guides.inventory;
 
 import java.io.StringReader;
 import java.net.URL;
-import java.util.List;
-import java.util.Properties;
 
-import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.WebTarget;
@@ -13,13 +10,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,43 +35,22 @@ public class InventoryURLIT {
     @ArquillianResource
     private URL deploymentURL;
 
-    @Deployment(name = "inventory_functional_test")
-    public static JavaArchive createDeploymentForFunctionalTest() {
-        JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-                                        .addClasses(SystemApplication.class,
-                                                    SystemResource.class,
-                                                    InventoryList.class,
-                                                    SystemData.class,
-                                                    SystemClient.class,
-                                                    InventoryApplication.class,
-                                                    InventoryManager.class,
-                                                    InventoryResource.class);
-        return archive;
-    }
-    
-    @Deployment(name = "inventory_endpoint_test", testable = false)
+    @Deployment(testable = false)
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class,
                                                "arquillian-managed.war")
                                        .addClasses(SystemResource.class,
                                                    SystemApplication.class,
                                                    InventoryList.class,
-                                                   SystemData.class, 
-                                                   SystemClient.class,
+                                                   SystemData.class, SystemClient.class,
                                                    InventoryApplication.class,
                                                    InventoryManager.class,
                                                    InventoryResource.class);
         return archive;
     }
-    
-    @Inject
-    //InventoryManager invMgr;
-    //SystemClient sysClient;
-    InventoryResource invSrv; 
 
     @Test
     @InSequence(1)
-    @OperateOnDeployment("inventory_endpoint_test")
     public void testEmptyInventory(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
@@ -110,7 +84,6 @@ public class InventoryURLIT {
 
     @Test
     @InSequence(2)
-    @OperateOnDeployment("inventory_endpoint_test")
     public void testHostRegistration(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
@@ -138,13 +111,11 @@ public class InventoryURLIT {
         System.out.println("Test localhost is registered successfully.");
         
         response.close();
-        
         System.out.println("******************************");
     }
 
     @Test
     @InSequence(3)
-    @OperateOnDeployment("inventory_endpoint_test")
     public void testSystemPropertiesMatch(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
@@ -187,10 +158,9 @@ public class InventoryURLIT {
         response.close();
         System.out.println("******************************");
     }
-    
+
     @Test
     @InSequence(4)
-    @OperateOnDeployment("inventory_endpoint_test")
     public void testUnknownHost(
                     @ArquillianResteasyResource("inventory") WebTarget webTarget) {
         System.out.println("******************************");
@@ -214,87 +184,6 @@ public class InventoryURLIT {
         System.out.println("Test the endpoint response message is ERROR.");
         
         response.close();
-        System.out.println("******************************");
-    }
-    
-/*    @Test
-    @InSequence(5)
-    @OperateOnDeployment("inventory_functional_test")
-    public void testInventoryManagerFunctions() {
-        System.out.println("******************************");
-        InventoryList invList = invMgr.list();
-        System.out.println("Inv List is: " + invList.getTotal());
-        
-        Properties props = invMgr.get("localhost");
-        System.out.println("Props is: " + props);
-        
-        invMgr.add("localhost", props);
-        
-        invList = invMgr.list();
-        System.out.println("Inv List is: " + invList.getTotal());
-        System.out.println("Inv List is: " + invList);
-        
-        List<SystemData> systemDataList = invList.getSystems();
-        System.out.println("System data list is: " + systemDataList);
-        
-        System.out.println("systemDataList.get(0): " + systemDataList.get(0).getHostname());
-        System.out.println("systemDataList.get(0).getProperties().get(\"os.name\"): " + systemDataList.get(0).getProperties().get("os.name"));
-        
-        Assert.assertTrue(systemDataList.get(0).getHostname().equals("localhost"));
-        Assert.assertTrue(systemDataList.get(0).getProperties().get("os.name").equals(System.getProperty("os.name")));
-        
-        // {"systems":[{"hostname":"localhost","properties":{"user.name":"evelinec","os.name":"Mac
-        // OS X"}}],"total":1}
-
-        System.out.println("******************************");
-    }*/
-    
-/*    @Test
-    @InSequence(6)
-    @OperateOnDeployment("inventory_functional_test")
-    public void testSystemClientFunction() {
-        System.out.println("******************************SystemClient");
-        Properties props = sysClient.getProperties("localhost");
-        System.out.println("System client props are: " + props);
-        String expectedOS = System.getProperty("os.name");
-        System.out.println("Expected OS name: " + expectedOS);
-        String serviceOS = props.getProperty("os.name");
-        System.out.println("Service OS name: " + serviceOS);
-
-        Assert.assertNotNull(serviceOS);
-        System.out.println("Test the system property for the service JVM is not null.");
-
-        Assert.assertEquals("The system property for the local and service JVM should match",
-                            expectedOS, serviceOS);
-        System.out.println("Test the system property for the local and service JVM should match.");
-        System.out.println("******************************");
-    }*/
-    
-    @Test
-    @InSequence(7)
-    @OperateOnDeployment("inventory_functional_test")
-    public void testInventoryResourceFunctions() {
-        System.out.println("******************************Test InventoryResource Functions*****");
-        invSrv.getPropertiesForHost("localhost");
-        
-        InventoryList invList = invSrv.listContents();
-        Assert.assertEquals(1, invList.getTotal());
-        System.out.println("Test the inventory should have one entry.");
-        
-        //System.out.println("Inv List total is: " + invList.getTotal());
-        
-        List<SystemData> systemDataList = invList.getSystems();
-        //System.out.println("System data list is: " + systemDataList);
-        
-        //System.out.println("systemDataList.get(0): " + systemDataList.get(0).getHostname());
-        //System.out.println("systemDataList.get(0).getProperties().get(\"os.name\"): " + systemDataList.get(0).getProperties().get("os.name"));
-        
-        Assert.assertTrue(systemDataList.get(0).getHostname().equals("localhost"));
-        System.out.println("Test the inventory should have localhost registered.");
-        
-        Assert.assertTrue(systemDataList.get(0).getProperties().get("os.name").equals(System.getProperty("os.name")));
-        System.out.println("Test system property for the local and service JVM should match.");
-
         System.out.println("******************************");
     }
 }

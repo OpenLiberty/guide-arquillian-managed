@@ -106,7 +106,7 @@ public class SystemIT {
     @Test
     @InSequence(2)
     @OperateOnDeployment("system_endpoint_test")
-    public void testGetPropertiesFromWeb(
+    public void testGetPropertiesFromEndpoint(
                     @ArquillianResteasyResource("system") WebTarget webTarget) {
         System.out.println("******************************");
         //System.out.println("System URL test started.");
