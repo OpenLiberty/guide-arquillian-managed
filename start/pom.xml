@@ -1,30 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-        http://maven.apache.org/POM/4.0.0
-        http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.openliberty.guides</groupId>
-	<artifactId>guide-arquillian-managed</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+  <!-- tag::AddLibertyMavenAppParent[] -->
+  <parent>
+    <groupId>net.wasdev.wlp.maven.parent</groupId>
+    <artifactId>liberty-maven-app-parent</artifactId>
+    <version>2.4.2</version>
+  </parent>
+  <!-- end::AddLibertyMavenAppParent[] -->
 
-	<name>guide-arquillian-managed</name>
+  <groupId>io.openliberty.guides</groupId>
+  <artifactId>guide-arquillian-managed</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
-	</properties>
+  <name>guide-arquillian-managed</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>javax.enterprise</groupId>
-			<artifactId>cdi-api</artifactId>
-			<version>1.2</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+
+  <!-- tag::AddArquillianBOM[] -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>1.4.0.Final</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <!-- end::AddArquillianBOM[] -->
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- tag::AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency[] -->
+    <dependency>
+      <groupId>io.openliberty.arquillian</groupId>
+      <artifactId>arquillian-liberty-managed-junit</artifactId>
+      <version>1.1.1</version>
+      <type>pom</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap</groupId>
+      <artifactId>shrinkwrap-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- end::AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency[] -->
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- tag::AddMavenFailsafeAndLibertyMavenPlugins[] -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.21.0</version>
+        <executions>
+          <execution>
+            <id>failsafe-integration-test</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>failsafe-verify</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>net.wasdev.wlp.maven.plugins</groupId>
+        <artifactId>liberty-maven-plugin</artifactId>
+        <version>2.4.2</version>
+        <extensions>true</extensions>
+        <!-- Specify configuration, executions for liberty-maven-plugin -->
+        <configuration>
+          <serverName>ArquillianManagedServer</serverName>
+          <assemblyArtifact>
+            <groupId>io.openliberty</groupId>
+            <artifactId>openliberty-runtime</artifactId>
+            <version>[17.0.0.4,)</version>
+            <type>zip</type>
+          </assemblyArtifact>
+          <features>
+            <acceptLicense>true</acceptLicense>
+          </features>
+          <skipTestServer>true</skipTestServer>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install-apps</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>configure-arquillian-xml</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>configure-arquillian</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- end::AddMavenFailsafeAndLibertyMavenPlugins[] -->
+    </plugins>
+  </build>
 </project>
