@@ -34,16 +34,13 @@ public class SystemClient {
 
     // Wrapper function that gets properties
     public Properties getProperties(String hostname) {
-        //System.out.println("SystemClient hostname: " + hostname);
         String url;
         if (WARNAME == null) {
             url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, SYSTEM_PROPERTIES);
         } else {
             url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, "/" + WARNAME + SYSTEM_PROPERTIES);
         }
-        //System.out.println("SystemClient url: " + url);
         Builder clientBuilder = buildClientBuilder(url);
-        //System.out.println("SystemClient clientBuilder is: " + clientBuilder);
         return getPropertiesHelper(clientBuilder);
     }
 
@@ -89,11 +86,8 @@ public class SystemClient {
 
     // Helper method that processes the request
     protected Properties getPropertiesHelper(Builder builder) {
-        //System.out.println("SystemClient getPropertiesHelper method.");
         try {
             Response response = builder.get();
-            //System.out.println("SystemClient getPropertiesHelper method response: " + response);
-            //System.out.println("SystemClient getPropertiesHelper method response status: " + response.getStatus());
             if (response.getStatus() == Status.OK.getStatusCode()) {
                 return response.readEntity(Properties.class);
             } else {
@@ -107,5 +101,4 @@ public class SystemClient {
         }
         return null;
     }
-
 }

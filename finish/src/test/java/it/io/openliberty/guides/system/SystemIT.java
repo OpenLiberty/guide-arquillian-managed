@@ -1,31 +1,15 @@
 // tag::copyright[]
 /*******************************************************************************
-* Copyright (c) 2018 IBM Corporation and others.
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*
-* Contributors:
-*     IBM Corporation - Initial implementation
-*
-********************************************************************************
-* Copyright 2012, Red Hat Middleware LLC, and individual contributors
-* by the @authors tag. See the copyright.txt in the distribution for a
-* full listing of individual contributors.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
-// end::copyright[]
+ * Copyright (c) 2018 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - Initial implementation
+ *******************************************************************************/
+ // end::copyright[]
 package it.io.openliberty.guides.system;
 
 import java.io.StringReader;
@@ -62,6 +46,7 @@ public class SystemIT {
     @ArquillianResource
     private URL deploymentURL;
 
+    // tag::system_functional_test[]
     @Deployment(name = "system_functional_test")
     public static JavaArchive createSystemFunctionalTestDeployment() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
@@ -69,30 +54,30 @@ public class SystemIT {
                                                     SystemResource.class);
         return archive;
     }
+    // end::system_functional_test[]
 
+    // tag::system_endpoint_test[]
     @Deployment(name = "system_endpoint_test", testable = false)
     public static WebArchive createSystemEndpointTestDeployment() {
-        WebArchive archive = ShrinkWrap.create(WebArchive.class)
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, "arquillian-managed.war")
                                        .addClasses(SystemResource.class,
-                                                   SystemApplication.class,
-                                                   JsonObject.class,
-                                                   MessageBodyReader.class);
+                                                   SystemApplication.class);
         return archive;
     }
+    // end::system_endpoint_test[]
 
     @Inject
     SystemResource system;
 
+    // tag::testGetPropertiesFromFunction[]
     @Test
     @InSequence(1)
     @OperateOnDeployment("system_functional_test")
     public void testGetPropertiesFromFunction() {
-        System.out.println("******************************");
+        System.out.println("******************************testGetPropertiesFromFunction*****");
         Properties prop = system.getProperties();
         String expectedOS = System.getProperty("os.name");
-        //System.out.println("Expected OS name: " + expectedOS);
         String serviceOS = prop.getProperty("os.name");
-        //System.out.println("Service OS name: " + serviceOS);
 
         Assert.assertNotNull(serviceOS);
         System.out.println("Test the system property for the service JVM is not null.");
@@ -102,34 +87,32 @@ public class SystemIT {
         System.out.println("Test the system property for the local and service JVM should match.");
         System.out.println("******************************");
     }
+    // end::testGetPropertiesFromFunction[]
 
+    // tag::testGetPropertiesFromEndpoint[]
     @Test
     @InSequence(2)
     @OperateOnDeployment("system_endpoint_test")
     public void testGetPropertiesFromEndpoint(
                     @ArquillianResteasyResource("system") WebTarget webTarget) {
-        System.out.println("******************************");
-        //System.out.println("System URL test started.");
+        System.out.println("******************************testGetPropertiesFromEndpoint*****");
         final Response response = webTarget.path("/properties")
                                            .request(MediaType.APPLICATION_JSON).get();
-        //System.out.println("Client deployment URI is: " + deploymentURL + "system");
-        //System.out.println("WebTarget URI is: " + webTarget.getUri().toASCIIString());
+       
+        System.out.println("WebTarget URI is: " + webTarget.getUri().toASCIIString());
+        
         Assert.assertEquals(deploymentURL + "system",
                             webTarget.getUri().toASCIIString());
         System.out.println("Test the client deployment URI and the endpoint URI should match.");
 
-        //System.out.println("Client response type is: "
-        //                + response.getMediaType().toString());
         Assert.assertEquals(MediaType.APPLICATION_JSON,
                             response.getMediaType().toString());
         System.out.println("Test the endpoint response media type is as expected.");
 
-        //System.out.println("Client response is: " + response.getStatus());
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         System.out.println("Test the endpoint response status code is OK.");
 
         String obj = response.readEntity(MediaType.APPLICATION_JSON.getClass());
-        //System.out.println("Client response read entity is: " + obj);
         JsonObject jObj = Json.createReader(new StringReader(obj)).readObject();
         Assert.assertEquals("The system property for the local and service JVM should match",
                             System.getProperty("os.name"), jObj.getString("os.name"));
@@ -137,4 +120,5 @@ public class SystemIT {
         response.close();
         System.out.println("******************************");
     }
+    // end::testGetPropertiesFromEndpoint[]
 }
