@@ -30,9 +30,9 @@ You will learn how to develop server and client side tests for your microservice
 
 http://arquillian.org/[Arquillian] is a testing platform to develop automated functional, integration and acceptance tests for your java applications. Arquillian Liberty Managed container is an adaptor that implements the Arquillian's `DeployableContainer`. It's capable of managing the local Liberty server operations, packaging the tests as a `WAR` to be deployed to the Liberty server and then running the tests on the server.
 
-The server side tests are unit tests that are testing the resources functionalities in an archive that is deployed in the container and the tests are run in it. The client side of tests are integration tests that are constructed with a web archive deployment to test the service endpoints.
+The server side tests are functional tests that are testing the resources functionalities in an archive that is deployed in the container and the tests are run in it. The client side of tests are integration tests that are constructed with a web archive deployment to test the service endpoints.
 
-The application that you will work with is an `inventory` service that stores information about various systems. The `inventory` service communicates with the `system` service on a particular host to retrieve its system properties. You will learn to configure an `inventory` service to use the Liberty Arquillian Managed container adaptor with the Maven build tool and develop functional and integration test for the microservices to run in Open Liberty.
+The application that you will work with is an `inventory` service that stores information about various systems. The `inventory` service communicates with the `system` service on a particular host to retrieve its system properties and stores them. You will learn to configure the `inventory` service to use the Liberty Arquillian Managed container adaptor with the Maven build tool and develop functional and integration test for the microservices to run in Open Liberty.
 
 include::{common-includes}/gitclone.adoc[]
 
@@ -47,15 +47,15 @@ mvn clean install
 
 You should see the console output indicating that your build is successful and the tests have passed.
 
-== Setting up your Arquillian Liberty Managed container environment
+== Setting up your Arquillian Liberty Managed container
 
-You will need to configure your build tool to use the Arquillina Liberty Managed container and setup the Open Liberty server.xml file before you can start developing Arquillian test cases for your microservice and have them run with Open Liberty.
-
-=== Configuring your test build
+You will need to configure your build tool to use the Arquillina Liberty Managed container and setup the Liberty server.xml file before developing Arquillian test cases for your microservice and running them with Open Liberty.
 
 Navigate to the `start` directory to begin.
 
-You will start configuring your test build with Maven. All of the Maven configuration will take place in the `pom.xml` file.
+=== Configuring your test build
+
+You will start configuring your test build with the Maven build tool. All of the Maven configuration takes place in the `pom.xml` file.
 
 [source, xml, indent=0, role="no_copy"]
 ----
@@ -69,7 +69,7 @@ Let's look into each of the required elements for this configuration. First, the
 include::finish/pom.xml[tags=AddLibertyMavenAppParent]
 ----
 
-Next, the Arquillian Bill of Materials (BOM) is a Maven artifact which defines versions of dependencies to make dependency management easier.
+Next, the Arquillian Bill of Materials (BOM) is a Maven artifact which defines the versions of dependencies to make dependency management easier.
 
 [source, xml, indent=0, role="no_copy"]
 ----
@@ -92,7 +92,7 @@ include::finish/pom.xml[tags=AddMavenFailsafeAndLibertyMavenPlugins]
 
 === Configuring the server.xml
 
-Now that you're done configuring the build tool, open the `src/test/resources/server.xml` file:
+Now that you're done configuring the build tool, open the `src/test/resources/server.xml` file.
 
 [source, xml, indent=0, role="no_copy"]
 ----
@@ -101,20 +101,18 @@ include::finish/src/test/resources/server.xml[tags=**]
 
 The `localConnector` feature in the `featureManager` block is required by the Arquillian Liberty Managed container in order to connect to and communicate with the Open Liberty runtime. The `servlet` feature is required during the deployment of the Aquillian tests in which servlets are created to perform the in-container testing.
 
-You're now ready to write your test. You will write Arquillian functional tests for the `system` and `inventory` microservices. The microservices code are provided to you under the `src/main/java/io/openliberty/guides` directory. You'll develop test classes in the `src/test` directory. Recall the `inventory` service communicates with the `system` service on a particular host to retrieve its system properties and then stores it.
-
 == Developing server side functional tests
 
-You will develop test classes that use Arquillian and JUnit to test the `system` and `inventory` service functionalities.
+You're now ready to write your test. You will write Arquillian functional tests for the `system` and `inventory` microservices. The microservices code are provided to you under the `src/main/java/io/openliberty/guides` directory. You'll develop test classes in the `src/test` directory. Recall the `inventory` service communicates with the `system` service on a particular host to retrieve its system properties and then stores it. You will develop test classes that use Arquillian and JUnit to test the `system` and `inventory` service functionalities.
 
-First, create the `SystemIT` test class in the `src/test/java/it/io/openliberty/guides/system/SystemIT.java` file:
+First, create the `SystemIT` test class for the `system` service in the `src/test/java/it/io/openliberty/guides/system/SystemIT.java` file:
 
 [source, Java, indent=0]
 ----
 include::finish/src/test/java/it/io/openliberty/guides/system/SystemIT.java[tags=**;!copyright;]
 ----
 
-Notice is that the JUnit Arquillian runner is being used to run the tests, instead of the standard JUnit runner. This is specified using the `@RunWith` annotation at the top of the class, and tells JUnit to run the tests using Arquillian.
+Notice the JUnit Arquillian runner is being used to run the tests, instead of the standard JUnit runner. This is specified using the `@RunWith` annotation at the top of the class, and tells JUnit to run the tests using Arquillian.
 
 Another important item is the `@Deployment` block.
 
@@ -125,78 +123,75 @@ include::finish/src/test/java/it/io/openliberty/guides/system/SystemIT.java[tags
 
 The ShrinkWrap test archive's contents are defined in this block, which is going to be deployed to Open Liberty to run the in-container tests. Notice the inclusion of the `SystemApplication` and `SystemResource` classes. Without these, the code compiles successfully but fails at runtime when the injection of the `SystemResource` class takes place.
 
-CDI is used to inject an instance of the `SystemResource` class through `@Inject SystemResource system;`. It is then tested by the `testGetPropertiesFromFunction` method, which validates that the system property for the local and service JVM should match.
+CDI is used to inject an instance of the `SystemResource` class into this test class. It is then tested by the `testGetPropertiesFromFunction` method, which validates that the system property for the local and service JVM should match.
 
-[source, Java, indent=0]
-----
-include::finish/src/test/java/it/io/openliberty/guides/system/SystemIT.java[tags=testGetPropertiesFromFunction]
-----
-
-Next, the `inventory` service calls the `system` service to retrieve the system properties and then stores them. It has a more functions to test. Create the `InventoryIT` test class in the `src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java` file:
+Now, the `inventory` service calls the `system` service to retrieve the system properties and then stores them. It has more functions to test. Create the `InventoryIT` test class for the `inventory` service in the `src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java` file:
 
 [source, Java, indent=0]
 ----
 include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java[tags=**;!copyright;]
 ----
 
-Similar to the `system` service test deployment block, the ShrinkWrap jar is defined to include all of the classes in this service. If you want to point to a path to include all the classes for your test, you can follow the Arquillian guides to do that. For simplicity and clarity, all of the classes are listed in the deployment blocks.
+Similar to the `system` service test deployment block, the ShrinkWrap test JAR is defined to include all of the classes in this service. If you want to point to a path to include all the classes for your test, you can follow the http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide] to do that. For clarity, all of the classes are listed in the deployment block.
 
-The `testInventoryResourceFunctions` method tests that the system property for the local and service JVM should match through the CDI injected `InventoryResource` instance function. When calling the `getPropertiesForHost()` method, a web archive connection is actually needed as the `inventory` service is really calling the `system` service through a `system` service client that constructs a `system` service endpoint, `http://localhost:9080/<WARNAME>/system/properties` to get the system properties. This works only because the test class has a web archive deployment defined. You can learn more about this in the next section.
+The `testInventoryResourceFunctions` method tests that the system property for the local and service JVM should match through the CDI injected `InventoryResource` instance. When calling the `getPropertiesForHost()` method, a web archive connection is needed as the `inventory` service is calling the `system` service through a `system` service client that constructs a `system` service endpoint, `http://localhost:9080/<WARNAME>/system/properties` to get the system properties. This works only because the test class has a web archive deployment defined. You will learn more about this in the next section.
 
 
 == Developing client side integration tests
 
-First, you will look at the test that tests the `system` endpoint. Refer to the `system_endpoint_test` deployment block in the `src/test/java/it/io/openliberty/guides/system/SystemIT.java` test class.
+The client side integration tests are to test the services through their endpoints.
+
+First, you will look the `system` endpoint test. Refer to the `system_endpoint_test` deployment block in the `src/test/java/it/io/openliberty/guides/system/SystemIT.java` test class.
 
 [source, Java, indent=0]
 ----
 include::finish/src/test/java/it/io/openliberty/guides/system/SystemIT.java[tags=system_endpoint_test]
 ----
 
-In contract to the functional test `@Deployment` block in the previous section, this one creates a web archive which will be deployed to the container and then the client tests are run against it. Similarly to the functional test deployment block, the `SystemApplication` and `SystemResource` classes are included in this ShrinkWrap test archive.
+In contract to the functional test deployment block described in the previous section, this one creates a web archive which will be deployed to the container and then the client tests are running against it. Similarly to the functional test deployment block, the `SystemApplication` and `SystemResource` classes are included in this ShrinkWrap test archive.
 
 [source, Java, indent=0]
 ----
 include::finish/src/test/java/it/io/openliberty/guides/system/SystemIT.java[tags=testGetPropertiesFromEndpoint]
 ----
 
-This test case constructs the endpoint URL through the `@ArquillianResteasyResource` annotation, which is from the Arquillian extended REST client API. The extension dependencies are included in the pom.xml. This annotation takes a web target parameter. Notice the `system` application path is attached to the annotation. The rest of the endpoint path, `/properties`, is built using the web target parameter. The HTTP response has constructed this endpoint URL, `http://localhost:9080/<WARNAME>/system/properties` that will return the system properties string when calling it through the `readEntity()` method on this response. The test case does some conversion of the string object to `JsonObject`, to verify that the system property for the local and service JVM are matching.
+This test case constructs the endpoint URL through the `@ArquillianResteasyResource` annotation, which is from the Arquillian extended REST client API. The extension dependencies are included in the `pom.xml`. This annotation takes a web target parameter. Notice the `system` application path is attached to the annotation. The rest of the endpoint path, `/properties`, is built using the web target parameter. The HTTP response has this endpoint URL, `http://localhost:9080/<WARNAME>/system/properties` that will return the system properties string when calling it through the `readEntity()` method on this response. The test case does the conversion of the string object to `JsonObject`, to verify that the system property for the local and service JVM are matching.
 
-Similarly, the inventory endpoint tests are to test the `inventory` service endpoints. the ShrinkWrap web archive is defined to include all of the classes in this service. Notice the `arquillian-managed.war` war name in the web archive, this is necessary, if you don't want a randomly generated web archive name. This war name is also needed when the `inventory` service communicates to the `system` service to get the system properties. The `inventory` service has four variations of endpoint test cases in the `src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java` test class.
+Similarly, the inventory endpoint tests are to test the `inventory` service endpoints. the ShrinkWrap web archive is defined to include all of the classes in this service. Notice the `arquillian-managed.war` WAR name in the web archive, this is necessary, if you don't want a randomly generated web archive name. This WAR name is also needed when the `inventory` service communicates to the `system` service to get the system properties. The `inventory` service has four variations of endpoint test cases in the `src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java` test class.
 
 - The `testEmptyInventory` method tests the `http://localhost:9080/<WARNAME>/inventory/systems` endpoint when the inventory is empty.
 
-- The `testHostRegistration` method calls the `http://localhost:9080/<WARNAME>/inventory/systems/localhost` endpoint with the `localhost` hostname, to add the `localhost` system's properties to the inventory. The test verifies that the system property for the local and service JVM should match.
+- The `testHostRegistration` method calls the `http://localhost:9080/<WARNAME>/inventory/systems/{hostname}` endpoint with the `localhost` hostname, to add the `localhost` system's properties to the inventory. The test verifies that the system property for the local and service JVM should match.
 
 - The `testSystemPropertiesMatch` method calls the `http://localhost:9080/<WARNAME>/inventory/systems` endpoint again, but this time it should have one host registered and that should be `localhost`. The test also verifies that the system property stored in the inventory for the local and service JVM should match.
 
-- The `testUnknownHost` method calls the `http://badhostname:9080/<WARNAME>/inventory/systems/badhostname` endpoint with a `badhostname` as the hostname. The test verifies that the HTTP response and the responded message should be an error.
+- The `testUnknownHost` method calls the `http://badhostname:9080/<WARNAME>/inventory/systems/{hostname}` endpoint with a `badhostname` as the hostname. The test verifies that the HTTP response and the responded message should be an error.
 
-Notice the sequences set in this test class. The sequences are important for the `testEmptyInventory`, `testHostRegistration` and `testSystemPropertiesMatch` test methods, as the results impacts each other.
+Notice the sequences set in this test class. The sequences are important for the `testEmptyInventory`, `testHostRegistration` and `testSystemPropertiesMatch` test methods, as the results impacts each other. The `@InSequence` annotation in Arquillian's JUnit integration guarantees the test sequence.
 
 == Running the tests
 
-It's now time to build and run your Arquillian test.
+It's now time to build and run your Arquillian test. Run the maven build command in the `start` directory.
 
 ```
 mvn clean install
 ```
 
-For the functional tests that has the ShrinkWrap test jar archive deployment, notice that the server is created and started, with a test application built from your ShrinkWrap archive that is deployed at `http://localhost:9080/test/` during the build process. You should see the initialization and execution of the test.
+For the functional tests that has the ShrinkWrap test JAR deployment, notice that the server is created and started, with a test application built from your ShrinkWrap archive that is deployed at `http://localhost:9080/test/` during the build process. You should see the initialization and execution of the test.
 
-The endpoint tests are run against their corresponding deployments. You see the constructions of the URLs throughout the tests.
+The endpoint tests are run against their corresponding ShrinkWrap test web archive deployments. You see the constructions of the URLs throughout the tests.
 
 - http://localhost:9080/<WARNAME>/system/properties
 - http://localhost:9080/<WARNAME>/inventory/systems
 - http://localhost:9080/<WARNAME>/inventory/systems/localhost
 
 
-Following the execution of the test, the test application is automatically undeployed and the server is shut down. You should then get a message indicating that the build was successful.
+Following the execution of the test, the test application is automatically undeployed and the server is shut down. You should then get a message indicating that the build and tests are successful.
 
 == Great work! You're done!
 
 You have just completed building some functional and integration tests with the Arquillian Liberty Managed container to run the tests for your microservices in Open Liberty.
 
-You can continue to try one of the related guides to learn more about the technologies that you have learned in this guide.
+You can continue to try one of the related guides to learn more about the technologies that you have come across in this guide.
 
 include::{common-includes}/finish.adoc[]
