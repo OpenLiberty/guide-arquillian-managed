@@ -12,26 +12,20 @@
  // end::copyright[]
 package it.io.openliberty.guides.system;
 
-import java.io.StringReader;
-import java.net.URL;
 import java.util.Properties;
 
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.MessageBodyReader;
 
+import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.OperateOnDeployment;
-import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,37 +37,23 @@ import io.openliberty.guides.system.SystemResource;
 @RunWith(Arquillian.class)
 public class SystemIT {
 
-    @ArquillianResource
-    private URL deploymentURL;
+    private final static String WARNAME = "arquillian-managed";
 
-    // tag::system_functional_test[]
-    @Deployment(name = "system_functional_test")
-    public static JavaArchive createSystemFunctionalTestDeployment() {
-        JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-                                        .addClasses(SystemApplication.class,
-                                                    SystemResource.class);
-        return archive;
-    }
-    // end::system_functional_test[]
-
-    // tag::system_endpoint_test[]
-    @Deployment(name = "system_endpoint_test", testable = false)
+    // tag::deployment[]
+    @Deployment(testable = true)
     public static WebArchive createSystemEndpointTestDeployment() {
-        WebArchive archive = ShrinkWrap.create(WebArchive.class, "arquillian-managed.war")
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME + ".war")
                                        .addClasses(SystemResource.class,
                                                    SystemApplication.class);
         return archive;
     }
-    // end::system_endpoint_test[]
+    // end::deployment[]
 
     @Inject
     SystemResource system;
 
-    // tag::testGetPropertiesFromFunction[]
     @Test
-    @InSequence(1)
-    @OperateOnDeployment("system_functional_test")
-    public void testGetPropertiesFromFunction() {
+    public void testGetPropertiesFromFunction() throws Exception {
         System.out.println("******************************testGetPropertiesFromFunction*****");
         Properties prop = system.getProperties();
         String expectedOS = System.getProperty("os.name");
@@ -87,36 +67,29 @@ public class SystemIT {
         System.out.println("Test the system property for the local and service JVM should match.");
         System.out.println("******************************");
     }
-    // end::testGetPropertiesFromFunction[]
-
+    
     // tag::testGetPropertiesFromEndpoint[]
     @Test
-    @InSequence(2)
-    @OperateOnDeployment("system_endpoint_test")
-    public void testGetPropertiesFromEndpoint(
-                    @ArquillianResteasyResource("system") WebTarget webTarget) {
+    @RunAsClient
+    public void testGetPropertiesFromEndpoint() throws Exception {
         System.out.println("******************************testGetPropertiesFromEndpoint*****");
-        final Response response = webTarget.path("/properties")
-                                           .request(MediaType.APPLICATION_JSON).get();
-       
-        System.out.println("WebTarget URI is: " + webTarget.getUri().toASCIIString());
-        
-        Assert.assertEquals(deploymentURL + "system",
-                            webTarget.getUri().toASCIIString());
-        System.out.println("Test the client deployment URI and the endpoint URI should match.");
+        String port = System.getProperty("liberty.test.port");
+        String url = "http://localhost:" + port + "/";
+        System.out.println("Endpoint URL: " + url);
+        Client client = ClientBuilder.newClient();
+        client.register(JsrJsonpProvider.class);
 
-        Assert.assertEquals(MediaType.APPLICATION_JSON,
-                            response.getMediaType().toString());
-        System.out.println("Test the endpoint response media type is as expected.");
+        WebTarget target = client.target(url + WARNAME + "/system/properties");
+        Response response = target.request().get();
 
-        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Assert.assertEquals("Incorrect response code from " + url, 200,
+                            response.getStatus());
         System.out.println("Test the endpoint response status code is OK.");
 
-        String obj = response.readEntity(MediaType.APPLICATION_JSON.getClass());
-        JsonObject jObj = Json.createReader(new StringReader(obj)).readObject();
-        Assert.assertEquals("The system property for the local and service JVM should match",
-                            System.getProperty("os.name"), jObj.getString("os.name"));
-        System.out.println("Test system property for the local and service JVM should match.");
+        JsonObject obj = response.readEntity(JsonObject.class);
+        Assert.assertEquals("The system property for the local and remote JVM should match",
+                            System.getProperty("os.name"), obj.getString("os.name"));
+        System.out.println("Test the system property for the local and service JVM should match.");
         response.close();
         System.out.println("******************************");
     }
