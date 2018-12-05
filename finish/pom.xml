@@ -47,14 +47,6 @@
                 <scope>import</scope>
             </dependency>
             <!-- end::AddArquillianBOM[] -->
-            <!-- ArquillianRESTWarpBOM -->
-            <dependency>
-                <groupId>org.jboss.arquillian.extension</groupId>
-                <artifactId>arquillian-rest-warp-bom</artifactId>
-                <version>1.0.0.Alpha4</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -105,21 +97,6 @@
             <scope>test</scope>
         </dependency>
         <!-- end::AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency[] -->
-        <!-- ArquillianRESTWarpParent -->
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-rest-warp-parent</artifactId>
-            <version>1.0.0.Alpha4</version>
-            <type>pom</type>
-            <scope>test</scope>
-        </dependency>
-        <!-- ArquillianRESTClientAPI -->
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-rest-client-api</artifactId>
-            <version>1.0.0.Alpha4</version>
-            <scope>test</scope>
-        </dependency>
         <!-- ArquillianRESTClientImpl -->
         <dependency>
             <groupId>org.jboss.arquillian.extension</groupId>
