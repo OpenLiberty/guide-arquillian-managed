@@ -77,7 +77,7 @@ public class InventoryIT {
     @RunAsClient
     @InSequence(2)
     public void testGetPropertiesFromEndpoint() throws Exception {
-        System.out.println("******************************testGetPropertiesFromEndpoint*****");
+        System.out.println("*****testGetPropertiesFromEndpoint*****");
         String url = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS + "/localhost";
         System.out.println("Endpoint URL: " + url);
 
@@ -119,7 +119,7 @@ public class InventoryIT {
     @Test
     @InSequence(3)
     public void testInventoryResourceFunctions() {
-        System.out.println("******************************testInventoryResourceFunctions*****");
+        System.out.println("*****testInventoryResourceFunctions*****");
         
         // Listing the inventory content that was stored in the previous test case
         InventoryList invList = invSrv.listContents();
