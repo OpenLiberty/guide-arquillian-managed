@@ -30,16 +30,11 @@ public class SystemClient {
     private final int DEFAULT_PORT = Integer.valueOf(System.getProperty("default.http.port"));
     private final String SYSTEM_PROPERTIES = "/system/properties";
     private final String PROTOCOL = "http";
-    private final String WARNAME = System.getProperty("war.name"); 
 
     // Wrapper function that gets properties
     public Properties getProperties(String hostname) {
         String url;
-        if (WARNAME == null) {
-            url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, SYSTEM_PROPERTIES);
-        } else {
-            url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, "/" + WARNAME + SYSTEM_PROPERTIES);
-        }
+        url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, SYSTEM_PROPERTIES);
         Builder clientBuilder = buildClientBuilder(url);
         return getPropertiesHelper(clientBuilder);
     }

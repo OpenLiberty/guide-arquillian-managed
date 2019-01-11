@@ -12,7 +12,6 @@
 // end::copyright[]
 package it.io.openliberty.guides.inventory;
 
-import java.net.URL;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,7 +26,6 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
@@ -45,9 +43,6 @@ import io.openliberty.guides.system.SystemResource;
 
 @RunWith(Arquillian.class)
 public class InventoryIT {
-
-    @ArquillianResource
-    private URL deploymentURL;
 
     private final static String WARNAME = "arquillian-managed";
     private static String port = System.getProperty("liberty.test.port");
@@ -75,49 +70,47 @@ public class InventoryIT {
 
     @Test
     @RunAsClient
-    @InSequence(2)
+    @InSequence(1)
     public void testGetPropertiesFromEndpoint() throws Exception {
         System.out.println("*****testGetPropertiesFromEndpoint*****");
-        String url = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS + "/localhost";
-        System.out.println("Endpoint URL: " + url);
+        String localhosturl = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS + "/localhost";
 
         client.register(JsrJsonpProvider.class);
-        WebTarget target = client.target(url);
-        Response response = target.request().get();
+        WebTarget localhosttarget = client.target(localhosturl);
+        Response localhostresponse = localhosttarget.request().get();
 
-        Assert.assertEquals("Incorrect response code from " + url, 200,
-                            response.getStatus());
+        Assert.assertEquals("Incorrect response code from " + localhosturl, 200,
+                            localhostresponse.getStatus());
         System.out.println("Test the endpoint response status code is OK.");
 
-        JsonObject obj = response.readEntity(JsonObject.class);
+        JsonObject localhostobj = localhostresponse.readEntity(JsonObject.class);
         Assert.assertEquals("The system property for the local and remote JVM should match",
-                            System.getProperty("os.name"), obj.getString("os.name"));
+                            System.getProperty("os.name"), localhostobj.getString("os.name"));
         System.out.println("Test the system property for the local and service JVM should match.");
 
-        String url2 = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS;
-        System.out.println("Endpoint URL: " + url2);
+        String invsystemsurl = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS;
 
-        WebTarget target2 = client.target(url2);
-        Response response2 = target2.request().get();
+        WebTarget invsystemstarget = client.target(invsystemsurl);
+        Response invsystemsresponse = invsystemstarget.request().get();
 
-        Assert.assertEquals("Incorrect response code from " + url, 200,
-                            response2.getStatus());
+        Assert.assertEquals("Incorrect response code from " + localhosturl, 200,
+                            invsystemsresponse.getStatus());
         System.out.println("Test the endpoint response status code is OK.");
 
-        JsonObject obj2 = response2.readEntity(JsonObject.class);
+        JsonObject invsystemsobj = invsystemsresponse.readEntity(JsonObject.class);
 
         int expected = 1;
-        int actual = obj2.getInt("total");
+        int actual = invsystemsobj.getInt("total");
         Assert.assertEquals("The inventory should have one entry for localhost",
                             expected, actual);
         System.out.println("Test the inventory should have one entry for localhost.");
-        response.close();
+        localhostresponse.close();
         System.out.println("******************************");
     }
 
     // tag::testInventoryResourceFunctions[]
     @Test
-    @InSequence(3)
+    @InSequence(2)
     public void testInventoryResourceFunctions() {
         System.out.println("*****testInventoryResourceFunctions*****");
         
