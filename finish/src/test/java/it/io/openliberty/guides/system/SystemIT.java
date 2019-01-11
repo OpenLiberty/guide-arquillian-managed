@@ -54,7 +54,7 @@ public class SystemIT {
 
     @Test
     public void testGetPropertiesFromFunction() throws Exception {
-        System.out.println("******************************testGetPropertiesFromFunction*****");
+        System.out.println("*****testGetPropertiesFromFunction*****");
         Properties prop = system.getProperties();
         String expectedOS = System.getProperty("os.name");
         String serviceOS = prop.getProperty("os.name");
@@ -72,7 +72,7 @@ public class SystemIT {
     @Test
     @RunAsClient
     public void testGetPropertiesFromEndpoint() throws Exception {
-        System.out.println("******************************testGetPropertiesFromEndpoint*****");
+        System.out.println("*****testGetPropertiesFromEndpoint*****");
         String port = System.getProperty("liberty.test.port");
         String url = "http://localhost:" + port + "/";
         System.out.println("Endpoint URL: " + url);

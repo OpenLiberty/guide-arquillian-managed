@@ -8,25 +8,25 @@
     <parent>
         <groupId>net.wasdev.wlp.maven.parent</groupId>
         <artifactId>liberty-maven-app-parent</artifactId>
-        <version>2.4.2</version>
+        <version>RELEASE</version>
     </parent>
     <!-- end::AddLibertyMavenAppParent[] -->
 
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>arquillian-managed</artifactId>
+    <artifactId>microservices-arquillian-managed-test</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>arquillian-managed</name>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <app.name>LibertyProject</app.name>
         <testServerHttpPort>9080</testServerHttpPort>
         <testServerHttpsPort>9443</testServerHttpsPort>
-        <testWarName>arquillian-managed</testWarName>
+        <package.file>${project.build.directory}/${app.name}.zip</package.file>
+        <packaging.type>usr</packaging.type>
     </properties>
 
     <dependencyManagement>
@@ -53,6 +53,18 @@
     <dependencies>
         <!-- For tests -->
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-client</artifactId>
+            <version>3.1.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-extension-providers</artifactId>
             <version>3.1.11</version>
@@ -64,7 +76,7 @@
             <version>1.0.4</version>
             <scope>test</scope>
         </dependency>
-        <!--Open Liberty features -->
+        <!-- Open Liberty features -->
         <dependency>
             <groupId>io.openliberty.features</groupId>
             <artifactId>jaxrs-2.1</artifactId>
@@ -83,6 +95,27 @@
             <type>esa</type>
             <scope>provided</scope>
         </dependency>
+        <!-- For JDK 9 & 10 Support -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
         <!-- tag::AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency[] -->
         <dependency>
             <groupId>io.openliberty.arquillian</groupId>
@@ -97,22 +130,24 @@
             <scope>test</scope>
         </dependency>
         <!-- end::AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency[] -->
-        <!-- ArquillianRESTClientImpl -->
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-rest-client-impl-3x</artifactId>
-            <version>1.0.0.Alpha4</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <packagingExcludes>pom.xml</packagingExcludes>
+                </configuration>
+            </plugin>
             <!-- tag::AddMavenFailsafeAndLibertyMavenPlugins[] -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.21.0</version>
+                <version>3.0.0-M1</version>
                 <executions>
                     <execution>
                         <id>failsafe-integration-test</id>
@@ -122,7 +157,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                                <include>**/it/**/*IT.java</include>
+                                <include>**/it/**/*.java</include>
                             </includes>
                             <!-- tag::system-props[] -->
                             <systemPropertyVariables>
@@ -139,6 +174,10 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <summaryFile>${project.build.directory}/test-reports/it/failsafe-summary.xml</summaryFile>
+                    <reportsDirectory>${project.build.directory}/test-reports/it</reportsDirectory>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>net.wasdev.wlp.maven.plugins</groupId>
@@ -154,20 +193,30 @@
                         <version>[17.0.0.4,)</version>
                         <type>zip</type>
                     </assemblyArtifact>
+                    <configFile>src/main/liberty/config/server.xml</configFile>
+                    <packageFile>${package.file}</packageFile>
+                    <include>${packaging.type}</include>
                     <bootstrapProperties>
                         <default.http.port>${testServerHttpPort}</default.http.port>
                         <default.https.port>${testServerHttpsPort}</default.https.port>
-                        <war.name>${testWarName}</war.name>
                     </bootstrapProperties>
-                    <features>
-                        <acceptLicense>true</acceptLicense>
-                    </features>
                     <skipTestServer>true</skipTestServer>
                 </configuration>
                 <executions>
                     <execution>
                         <id>install-apps</id>
-                        <phase>none</phase>
+                        <!-- <phase>none</phase> -->
+                        <configuration>
+                            <looseApplication>true</looseApplication>
+                            <stripVersion>true</stripVersion>
+                            <installAppPackages>project</installAppPackages>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>package-app</id>
+                        <configuration>
+                            <outputDirectory>target/wlp-package</outputDirectory>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>configure-arquillian-xml</id>
