@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -72,8 +72,8 @@ public class InventoryIT {
     @RunAsClient
     @InSequence(1)
     public void testGetPropertiesFromEndpoint() throws Exception {
-        System.out.println("*****testGetPropertiesFromEndpoint*****");
-        String localhosturl = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS + "/localhost";
+        String localhosturl = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS
+                        + "/localhost";
 
         client.register(JsrJsonpProvider.class);
         WebTarget localhosttarget = client.target(localhosturl);
@@ -81,12 +81,11 @@ public class InventoryIT {
 
         Assert.assertEquals("Incorrect response code from " + localhosturl, 200,
                             localhostresponse.getStatus());
-        System.out.println("Test the endpoint response status code is OK.");
 
         JsonObject localhostobj = localhostresponse.readEntity(JsonObject.class);
         Assert.assertEquals("The system property for the local and remote JVM should match",
-                            System.getProperty("os.name"), localhostobj.getString("os.name"));
-        System.out.println("Test the system property for the local and service JVM should match.");
+                            System.getProperty("os.name"),
+                            localhostobj.getString("os.name"));
 
         String invsystemsurl = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS;
 
@@ -95,7 +94,6 @@ public class InventoryIT {
 
         Assert.assertEquals("Incorrect response code from " + localhosturl, 200,
                             invsystemsresponse.getStatus());
-        System.out.println("Test the endpoint response status code is OK.");
 
         JsonObject invsystemsobj = invsystemsresponse.readEntity(JsonObject.class);
 
@@ -103,30 +101,24 @@ public class InventoryIT {
         int actual = invsystemsobj.getInt("total");
         Assert.assertEquals("The inventory should have one entry for localhost",
                             expected, actual);
-        System.out.println("Test the inventory should have one entry for localhost.");
         localhostresponse.close();
-        System.out.println("******************************");
     }
 
     // tag::testInventoryResourceFunctions[]
     @Test
     @InSequence(2)
     public void testInventoryResourceFunctions() {
-        System.out.println("*****testInventoryResourceFunctions*****");
-        
-        // Listing the inventory content that was stored in the previous test case
+
+        // Listing the inventory contents that were stored in the previous test
+        // case
         InventoryList invList = invSrv.listContents();
         Assert.assertEquals(1, invList.getTotal());
-        System.out.println("Test the inventory should have one entry.");
 
         List<SystemData> systemDataList = invList.getSystems();
         Assert.assertTrue(systemDataList.get(0).getHostname().equals("localhost"));
-        System.out.println("Test the inventory should have localhost registered.");
 
         Assert.assertTrue(systemDataList.get(0).getProperties().get("os.name")
                                         .equals(System.getProperty("os.name")));
-        System.out.println("Test system property for the local and service JVM should match.");
-        System.out.println("******************************");
     }
     // end::testInventoryResourceFunctions[]
 }
