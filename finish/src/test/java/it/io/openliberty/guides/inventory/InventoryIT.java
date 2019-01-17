@@ -64,9 +64,6 @@ public class InventoryIT {
     @RunAsClient
     @InSequence(1)
     public void testGetPropertiesFromEndpoint() throws Exception {
-        // System.out.println("ARQULLIAN BASE URL: " + baseURL);
-        // //http://localhost:9080/arquillian-managed/
-
         String localhosturl = baseURL + INVENTORY_SYSTEMS + "/localhost";
 
         client.register(JsrJsonpProvider.class);
