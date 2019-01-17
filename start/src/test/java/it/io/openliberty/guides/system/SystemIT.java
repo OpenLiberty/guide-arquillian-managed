@@ -45,8 +45,7 @@ public class SystemIT {
     @Deployment(testable = true)
     public static WebArchive createSystemEndpointTestDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
-                                       .addClasses(SystemResource.class,
-                                                   SystemApplication.class);
+                                       .addPackages(true, "io.openliberty.guides.system");
         return archive;
     }
     // end::deployment[]
