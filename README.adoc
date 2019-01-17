@@ -120,7 +120,7 @@ The ShrinkWrap test archive's contents are defined in this block, which is going
 
 Notice the `arquillian-managed.war` WAR name in the web archive. This is necessary if you don't want a randomly generated web archive name. This WAR name is also needed when the `inventory` service communicates with the `system` service to get the system properties.
 
-All of the classes in this service must be added to the web archive, otherwise, the code compiles successfully but fails at runtime when the injection of the testing resource class takes place. If you want to learn about the complex archive configuration, you can follow the http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide].
+All of the packages in this service must be added to the web archive, otherwise, the code compiles successfully but fails at runtime when the injection of the testing resource class takes place. 
 
 The `testGetPropertiesFromEndpoint` test case is an integration test to test the `inventory` service endpoints. The `@RunAsClient` annotation added in this test case is to indicate that this test case is to be run on the client side, which means the tests are run against the managed container. The endpoint test case first calls the `http://localhost:9080/{WARNAME}/inventory/systems/{hostname}` endpoint with the `localhost` hostname, to add its system properties to the inventory. The test verifies that the system property for the local and service JVM match. Then, the test method calls the `http://localhost:9080/<WARNAME>/inventory/systems` endpoint. The test checks that the inventory should have one host registered and that should be `localhost`. The test also verifies that the system property stored in the inventory for the local and service JVM match.
 

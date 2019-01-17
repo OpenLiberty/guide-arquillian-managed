@@ -12,6 +12,7 @@
 // end::copyright[]
 package it.io.openliberty.guides.inventory;
 
+import java.net.URL;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,44 +27,35 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.openliberty.guides.inventory.InventoryApplication;
-import io.openliberty.guides.inventory.InventoryManager;
 import io.openliberty.guides.inventory.InventoryResource;
-import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
-import io.openliberty.guides.system.SystemApplication;
-import io.openliberty.guides.system.SystemResource;
 
 @RunWith(Arquillian.class)
 public class InventoryIT {
 
-    private final static String WARNAME = "arquillian-managed";
-    private static String port = System.getProperty("liberty.test.port");
-    private static String baseUrl = "http://localhost:" + port + "/";
+    private final static String WARNAME = "arquillian-managed.war";
     private final String INVENTORY_SYSTEMS = "inventory/systems";
     private Client client = ClientBuilder.newClient();
 
     // tag::deployment[]
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
-        WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME + ".war")
-                                       .addClasses(SystemResource.class,
-                                                   SystemApplication.class,
-                                                   InventoryList.class,
-                                                   SystemData.class, SystemClient.class,
-                                                   InventoryApplication.class,
-                                                   InventoryManager.class,
-                                                   InventoryResource.class);
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
+                                       .addPackages(true, "io.openliberty.guides");
         return archive;
     }
     // end::deployment[]
+
+    @ArquillianResource
+    URL baseURL;
 
     @Inject
     InventoryResource invSrv;
@@ -72,8 +64,10 @@ public class InventoryIT {
     @RunAsClient
     @InSequence(1)
     public void testGetPropertiesFromEndpoint() throws Exception {
-        String localhosturl = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS
-                        + "/localhost";
+        // System.out.println("ARQULLIAN BASE URL: " + baseURL);
+        // //http://localhost:9080/arquillian-managed/
+
+        String localhosturl = baseURL + INVENTORY_SYSTEMS + "/localhost";
 
         client.register(JsrJsonpProvider.class);
         WebTarget localhosttarget = client.target(localhosturl);
@@ -83,11 +77,11 @@ public class InventoryIT {
                             localhostresponse.getStatus());
 
         JsonObject localhostobj = localhostresponse.readEntity(JsonObject.class);
-        Assert.assertEquals("The system property for the local and remote JVM should match",
-                            System.getProperty("os.name"),
+        Assert.assertEquals("The system property for the local and remote JVM "
+                        + "should match", System.getProperty("os.name"),
                             localhostobj.getString("os.name"));
 
-        String invsystemsurl = baseUrl + WARNAME + "/" + INVENTORY_SYSTEMS;
+        String invsystemsurl = baseURL + INVENTORY_SYSTEMS;
 
         WebTarget invsystemstarget = client.target(invsystemsurl);
         Response invsystemsresponse = invsystemstarget.request().get();
@@ -110,7 +104,6 @@ public class InventoryIT {
     public void testInventoryResourceFunctions() {
 
         // Listing the inventory contents that were stored in the previous test
-        // case
         InventoryList invList = invSrv.listContents();
         Assert.assertEquals(1, invList.getTotal());
 
