@@ -147,7 +147,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>2.22.1</version>
                 <executions>
                     <execution>
                         <id>failsafe-integration-test</id>
@@ -159,11 +159,6 @@
                             <includes>
                                 <include>**/it/**/*.java</include>
                             </includes>
-                            <systemPropertyVariables>
-                                <liberty.test.port>
-                                  ${testServerHttpPort}
-                                </liberty.test.port>
-                            </systemPropertyVariables>
                         </configuration>
                     </execution>
                     <execution>
@@ -193,7 +188,7 @@
                     <assemblyArtifact>
                         <groupId>io.openliberty</groupId>
                         <artifactId>openliberty-runtime</artifactId>
-                        <version>[17.0.0.4,)</version>
+                        <version>[18.0.0.4,)</version>
                         <type>zip</type>
                     </assemblyArtifact>
                     <configFile>src/main/liberty/config/server.xml</configFile>

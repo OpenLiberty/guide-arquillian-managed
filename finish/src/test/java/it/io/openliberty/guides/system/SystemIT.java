@@ -12,6 +12,7 @@
 // end::copyright[]
 package it.io.openliberty.guides.system;
 
+import java.net.URL;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
@@ -37,17 +39,18 @@ import io.openliberty.guides.system.SystemResource;
 @RunWith(Arquillian.class)
 public class SystemIT {
 
-    private final static String WARNAME = "arquillian-managed";
+    private final static String WARNAME = "arquillian-managed.war";
 
     // tag::deployment[]
     @Deployment(testable = true)
     public static WebArchive createSystemEndpointTestDeployment() {
-        WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME + ".war")
-                                       .addClasses(SystemResource.class,
-                                                   SystemApplication.class);
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
+                                       .addPackages(true, "io.openliberty.guides.system");
         return archive;
     }
     // end::deployment[]
+    
+    @ArquillianResource URL baseURL; 
 
     @Inject
     SystemResource system;
@@ -67,15 +70,13 @@ public class SystemIT {
     @Test
     @RunAsClient
     public void testGetPropertiesFromEndpoint() throws Exception {
-        String port = System.getProperty("liberty.test.port");
-        String url = "http://localhost:" + port + "/";
         Client client = ClientBuilder.newClient();
         client.register(JsrJsonpProvider.class);
 
-        WebTarget target = client.target(url + WARNAME + "/system/properties");
+        WebTarget target = client.target(baseURL + "/system/properties");
         Response response = target.request().get();
 
-        Assert.assertEquals("Incorrect response code from " + url, 200,
+        Assert.assertEquals("Incorrect response code from " + baseURL, 200,
                             response.getStatus());
 
         JsonObject obj = response.readEntity(JsonObject.class);
