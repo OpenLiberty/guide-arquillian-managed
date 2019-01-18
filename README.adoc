@@ -9,9 +9,9 @@
 :page-layout: guide
 :projectid: arquillian-managed
 :page-duration: 20 minutes
-:page-releasedate: 2018-11-30
+:page-releasedate: 2019-02-01
 :page-guide-category: none
-:page-description: Learn how to test your microservices using the Arquillian Liberty Managed container and JUnit.
+:page-description: Learn how to test your microservices with the Arquillian Liberty Managed container and JUnit.
 :page-tags: ['Maven']
 :page-related-guides: ['cdi-intro','rest-intro']
 :page-permalink: /guides/{projectid}
@@ -23,14 +23,14 @@
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to develop tests for your microservices using the Arquillian Liberty Managed container and run the tests in Open Liberty.
+Learn how to develop tests for your microservices with the Arquillian Liberty Managed container and run the tests in Open Liberty.
 
 == What you'll learn
 You will learn how to develop tests for your microservices using the https://github.com/OpenLiberty/liberty-arquillian/tree/master/liberty-managed[Arquillian Liberty Managed container] and JUnit with Maven in Open Liberty. You will also learn how to take advantage of features in the Liberty plugin that simplify the process of managing Arquillian dependencies and setting up your managed container.
 
 http://arquillian.org/[Arquillian] is a testing platform to develop automated functional, integration and acceptance tests for your Java applications.
 
-Arquillian tests look similar to the common unit tests. The benefit of Arquillian test is that it sets up the test environment and is able to handle the application server life cycle for you, so you can focus on writing tests. Arquillian supports both JUnit and TestNG as the test runner. This guide will use the JUnit test runner. An Arquillian JUnit test has three core components, `@RunWith(Arquillian.class)`, `@Deployment` and `@Test`. Once you have these three components setup, you'll have everything you need to test your microservices. You will learn more about these components in the test class.
+Arquillian tests look similar to the common unit tests. The benefit of Arquillian test is that it sets up the test environment and is able to handle the application server life cycle for you, so you can focus on writing tests. Arquillian supports both JUnit and TestNG as the test runner. This guide will use the JUnit test runner. An Arquillian JUnit test has three core components, `@RunWith(Arquillian.class)`, `@Deployment` and `@Test`. After you have these three components setup, you'll have everything you need to test your microservices. You will learn more about these components in the test class.
 
 Arquillian allows different application servers to implement their own embedded, managed and remote containers. This guide will use the Arquillian Liberty Managed container, which is an adaptor to run Arquillian tests on or against a locally managed Liberty runtime. It's capable of managing the Liberty server operations, packaging the tests as a `WAR` to be deployed to the Liberty server and then running the tests on the server.
 
