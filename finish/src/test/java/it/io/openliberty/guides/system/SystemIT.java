@@ -50,7 +50,8 @@ public class SystemIT {
     }
     // end::deployment[]
     
-    @ArquillianResource URL baseURL; 
+    @ArquillianResource 
+    private URL baseURL; 
 
     @Inject
     SystemResource system;

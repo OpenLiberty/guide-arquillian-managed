@@ -55,7 +55,7 @@ public class InventoryIT {
     // end::deployment[]
 
     @ArquillianResource
-    URL baseURL;
+    private URL baseURL;
 
     @Inject
     InventoryResource invSrv;

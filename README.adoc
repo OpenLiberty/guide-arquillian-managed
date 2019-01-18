@@ -28,11 +28,13 @@ Learn how to develop tests for your microservices using the Arquillian Liberty M
 == What you'll learn
 You will learn how to develop tests for your microservices using the https://github.com/OpenLiberty/liberty-arquillian/tree/master/liberty-managed[Arquillian Liberty Managed container] and JUnit with Maven in Open Liberty. You will also learn how to take advantage of features in the Liberty plugin that simplify the process of managing Arquillian dependencies and setting up your managed container.
 
-http://arquillian.org/[Arquillian] is a testing platform to develop automated functional, integration and acceptance tests for your Java applications. Arquillian tests are very similar to the common unit tests, however, Arquillian sets up the test environment and is able to handle the application server life cycle for you, so you can focus on writing tests. Arquillian supports both JUnit and TestNG as the test runner. This guide will use the JUnit test runner. The Arquillian JUnit test has three components, `@RunWith(Arquillian.class)`, `@Deployment` and `@Test`. Once you have these three components setup, you'll have everything you need to test your microservices. You will learn more about these components in the test class.
+http://arquillian.org/[Arquillian] is a testing platform to develop automated functional, integration and acceptance tests for your Java applications.
 
-Arquillian allows different application servers to implement their own embedded, managed and remote containers. This guide will use the Arquillian Liberty Managed container, which is an adaptor to run Arquillian tests with Liberty. It's capable of managing the local Liberty server operations, packaging the tests as a `WAR` to be deployed to the Liberty server and then running the tests on the server.
+Arquillian tests look similar to the common unit tests. The benefit of Arquillian test is that it sets up the test environment and is able to handle the application server life cycle for you, so you can focus on writing tests. Arquillian supports both JUnit and TestNG as the test runner. This guide will use the JUnit test runner. An Arquillian JUnit test has three core components, `@RunWith(Arquillian.class)`, `@Deployment` and `@Test`. Once you have these three components setup, you'll have everything you need to test your microservices. You will learn more about these components in the test class.
 
-The application that you will work with is an `inventory` service that stores information about various systems. The `inventory` service communicates with the `system` service on a particular host to retrieve its system properties and stores them. You will learn how to configure the `inventory` service to use the Liberty Arquillian Managed container adaptor with the Maven build tool and develop functional and integration tests for the microservices to run in Open Liberty.
+Arquillian allows different application servers to implement their own embedded, managed and remote containers. This guide will use the Arquillian Liberty Managed container, which is an adaptor to run Arquillian tests on or against a locally managed Liberty runtime. It's capable of managing the Liberty server operations, packaging the tests as a `WAR` to be deployed to the Liberty server and then running the tests on the server.
+
+The application that you will work with is an `inventory` service that stores information about various systems. The `inventory` service communicates with the `system` service on a particular host to retrieve its system properties and stores them. You will learn how to configure the `inventory` service to use the Arquillian Liberty Managed container adaptor with the Maven build tool and develop functional and integration tests for the microservices to run in Open Liberty.
 
 include::{common-includes}/gitclone.adoc[]
 
@@ -78,7 +80,7 @@ Next, refer to the `arquillian-liberty-managed-junit` dependency bundle and the 
 include::finish/pom.xml[tags=AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency]
 ----
 
-Finally, the `maven-failsafe-plugin` is used to run your JUnit integration tests, while the `liberty-maven-plugin` configuration specifies your Open Liberty runtime and uses the `configure-arquillian` goal to automatically create and configure your `arquillian.xml` file. This goal retrieves the core `wlpHome`, `serverName`, and `httpPort` parameter values automatically from the Liberty Maven Plugin configuration, and also allows you to specify additional `arquillian.xml` parameters directly in your POM in an `arquillianProperties` dictionary. You can learn more about the `configure-arquillian` goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[complete documentation]. Also, notice in the configuration that `skipTestServer` is set to true to skip the `test-start-server` and `test-stop-server` goals defined in the Liberty Maven Application Parent. The test server configuration is disabled because Arquillian is managing the server lifecycle when it runs the tests.
+Finally, the `maven-failsafe-plugin` is used to run your Arquillian integration tests using JUnit, while the `liberty-maven-plugin` configuration specifies your Open Liberty runtime and uses the `configure-arquillian` goal to automatically create and configure your `arquillian.xml` file. This goal retrieves the core `wlpHome`, `serverName`, and `httpPort` parameter values automatically from the Liberty Maven Plugin configuration, and also allows you to specify additional `arquillian.xml` parameters directly in your POM in an `arquillianProperties` dictionary. You can learn more about the `configure-arquillian` goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation]. Also, notice in the configuration that `skipTestServer` is set to true to skip the `test-start-server` and `test-stop-server` goals defined in the Liberty Maven Application Parent. The test server configuration is disabled because Arquillian is managing the server lifecycle when it runs the tests.
 
 [source, xml, indent=0, role="no_copy"]
 ----
@@ -120,13 +122,17 @@ The ShrinkWrap test archive's contents are defined in this block, which is going
 
 Notice the `arquillian-managed.war` WAR name in the web archive. This is necessary if you don't want a randomly generated web archive name. This WAR name is also needed when the `inventory` service communicates with the `system` service to get the system properties.
 
-All of the packages in this service must be added to the web archive, otherwise, the code compiles successfully but fails at runtime when the injection of the testing resource class takes place.
+All of the packages in this service must be added to the web archive, otherwise, the code compiles successfully but fails at runtime when the injection of the testing resource class takes place. You can learn about the ShrinkWrap archive configuration in the  http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide].
 
-The `testGetPropertiesFromEndpoint` test case is an integration test to test the `inventory` service endpoints. The `@RunAsClient` annotation added in this test case is to indicate that this test case is to be run on the client side, which means the tests are run against the managed container. The endpoint test case first calls the `http://localhost:9080/{WARNAME}/inventory/systems/{hostname}` endpoint with the `localhost` hostname, to add its system properties to the inventory. The test verifies that the system property for the local and service JVM match. Then, the test method calls the `http://localhost:9080/{WARNAME}/inventory/systems` endpoint. The test checks that the inventory should have one host registered and that should be `localhost`. The test also verifies that the system property stored in the inventory for the local and service JVM match.
+The `@ArquillianResource` annotation is used to retrieve the base URL for this web service.
+This annotation provides the hostname, port number and web archive information for this service,
+so you do not need to hard code these values in the test case.
 
-Next, refer to the `testInventoryResourceFunctions` test case, which is a functional test case to test the functions in the `InventoryResource` class.
+The `testGetPropertiesFromEndpoint` test case is an integration test to test the `inventory` service endpoints. The `@RunAsClient` annotation added in this test case indicates that this test case is to be run on the client side, which means the tests are run against the managed container. The endpoint test case first calls the `http://localhost:9080/{WARNAME}/inventory/systems/{hostname}` endpoint with the `localhost` hostname, to add its system properties to the inventory. The test verifies that the system property for the local and service JVM match. Then, the test method calls the `http://localhost:9080/{WARNAME}/inventory/systems` endpoint. The test checks that the inventory should have one host registered and that should be `localhost`. The test also verifies that the system property stored in the inventory for the local and service JVM match.
 
-CDI is used to inject an instance of the `InventoryResource` class into this test class. It is then tested by the `testGetPropertiesFromFunction` method, which validates that the system property for the local and service JVM match. This test case calls the `listContents()` method to get all systems that are stored in this inventory and verifies that one system is found and it is `localhost`. The functional test case does not do the action to store any system in the inventory, the one system that's found was from the endpoint test case that was run prior to this test case. The `@InSequence` annotation from Arquillian's JUnit integration guarantees the test sequence. The sequences are important for the two test methods, as the results in the first test impacts the second one.
+Next, refer to the `testInventoryResourceFunctions` test case, which is a functional test case for the `InventoryResource` class.
+
+CDI is used to inject an instance of the `InventoryResource` class into this test class. It is then tested by the `testGetPropertiesFromFunction` method, which validates that the system property for the local and service JVM match. This test case calls the `listContents()` method to get all systems that are stored in this inventory and verifies that one system is found and it is `localhost`. Notice the functional test case does not store any system in the inventory, the `localhost` system is from the endpoint test case that ran prior to this test case. The `@InSequence` Arquillian annotation guarantees the test sequence. The sequences are important for the two test methods, as the results in the first test impacts the second one.
 
 == Running the tests
 
@@ -139,12 +145,6 @@ mvn install
 In the test output, you see the application server was launched, and that the ShrinkWrap web archive, `arquillian-managed` is started as an application in the server. Then, the tests are being run and the results are reported.
 
 Following the execution of the tests, the test application is automatically undeployed and the server is shut down. You should then get a message indicating that the build and tests are successful.
-
-If you make changes to the test cases, you can verify that the tests pass using the Maven `verify` command:
-
-```
-mvn verify
-```
 
 == Great work! You're done!
 
