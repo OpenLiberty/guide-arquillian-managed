@@ -6,12 +6,13 @@
 // Contributors:
 //     IBM Corporation
 //
-:page-layout: guide
+:page-layout: guide-multipane
 :projectid: arquillian-managed
 :page-duration: 15 minutes
 :page-releasedate: 2019-02-01
 :page-guide-category: none
 :page-description: Learn how to test your microservices with the Arquillian Liberty Managed container and JUnit.
+:guide-author: Open Liberty
 :page-tags: ['Maven']
 :page-related-guides: ['cdi-intro','rest-intro']
 :page-permalink: /guides/{projectid}
@@ -42,6 +43,7 @@ system properties and stores them. You will learn how to configure the `inventor
 Arquillian Liberty Managed container adaptor with the Maven build tool and develop functional and
 integration tests for the microservices to run on Open Liberty.
 
+[role="command"]
 include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
@@ -49,14 +51,13 @@ include::{common-includes}/gitclone.adoc[]
 To try running the finished application with the Arquillian tests, navigate to the `finish` directory
 and execute the Maven build.
 
+[role="command"]
 ```
 cd finish
 mvn install
 ```
 
 You should see the console output indicating that your build is successful and the tests have passed.
-
-Navigate to the `start` directory to begin.
 
 == Developing Arquillian tests
 
@@ -66,29 +67,31 @@ You'll develop test classes in the `src/test` directory. Recall the `inventory` 
 on a particular host to retrieve its system properties and then stores it.
 You will develop tests that use Arquillian and JUnit to verify the `inventory` service as an endpoint and its resource functionalities.
 
-Create the `InventoryIT` test class for the `inventory` service in the `src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java` file:
+Navigate to the `start` directory to begin.
 
-[source, Java, indent=0]
+[role="code_command", subs="quotes"]
+----
+#Create the `InventoryIT` test class for the `inventory` service.#
+`src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java`
+----
+
+InventoryIT.java
+[source, Java, linenums, indent=0, role="code_column"]
 ----
 include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java[tags=**;!copyright;]
 ----
 
 Notice the JUnit Arquillian runner is being used to run the tests, instead of the standard JUnit runner.
-This is specified using the `@RunWith` annotation at the top of the class,
+This is specified using the [hotspot=29]`@RunWith` annotation at the top of the class,
 and tells JUnit to run the tests using Arquillian.
 
-Another important item is the `@Deployment` block.
-
-[source, Java, indent=0]
-----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java[tags=deployment]
-----
+Another important item is the [hotspot=36-41]`@Deployment` block.
 
 The ShrinkWrap test archive's contents are defined in this block,
 which is going to be deployed to Open Liberty to run the in-container tests.
-The `testable = true` attribute enables the deployment to run in-container tests.
+The [hotspot=36]`testable = true` attribute enables the deployment to run in-container tests.
 
-Notice the `arquillian-managed.war` WAR name in the web archive.
+Notice the [hotspot=32 hotspot=38]`arquillian-managed.war` WAR name in the web archive.
 This is necessary if you don't want a randomly generated web archive name.
 This WAR name is also needed when the `inventory` service communicates with the `system` service to get the system properties.
 
@@ -96,12 +99,12 @@ All of the packages in this service must be added to the web archive, otherwise,
 the code compiles successfully but fails at runtime when the injection of the testing resource class takes place.
 You can learn about the ShrinkWrap archive configuration in the  http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide].
 
-The `@ArquillianResource` annotation is used to retrieve the base URL for this web service.
+The [hotspot=43]`@ArquillianResource` annotation is used to retrieve the base URL for this web service.
 This annotation provides the hostname, port number and web archive information for this service,
 so you do not need to hard code these values in the test case.
 
-The `testGetPropertiesFromEndpoint` method is an integration test to test the `inventory` service endpoints.
-The `@RunAsClient` annotation added in this test case indicates that this test case is to be run on the client side,
+The [hotspot=52-82]`testGetPropertiesFromEndpoint` method is an integration test to test the `inventory` service endpoints.
+The [hotspot=50]`@RunAsClient` annotation added in this test case indicates that this test case is to be run on the client side,
 which means the tests are run against the managed container.
 The endpoint test case first calls the `http://localhost:9080/{WARNAME}/inventory/systems/{hostname}` endpoint with the `localhost` hostname,
 to add its system properties to the inventory.
@@ -111,15 +114,16 @@ The test checks that the inventory should have one host registered and that shou
 The test also verifies that the system property stored in the inventory for the local and service JVM match.
 
 CDI is used to inject an instance of the `InventoryResource` class into this test class.
-It is then tested by the `testGetPropertiesFromFunction` method.
-This test case calls the `listContents()` method to get all systems that are stored in this inventory
+It is then tested by the [hotspot=86-97]`testGetPropertiesFromFunction` method.
+This test case calls the [hotspot=89]`listContents()` method to get all systems that are stored in this inventory
 and verifies that one system is found and it is `localhost`.
 Notice the functional test case does not store any system in the inventory,
 the `localhost` system is from the endpoint test case that ran prior to this test case.
-The `@InSequence` Arquillian annotation guarantees the test sequence.
+The [hotspot=51 hotspot=85]`@InSequence` Arquillian annotation guarantees the test sequence.
 The sequences are important for the two test methods, as the results in the first test impacts the second one.
 
-The test cases are ready to run. In the next section, you will configure the Maven build and the Liberty application server to run them.
+The test cases are ready to run. In the next section,
+you will configure the Maven build and the Liberty application server to run them.
 
 == Configuring Arquillian with Liberty
 
@@ -128,62 +132,51 @@ and set up the Liberty `server.xml` file to run your test cases with Open Libert
 
 === Configuring your test build
 
-First, configure your test build with Maven. All of the Maven configuration takes place in the `pom.xml` file.
+First, configure your test build with Maven. All of the Maven configuration takes place in the [hotspot]`pom.xml` file.
+
+pom.xml
+[source, xml, linenums, indent=0, role="code_column"]
+----
+include::finish/pom.xml[tags=**;]
+----
 
 Let's look into each of the required elements for this configuration.
-First, the `liberty-maven-app-parent` parent POM configures the Liberty Maven Plugin with the default executions
+First, the [hotspot=7-11]`liberty-maven-app-parent` parent POM configures the Liberty Maven Plugin with the default executions
 necessary for setting up your managed Liberty server.
 
-[source, xml, indent=0, role="no_copy"]
-----
-include::finish/pom.xml[tags=AddLibertyMavenAppParent]
-----
-
-Next, the `arquillian-bom` Bill of Material is a Maven artifact which defines the versions of Arquillian
+Next, the [hotspot=39-45]`arquillian-bom` Bill of Material is a Maven artifact which defines the versions of Arquillian
 dependencies to make dependency management easier.
 
-[source, xml, indent=0, role="no_copy"]
-----
-include::finish/pom.xml[tags=AddArquillianBOM]
-----
-
-Next, refer to the `arquillian-liberty-managed-junit` dependency bundle and the Arquillian `shrinkwrap-api`.
+Next, refer to the [hotspot=115-121]`arquillian-liberty-managed-junit` dependency bundle and the Arquillian
+[hotspot=122-126]`shrinkwrap-api`.
 The dependency bundle includes all the core dependencies for running Arquillian tests on a managed Liberty container using JUnit.
 You can learn more about the https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles].
 The Shrinkwrap API allows you to create your test archive which is packaged into a WAR file and deployed to the Open Liberty server.
 
-[source, xml, indent=0, role="no_copy"]
-----
-include::finish/pom.xml[tags=AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency]
-----
-
-Finally, the `maven-failsafe-plugin` is used to run your Arquillian integration tests using JUnit,
-while the `liberty-maven-plugin` configuration specifies your Open Liberty runtime and uses the `configure-arquillian` goal
-to automatically create and configure your `arquillian.xml` file.
+Finally, the [hotspot=140-173]`maven-failsafe-plugin` is used to run your Arquillian integration tests using JUnit,
+while the [hotspot=174-219]`liberty-maven-plugin` configuration specifies your Open Liberty runtime
+and uses the [hotspot=215]`configure-arquillian` goal to automatically create and configure your `arquillian.xml` file.
 This goal retrieves the core `wlpHome`, `serverName`, and `httpPort` parameter values automatically from the Liberty Maven Plugin configuration,
 and also allows you to specify additional `arquillian.xml` parameters directly in your POM in an `arquillianProperties` dictionary.
-You can learn more about the `configure-arquillian` goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation].
-Also, notice in the configuration that `skipTestServer` is set to true to skip the `test-start-server`
+You can learn more about the [hotspot=215]`configure-arquillian` goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation].
+Also, notice in the configuration that [hotspot=194]`skipTestServer` is set to true to skip the `test-start-server`
 and `test-stop-server` goals defined in the Liberty Maven Application Parent.
 The test server configuration is disabled because Arquillian is managing the server lifecycle when it runs the tests.
 
-[source, xml, indent=0, role="no_copy"]
-----
-include::finish/pom.xml[tags=AddMavenFailsafeAndLibertyMavenPlugins]
-----
-
 === Configuring the server.xml
 
-Now that you're done configuring the build tool, open the `src/main/liberty/config/server.xml` file:
+Now that you're done configuring the build tool,
+take a look at the [hotspot]`src/main/liberty/config/server.xml` file.
 
-[source, xml, indent=0, role="no_copy"]
+server.xml
+[source, xml, linenums, indent=0, role="code_column"]
 ----
-include::finish/src/main/liberty/config/server.xml[tags=**]
+include::finish/src/main/liberty/config/server.xml[tags=**;]
 ----
 
-The `localConnector` feature in the `featureManager` block is required by the Arquillian Liberty Managed container
+The [hotspot=9]`localConnector` feature in the [hotspot=3-11]`featureManager` block is required by the Arquillian Liberty Managed container
 in order to connect to and communicate with the Open Liberty runtime.
-The `servlet` feature is required during the deployment of the Aquillian tests in which servlets are created to
+The [hotspot=10]`servlet` feature is required during the deployment of the Arquillian tests in which servlets are created to
 perform the in-container testing.
 
 
@@ -191,6 +184,7 @@ perform the in-container testing.
 
 It's now time to build and run your Arquillian test. Run the Maven build command in the `start` directory.
 
+[role="command"]
 ```
 mvn install
 ```
@@ -208,4 +202,4 @@ run the tests for your microservices on Open Liberty.
 
 You can continue to try one of the related guides to learn more about the technologies that you have come across in this guide.
 
-include::{common-includes}/finish.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
