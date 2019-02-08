@@ -113,7 +113,7 @@ The test checks that the inventory should have one host registered and that shou
 The test also verifies that the system property stored in the inventory for the local and service JVM match.
 
 Contexts and Dependency Injection (CDI) is used to inject an instance of the `InventoryResource` class into this test class.
-You can learn more about CDI in the https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices].
+You can learn more about CDI in the https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices] guide.
 The instance is then tested by the [hotspot=86-97]`testGetPropertiesFromFunction` method.
 This test case calls the [hotspot=89]`listContents()` method to get all systems that are stored in this inventory
 and verifies that one system is found and it is `localhost`.
