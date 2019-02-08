@@ -4,13 +4,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- tag::AddLibertyMavenAppParent[] -->
     <parent>
         <groupId>net.wasdev.wlp.maven.parent</groupId>
         <artifactId>liberty-maven-app-parent</artifactId>
         <version>RELEASE</version>
     </parent>
-    <!-- end::AddLibertyMavenAppParent[] -->
 
     <groupId>io.openliberty.guides</groupId>
     <artifactId>microservices-arquillian-managed-test</artifactId>
@@ -38,7 +36,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- tag::AddArquillianBOM[] -->
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
@@ -46,7 +43,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- end::AddArquillianBOM[] -->
         </dependencies>
     </dependencyManagement>
 
@@ -116,7 +112,6 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
-        <!-- tag::AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency[] -->
         <dependency>
             <groupId>io.openliberty.arquillian</groupId>
             <artifactId>arquillian-liberty-managed-junit</artifactId>
@@ -129,7 +124,6 @@
             <artifactId>shrinkwrap-api</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- end::AddArquillianLibertyManagedJUnitAndShrinkwrapAPIDependency[] -->
     </dependencies>
 
     <build>
@@ -143,7 +137,6 @@
                     <packagingExcludes>pom.xml</packagingExcludes>
                 </configuration>
             </plugin>
-            <!-- tag::AddMavenFailsafeAndLibertyMavenPlugins[] -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -224,7 +217,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- end::AddMavenFailsafeAndLibertyMavenPlugins[] -->
         </plugins>
     </build>
 </project>
