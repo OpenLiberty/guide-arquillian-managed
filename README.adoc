@@ -32,7 +32,7 @@ You will learn how to develop tests for your microservices using the
 https://github.com/OpenLiberty/liberty-arquillian/tree/master/liberty-managed[Arquillian Liberty Managed container]
 and JUnit with Maven on Open Liberty. http://arquillian.org/[Arquillian] is a testing platform to develop
 automated functional, integration and acceptance tests for your Java applications.
-Arquillian test sets up the test environment and is able to handle the application server life cycle for you,
+Arquillian sets up the test environment and is able to handle the application server life cycle for you,
 so you can focus on writing tests. In this guide, you will develop the Arquillian tests that uses JUnit
 as the runner and build your tests with Maven. The Liberty Maven plugin simplifies the process of managing
 Arquillian dependencies and setting up your Arquillian managed container.
@@ -86,7 +86,7 @@ and tells JUnit to run the tests using Arquillian.
 
 Another important item is the [hotspot=36-41]`@Deployment` block.
 
-The ShrinkWrap test archive's contents are defined in this block,
+The contents of the ShrinkWrap test archive are defined in this block,
 which is going to be deployed to Open Liberty to run the in-container tests.
 The [hotspot=36]`testable = true` attribute enables the deployment to run in-container tests.
 
@@ -96,7 +96,7 @@ This WAR name is also needed when the `inventory` service communicates with the 
 
 All of the packages in this service must be added to the web archive, otherwise,
 the code compiles successfully but fails at runtime when the injection of the testing resource class takes place.
-You can learn about the ShrinkWrap archive configuration in the  http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide].
+You can learn about the ShrinkWrap archive configuration in the http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide].
 
 The [hotspot=43]`@ArquillianResource` annotation is used to retrieve the base URL for this web service.
 This annotation provides the hostname, port number and web archive information for this service,
@@ -105,15 +105,16 @@ so you do not need to hard code these values in the test case.
 The [hotspot=52-82]`testGetPropertiesFromEndpoint` method is an integration test to test the `inventory` service endpoints.
 The [hotspot=50]`@RunAsClient` annotation added in this test case indicates that this test case is to be run on the client side,
 which means the tests are run against the managed container.
-The endpoint test case first calls the \http://localhost:9080/{WARNAME}/inventory/systems/{hostname} endpoint with the `localhost` hostname,
+The endpoint test case first calls the `\http://localhost:9080/{WARNAME}/inventory/systems/{hostname}` endpoint with the `localhost` hostname,
 to add its system properties to the inventory.
 The test verifies that the system property for the local and service JVM match.
-Then, the test method calls the \http://localhost:9080/{WARNAME}/inventory/systems endpoint.
+Then, the test method calls the `\http://localhost:9080/{WARNAME}/inventory/systems` endpoint.
 The test checks that the inventory should have one host registered and that should be `localhost`.
 The test also verifies that the system property stored in the inventory for the local and service JVM match.
 
-CDI is used to inject an instance of the `InventoryResource` class into this test class.
-It is then tested by the [hotspot=86-97]`testGetPropertiesFromFunction` method.
+Contexts and Dependency Injection (CDI) is used to inject an instance of the `InventoryResource` class into this test class.
+You can learn more about CDI in the https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices].
+The instance is then tested by the [hotspot=86-97]`testGetPropertiesFromFunction` method.
 This test case calls the [hotspot=89]`listContents()` method to get all systems that are stored in this inventory
 and verifies that one system is found and it is `localhost`.
 Notice the functional test case does not store any system in the inventory,
@@ -140,7 +141,7 @@ include::finish/pom.xml[tags=**;]
 ----
 
 Let's look into each of the required elements for this configuration.
-First, the [hotspot=7-11]`liberty-maven-app-parent` parent POM configures the Liberty Maven Plugin with the default executions
+First, the [hotspot=7-11]`liberty-maven-app-parent` configures the Liberty Maven Plugin with the default executions
 necessary for setting up your managed Liberty server.
 
 Next, the [hotspot=39-45]`arquillian-bom` Bill of Material is a Maven artifact which defines the versions of Arquillian
