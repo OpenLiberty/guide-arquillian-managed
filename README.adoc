@@ -71,7 +71,7 @@ Navigate to the `start` directory to begin.
 
 [role="code_command", subs="quotes"]
 ----
-#Create the `InventoryIT` test class for the `inventory` service.#
+#Create the `InventoryIT` test class.#
 `src/test/java/it/io/openliberty/guides/inventory/InventoryIT.java`
 ----
 
@@ -122,8 +122,8 @@ the `localhost` system is from the endpoint test case that ran prior to this tes
 The [hotspot=51 hotspot=85]`@InSequence` Arquillian annotation guarantees the test sequence.
 The sequences are important for the two test methods, as the results in the first test impacts the second one.
 
-The test cases are ready to run. In the next section,
-you will configure the Maven build and the Liberty application server to run them.
+The test cases are ready to run.
+You will configure the Maven build and the Liberty application server to run them.
 
 == Configuring Arquillian with Liberty
 
