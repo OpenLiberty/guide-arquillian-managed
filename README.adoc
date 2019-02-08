@@ -53,7 +53,6 @@ and execute the Maven build.
 
 [role="command"]
 ```
-cd finish
 mvn install
 ```
 
@@ -106,10 +105,10 @@ so you do not need to hard code these values in the test case.
 The [hotspot=52-82]`testGetPropertiesFromEndpoint` method is an integration test to test the `inventory` service endpoints.
 The [hotspot=50]`@RunAsClient` annotation added in this test case indicates that this test case is to be run on the client side,
 which means the tests are run against the managed container.
-The endpoint test case first calls the `http://localhost:9080/{WARNAME}/inventory/systems/{hostname}` endpoint with the `localhost` hostname,
+The endpoint test case first calls the \http://localhost:9080/{WARNAME}/inventory/systems/{hostname} endpoint with the `localhost` hostname,
 to add its system properties to the inventory.
 The test verifies that the system property for the local and service JVM match.
-Then, the test method calls the `http://localhost:9080/{WARNAME}/inventory/systems` endpoint.
+Then, the test method calls the \http://localhost:9080/{WARNAME}/inventory/systems endpoint.
 The test checks that the inventory should have one host registered and that should be `localhost`.
 The test also verifies that the system property stored in the inventory for the local and service JVM match.
 
