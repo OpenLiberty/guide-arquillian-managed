@@ -71,14 +71,14 @@ Navigate to the `start` directory to begin.
 
 [role="code_command", subs="quotes"]
 ----
-#Create the `InventoryArquillianTest` test class.#
-`src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTest.java`
+#Create the `InventoryArquillianTests` test class.#
+`src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java`
 ----
 
-InventoryArquillianTest.java
+InventoryArquillianTests.java
 [source, Java, linenums, indent=0, role="code_column"]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTest.java[tags=**;!copyright;]
+include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java[tags=**;!copyright;]
 ----
 
 Notice the JUnit Arquillian runner is being used to run the tests, instead of the standard JUnit runner.
@@ -232,7 +232,7 @@ mvn install
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
-[INFO] Running it.io.openliberty.guides.inventory.InventoryArquillianTest
+[INFO] Running it.io.openliberty.guides.inventory.InventoryArquillianTests
 ...
 [AUDIT   ] CWWKE0001I: The server ArquillianManagedServer has been launched.
 [INFO    ] CWWKE0002I: The kernel started after 2.069 seconds

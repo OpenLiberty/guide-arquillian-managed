@@ -39,7 +39,7 @@ import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
 @RunWith(Arquillian.class)
-public class InventoryArquillianTest {
+public class InventoryArquillianTests {
 
     private final static String WARNAME = "arquillian-managed.war";
     private final String INVENTORY_SYSTEMS = "inventory/systems";
