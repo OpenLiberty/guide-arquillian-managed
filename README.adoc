@@ -19,7 +19,7 @@
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :page-seo-title: Testing microservices with Arquillian Liberty Managed container
 :page-seo-description: Learn how to test your microservices with Arquillian Liberty Managed container
-= Testing microservices with Arquillian Managed container
+= Testing microservices with Arquillian managed container
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
@@ -60,12 +60,9 @@ You should see the console output indicating that your build is successful and t
 
 == Developing Arquillian tests
 
-You will write your Arquillian tests for the `inventory` microservices.
-The code for the microservices is provided to you under the `src/main/java/io/openliberty/guides` directory.
-You'll develop test classes in the `src/test` directory. Recall the `inventory` service communicates with the `system` service
-on a particular host to retrieve its system properties and then stores it.
-You will develop tests that use Arquillian and JUnit to verify the `inventory` service as an endpoint
+You'll develop tests that use Arquillian and JUnit to verify the `inventory` microservice as an endpoint
 and the functions of the inventory resource class.
+The code for the microservices is provided to you under the `src/main/java/io/openliberty/guides` directory.
 
 Navigate to the `start` directory to begin.
 
@@ -85,10 +82,8 @@ Notice the JUnit Arquillian runner is being used to run the tests, instead of th
 This is specified using the [hotspot=29]`@RunWith` annotation at the top of the class,
 and tells JUnit to run the tests using Arquillian.
 
-Another important item is the [hotspot=36-41]`@Deployment` block.
-
-The contents of the web archive are defined in this block,
-which is going to be deployed to Open Liberty and the tests are run
+The method annotated by [hotspot=36-41]`@Deployment` defines the content of the
+web archive, which is going to be deployed to Open Liberty and the tests are run
 on or against the server.
 The [hotspot=36]`testable = true` attribute enables the deployment to
 run in-container tests, which means the tests are run against the server.
@@ -103,7 +98,7 @@ You can learn about the ShrinkWrap archive configuration in the
 http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide].
 
 The [hotspot=43]`@ArquillianResource` annotation is used to retrieve the
-`http://localhost:9080/arquillian-managed/` base URL for this web service.
+`\http://localhost:9080/arquillian-managed/` base URL for this web service.
 This annotation provides the hostname, port number and web archive
 information for this service, so you do not need to hard code these values
 in the test case. Notice the `arquillian-managed` WAR name that was specified
@@ -265,6 +260,8 @@ mvn install
 [INFO    ] SRVE0253I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Destroy successful.
 [INFO    ] SRVE0253I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.inventory.InventoryApplication]: Destroy successful.
 [AUDIT   ] CWWKZ0009I: The application arquillian-managed has stopped successfully.
+...
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.355 s - in it.io.openliberty.guides.inventory.InventoryArquillianTests
 ...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
