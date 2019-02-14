@@ -33,22 +33,19 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.openliberty.guides.system.SystemApplication;
 import io.openliberty.guides.system.SystemResource;
 
 @RunWith(Arquillian.class)
-public class SystemIT {
+public class SystemArquillianTests {
 
     private final static String WARNAME = "arquillian-managed.war";
 
-    // tag::deployment[]
     @Deployment(testable = true)
     public static WebArchive createSystemEndpointTestDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                                        .addPackages(true, "io.openliberty.guides.system");
         return archive;
     }
-    // end::deployment[]
     
     @ArquillianResource 
     private URL baseURL; 
@@ -67,7 +64,6 @@ public class SystemIT {
                             expectedOS, serviceOS);
     }
 
-    // tag::testGetPropertiesFromEndpoint[]
     @Test
     @RunAsClient
     public void testGetPropertiesFromEndpoint() throws Exception {
@@ -85,5 +81,4 @@ public class SystemIT {
                             System.getProperty("os.name"), obj.getString("os.name"));
         response.close();
     }
-    // end::testGetPropertiesFromEndpoint[]
 }

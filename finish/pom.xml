@@ -91,7 +91,7 @@
             <type>esa</type>
             <scope>provided</scope>
         </dependency>
-        <!-- For JDK 9 & 10 Support -->
+        <!-- For JDK 9 & above Support -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>

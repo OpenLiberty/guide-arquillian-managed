@@ -39,20 +39,18 @@ import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
 @RunWith(Arquillian.class)
-public class InventoryIT {
+public class InventoryArquillianTests {
 
     private final static String WARNAME = "arquillian-managed.war";
     private final String INVENTORY_SYSTEMS = "inventory/systems";
     private Client client = ClientBuilder.newClient();
 
-    // tag::deployment[]
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                                        .addPackages(true, "io.openliberty.guides");
         return archive;
     }
-    // end::deployment[]
 
     @ArquillianResource
     private URL baseURL;
@@ -63,7 +61,7 @@ public class InventoryIT {
     @Test
     @RunAsClient
     @InSequence(1)
-    public void testGetPropertiesFromEndpoint() throws Exception {
+    public void testInventoryEndpoints() throws Exception {
         String localhosturl = baseURL + INVENTORY_SYSTEMS + "/localhost";
 
         client.register(JsrJsonpProvider.class);
@@ -95,7 +93,6 @@ public class InventoryIT {
         localhostresponse.close();
     }
 
-    // tag::testInventoryResourceFunctions[]
     @Test
     @InSequence(2)
     public void testInventoryResourceFunctions() {
@@ -110,5 +107,4 @@ public class InventoryIT {
         Assert.assertTrue(systemDataList.get(0).getProperties().get("os.name")
                                         .equals(System.getProperty("os.name")));
     }
-    // end::testInventoryResourceFunctions[]
 }
