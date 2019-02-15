@@ -222,6 +222,14 @@ Run the Maven build command in the `start` directory.
 mvn install
 ```
 
+In the test output, you see the application server was launched, and that the web archive,
+`arquillian-managed` is started as an application in the server.
+Then, the tests are being run and the results are reported.
+
+Following the execution of the tests, the test application is automatically
+undeployed and the server is shut down.
+You should then get a message indicating that the build and tests are successful.
+
 ----
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
@@ -269,14 +277,6 @@ mvn install
 [INFO] Finished at: 2019-02-12T14:40:43-05:00
 [INFO] ------------------------------------------------------------------------
 ----
-
-In the test output, you see the application server was launched, and that the web archive,
-`arquillian-managed` is started as an application in the server.
-Then, the tests are being run and the results are reported.
-
-Following the execution of the tests, the test application is automatically
-undeployed and the server is shut down.
-You should then get a message indicating that the build and tests are successful.
 
 == Great work! You're done!
 
