@@ -90,6 +90,7 @@ run in-container tests, which means the tests are run against the server.
 Notice the [hotspot=32 hotspot=38]`arquillian-managed.war` name used for the web
 archive. It is necessary if you don't want a randomly generated web archive name.
 
+ShrinkWrap is used to create the web archive.
 All of the packages in this service must be added to the web archive; otherwise,
 the code compiles successfully but fails at runtime when the injection of the
 testing resource class takes place.
@@ -159,11 +160,11 @@ Next, you need the [hotspot=39-45]`arquillian-bom` Bill of Material.
 It's a Maven artifact that defines the versions of Arquillian dependencies to
 make dependency management easier.
 
-You also need the [hotspot=115-121]`arquillian-liberty-managed-junit` dependency
-bundle and the Arquillian [hotspot=122-126]`shrinkwrap-api`.
-The dependency bundle includes all the core dependencies for running Arquillian
-tests on a managed Liberty container using JUnit. You can learn more about the
+You need the [hotspot=115-121]`arquillian-liberty-managed-junit` dependency bundle,
+which includes all the core dependencies for running Arquillian tests on a
+managed Liberty container using JUnit. You can learn more about the
 https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles^].
+You also need the [hotspot=122-126]`shrinkwrap-api` dependency.
 The Shrinkwrap API allows you to create your test archive which is packaged into
 a WAR file and deployed to the Open Liberty server.
 
@@ -230,6 +231,7 @@ Following the execution of the tests, the test application is automatically
 undeployed and the server is shut down.
 You should then get a message indicating that the build and tests are successful.
 
+[source, role="no_copy"]
 ----
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
