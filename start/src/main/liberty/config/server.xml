@@ -1,0 +1,15 @@
+<server description="new server">
+
+  <featureManager>
+    <feature>jaxrs-2.1</feature>
+    <feature>jsonp-1.1</feature>
+    <feature>cdi-2.0</feature>
+
+    <!-- Enable the following features to run tests with Arquillian managed container -->
+    <feature>localConnector-1.0</feature>
+    <feature>servlet-4.0</feature>
+  </featureManager>
+
+  <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443" />
+  <webApplication location="microservices-arquillian-managed-test.war" context-root="/"/>
+</server>

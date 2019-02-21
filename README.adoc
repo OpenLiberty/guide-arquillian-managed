@@ -194,11 +194,7 @@ Now that you're done configuring the build tool, you will set up your
 Open Liberty server to run your test cases by configuring
 the [hotspot]`server.xml` file.
 
-[role="code_command", subs="quotes"]
-----
-#Create the `server.xml` file.#
-`src/main/liberty/config/server.xml`
-----
+Take a look at the [hotspot]`server.xml` file.
 
 server.xml
 [source, xml, linenums, indent=0, role="code_column"]
