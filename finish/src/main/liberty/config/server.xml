@@ -5,7 +5,7 @@
     <feature>jsonp-1.1</feature>
     <feature>cdi-2.0</feature>
 
-    <!-- Arquillian test required features -->
+    <!-- Enable the following features to run tests with Arquillian managed container -->
     <feature>localConnector-1.0</feature>
     <feature>servlet-4.0</feature>
   </featureManager>
