@@ -30,7 +30,7 @@ Learn how to develop tests for your microservices with the Arquillian managed co
 == What you'll learn
 You will learn how to develop tests for your microservices using the
 https://github.com/OpenLiberty/liberty-arquillian/tree/master/liberty-managed[Arquillian Liberty Managed container^]
-and JUnit with Maven on Open Liberty. http://arquillian.org/[Arquillian^] is a testing platform to develop
+and JUnit with Maven on Open Liberty. http://arquillian.org/[Arquillian^] is a testing framework to develop
 automated functional, integration and acceptance tests for your Java applications.
 Arquillian sets up the test environment and is able to handle the application server lifecycle for you,
 so you can focus on writing tests. In this guide, you will develop the Arquillian tests that use JUnit
