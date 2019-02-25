@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import io.openliberty.guides.system.SystemResource;
 
 @RunWith(Arquillian.class)
-public class SystemArquillianTest {
+public class SystemArquillianTests {
 
     private final static String WARNAME = "arquillian-managed.war";
 
