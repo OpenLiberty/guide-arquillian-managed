@@ -9,16 +9,16 @@
 :page-layout: guide-multipane
 :projectid: arquillian-managed
 :page-duration: 15 minutes
-:page-releasedate: 2019-02-01
+:page-releasedate: 2019-03-08
 :page-guide-category: none
-:page-description: Learn how to test your microservices with the Arquillian managed container and JUnit.
+:page-description: Learn how to test your microservices with the Arquillian managed container and JUnit on Open Liberty.
 :guide-author: Open Liberty
 :page-tags: ['Maven']
 :page-related-guides: ['cdi-intro','rest-intro']
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :page-seo-title: Testing microservices with Arquillian managed container
-:page-seo-description: Learn how to test your microservices with Arquillian managed container
+:page-seo-description: A tutorial on how to test your microservices with the Arquillian managed container for Open Liberty
 = Testing microservices with Arquillian managed container
 
 [.hidden]
@@ -34,15 +34,17 @@ https://github.com/OpenLiberty/liberty-arquillian/tree/master/liberty-managed[Ar
 and JUnit with Maven on Open Liberty. http://arquillian.org/[Arquillian^] is a testing framework to develop
 automated functional, integration and acceptance tests for your Java applications.
 Arquillian sets up the test environment and is able to handle the application server lifecycle for you,
-so you can focus on writing tests. In this guide, you will develop the Arquillian tests that use JUnit
-as the runner and build your tests with Maven. The Liberty Maven plug-in simplifies the process of managing
-Arquillian dependencies and setting up your Arquillian managed container.
+so you can focus on writing tests.
+
+In this guide, you will develop Arquillian tests that use JUnit
+as the runner and build your tests with Maven using the Liberty Maven plug-in, which simplifies the process of managing
+Arquillian dependencies and the setup of your Arquillian managed container.
 
 The application that you will work with is an `inventory` service that stores information about various systems.
 The `inventory` service communicates with the `system` service on a particular host to retrieve its
 system properties and stores them. You will develop functional and integration tests for the microservices.
-You will learn about the configurations you need to run your tests on Open Liberty with the Arquillian
-Liberty Managed container using the Maven build tool.
+You will also learn about the Maven and server configurations you need to run your tests on Open Liberty with the Arquillian
+Liberty Managed container.
 
 [role="command"]
 include::{common-includes}/gitclone.adoc[]
@@ -95,7 +97,7 @@ ShrinkWrap is used to create the web archive.
 All of the packages in the `inventory` service must be added to the web archive; otherwise,
 the code compiles successfully but fails at runtime when the injection of the
 `InventoryResource` class takes place.
-You can learn about the ShrinkWrap archive configuration in the
+You can learn about the ShrinkWrap archive configuration in this
 http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide^].
 
 The [hotspot=43]`@ArquillianResource` annotation is used to retrieve the
@@ -214,8 +216,8 @@ Run the Maven build command in the `start` directory.
 mvn install
 ```
 
-In the test output, you see the application server was launched, and that the web archive,
-`arquillian-managed` is started as an application in the server.
+In the test output, you see the application server was launched, and the web archive,
+`arquillian-managed`, is started as an application in the server.
 Then, the tests are being run and the results are reported.
 
 Following the execution of the tests, the test application is automatically
@@ -273,8 +275,8 @@ You should then get a message indicating that the build and tests are successful
 
 == Great work! You're done!
 
-You have just completed building some functional and integration tests with the
-Arquillian Liberty Managed container to run the tests for your microservices
+You have just built some functional and integration tests with the
+Arquillian Liberty Managed container and ran the tests for your microservices
 on Open Liberty.
 
 You can continue to try one of the related guides to learn more about the
