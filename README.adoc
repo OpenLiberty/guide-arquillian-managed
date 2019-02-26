@@ -284,4 +284,4 @@ on Open Liberty.
 You can continue to try one of the related guides to learn more about the
 technologies that you come across in this guide.
 
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
+include::{common-includes}/attribution.adoc[subs="attributes"]
