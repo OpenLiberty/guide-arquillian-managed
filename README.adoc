@@ -104,10 +104,10 @@ The [hotspot=43]`@ArquillianResource` annotation is used to retrieve the
 `\http://localhost:9080/arquillian-managed/` base URL for this web service.
 The annotation provides the host name, port number and web archive
 information for this service, so you don't need to hardcode these values
-in the test case. The `arquillian-managed` WAR name comes
+in the test case. The `arquillian-managed` WAR name in the URL comes
 from the WAR name you specified when you created the web archive in the
 [hotspot=36-41]`@Deployment` method.
-It's needed  when the `inventory` service communicates
+It's needed when the `inventory` service communicates
 with the `system` service to get the system properties.
 
 The [hotspot=52-82]`testInventoryEndpoints` method is an integration
