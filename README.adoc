@@ -162,7 +162,7 @@ It's a Maven artifact that defines the versions of Arquillian dependencies to
 make dependency management easier.
 
 The [hotspot=115-121]`arquillian-liberty-managed-junit` dependency bundle,
-which includes all the core dependencies is required to run the Arquillian tests on a
+which includes all the core dependencies, is required to run the Arquillian tests on a
 managed Liberty container using JUnit. You can learn more about the
 https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles^].
 The [hotspot=122-126]`shrinkwrap-api` dependency allows you to create your test
@@ -173,7 +173,7 @@ The [hotspot=140-173]`maven-failsafe-plugin` runs your Arquillian integration te
 Lastly, specify the [hotspot=174-219]`liberty-maven-plugin`
 configuration that defines your Open Liberty runtime configuration and use
 the [hotspot=215]`configure-arquillian` goal to configure your Arquillian container.
-This goal automatically retrieves core server parameters automatically from the `liberty-maven-plugin` configuration
+This goal automatically retrieves core server parameters from the `liberty-maven-plugin` configuration
 and enables you to customize your Arquillian container configuration directly in your POM file if necessary.
 You can learn more about the [hotspot=215]`configure-arquillian` goal in its
 https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
