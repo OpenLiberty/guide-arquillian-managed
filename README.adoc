@@ -9,7 +9,7 @@
 :page-layout: guide-multipane
 :projectid: arquillian-managed
 :page-duration: 15 minutes
-:page-releasedate: 2019-03-08
+:page-releasedate: 2019-03-01
 :page-guide-category: none
 :page-description: Learn how to test your microservices with the Arquillian managed container and JUnit on Open Liberty.
 :guide-author: Open Liberty
@@ -106,7 +106,7 @@ The annotation provides the host name, port number and web archive
 information for this service, so you don't need to hardcode these values
 in the test case. The `arquillian-managed` path in the URL comes
 from the WAR name you specified when you created the web archive in the
-[hotspot=36-41]`@Deployment` method.
+[hotspot=36-41]`@Deployment` annotated method.
 It's needed when the `inventory` service communicates
 with the `system` service to get the system properties.
 
@@ -129,13 +129,13 @@ Contexts and Dependency Injection (CDI) is used to inject an instance of the
 You can learn more about CDI in the
 https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices^] guide.
 The instance is then tested by the [hotspot=86-97]`testInventoryResourceFunctions` method.
-This test case calls the [hotspot=89]`listContents()` method to get all systems
- are stored in this inventory
-and verifies that one system is found and it's `localhost`.
+This test case calls the [hotspot=89]`listContents()` method to get all the systems
+that are stored in this inventory
+and verifies that `localhost` is the only system being found.
 Notice the functional test case doesn't store any system in the inventory,
 the `localhost` system is from the endpoint test case that ran before this test case.
 The [hotspot=51 hotspot=85]`@InSequence` Arquillian annotation guarantees the test sequence.
-The sequence is important for the two tests, as the results in the first test impacts the second one.
+The sequence is important for the two tests, as the results in the first test impact the second one.
 
 The test cases are ready to run.
 You will configure the Maven build and the Liberty application server to run them.
