@@ -63,7 +63,7 @@ the following Maven goal to build the application and run the tests on Open Libe
 mvn install
 ```
 
-You should see the console output indicating that your build is successful and the tests have passed.
+In the console output, you can see the build was successful and the tests passed.
 
 == Developing Arquillian tests
 
