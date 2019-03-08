@@ -9,7 +9,7 @@
 :page-layout: guide-multipane
 :projectid: arquillian-managed
 :page-duration: 15 minutes
-:page-releasedate: 2019-03-01
+:page-releasedate: 2019-03-08
 :page-guide-category: none
 :page-description: Learn how to test your microservices with the Arquillian managed container and JUnit on Open Liberty.
 :guide-author: Open Liberty
