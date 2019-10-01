@@ -6,12 +6,12 @@
     <feature>cdi-2.0</feature>
 
     <!-- Enable the following features to run tests with Arquillian managed container -->
-    <!-- tag::localConnector -->
+    <!-- tag::localConnector[] -->
     <feature>localConnector-1.0</feature>
-    <!-- end::localConnector -->
-    <!-- tag::Servlet -->
+    <!-- end::localConnector[] -->
+    <!-- tag::Servlet[] -->
     <feature>servlet-4.0</feature>
-    <!-- end::Servlet -->
+    <!-- end::Servlet[] -->
   </featureManager>
 
   <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443" />
