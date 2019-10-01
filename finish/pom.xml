@@ -4,14 +4,16 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- tag::liberty-maven-app-parent -->
     <parent>
         <groupId>net.wasdev.wlp.maven.parent</groupId>
         <artifactId>liberty-maven-app-parent</artifactId>
         <version>RELEASE</version>
     </parent>
+    <!-- end::liberty-maven-app-parent -->
 
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>microservices-arquillian-managed-test</artifactId>
+    <artifactId>guide-arquillian-managed</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -36,6 +38,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- tag::arquillian-bom -->
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
@@ -43,6 +46,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- end::arquillian-bom -->
+
         </dependencies>
     </dependencyManagement>
 
@@ -112,6 +117,7 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <!-- tag::arquillian-liberty-managed-junit-->
         <dependency>
             <groupId>io.openliberty.arquillian</groupId>
             <artifactId>arquillian-liberty-managed-junit</artifactId>
@@ -119,14 +125,18 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>
+        <!-- end::arquillian-liberty-managed-junit -->
+        <!-- tag::shrinkwrap-api -->
         <dependency>
             <groupId>org.jboss.shrinkwrap</groupId>
             <artifactId>shrinkwrap-api</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- end::shrinkwrap-api -->
     </dependencies>
 
     <build>
+        <!-- tag::maven-failsafe-plugin -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -171,6 +181,8 @@
                     </reportsDirectory>
                 </configuration>
             </plugin>
+            <!-- end::maven-failsafe-plugin-->
+            <!-- tag::liberty-maven-plugin -->
             <plugin>
                 <groupId>net.wasdev.wlp.maven.plugins</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
@@ -212,11 +224,14 @@
                         <id>configure-arquillian-xml</id>
                         <phase>pre-integration-test</phase>
                         <goals>
+                            <!-- tag::configure-arquillian -->
                             <goal>configure-arquillian</goal>
+                            <!-- end::configure-arquillian -->
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            <!-- end::liberty-maven-plugin -->
         </plugins>
     </build>
 </project>
