@@ -201,9 +201,9 @@ the [hotspot]`server.xml` file.
 Take a look at the [hotspot]`server.xml` file.
 
 server.xml
-[source, xml, linenums, indent=0, role="code_column"]
+[source, xml, linenums, indent=0, role='code_column hide_tags=copyright']
 ----
-include::finish/src/main/liberty/config/server.xml[tags=**;]
+include::finish/src/main/liberty/config/server.xml[]
 ----
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty
