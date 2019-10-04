@@ -186,7 +186,7 @@ and enables you to customize your Arquillian container configuration directly in
 You can learn more about the [hotspot=configure-arquillian]`configure-arquillian` goal in its
 https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
 
-Notice in the `liberty-maven-plugin` configuration that the [hotspot=194]`skipTestServer` element is set to
+Notice in the `liberty-maven-plugin` configuration that the [hotspot=skipTestServer]`skipTestServer` element is set to
 `true` to skip the `test-start-server`
 and `test-stop-server` goals defined in the [hotspot=liberty-maven-app-parent]`liberty-maven-app-parent` parent configuration.
 The test server configuration is skipped because Arquillian is managing the
