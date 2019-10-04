@@ -203,9 +203,9 @@
                         <default.http.port>${testServerHttpPort}</default.http.port>
                         <default.https.port>${testServerHttpsPort}</default.https.port>
                     </bootstrapProperties>
-                    <!-- tag::skipTestServer -->
+                    <!-- tag::skipTestServer[] -->
                     <skipTestServer>true</skipTestServer>
-                    <!-- end::skipTestServer -->
+                    <!-- end::skipTestServer[] -->
                 </configuration>
                 <executions>
                     <execution>
