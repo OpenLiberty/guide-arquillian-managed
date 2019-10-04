@@ -52,11 +52,11 @@ public class InventoryArquillianTests {
     // tag::Deployment[]
     // tag::Tesable[]
     @Deployment(testable = true)
-    // end::Tesable
+    // end::Tesable[]
     public static WebArchive createDeployment() {
-        // tag::WebArchive
+        // tag::WebArchive[]
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
-        // end::WebArchive
+        // end::WebArchive[]
                                        .addPackages(true, "io.openliberty.guides");
         return archive;
     }
