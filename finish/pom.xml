@@ -136,8 +136,8 @@
     </dependencies>
 
     <build>
-        <!-- tag::maven-failsafe-plugin[] -->
         <plugins>
+            <!-- tag::maven-failsafe-plugin[] -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -203,7 +203,9 @@
                         <default.http.port>${testServerHttpPort}</default.http.port>
                         <default.https.port>${testServerHttpsPort}</default.https.port>
                     </bootstrapProperties>
+                    <!-- tag::skipTestServer -->
                     <skipTestServer>true</skipTestServer>
+                    <!-- end::skipTestServer -->
                 </configuration>
                 <executions>
                     <execution>
