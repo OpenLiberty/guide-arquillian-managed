@@ -50,9 +50,9 @@ public class InventoryArquillianTests {
     private Client client = ClientBuilder.newClient();
 
     // tag::Deployment[]
-    // tag::Tesable[]
+    // tag::Testable[]
     @Deployment(testable = true)
-    // end::Tesable[]
+    // end::Testable[]
     public static WebArchive createDeployment() {
         // tag::WebArchive[]
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
