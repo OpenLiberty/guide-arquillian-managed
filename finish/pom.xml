@@ -136,7 +136,6 @@
     </dependencies>
 
     <build>
-        <!-- tag::maven-failsafe-plugin[] -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -147,6 +146,7 @@
                     <packagingExcludes>pom.xml</packagingExcludes>
                 </configuration>
             </plugin>
+            <!-- tag::maven-failsafe-plugin[] -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -203,7 +203,9 @@
                         <default.http.port>${testServerHttpPort}</default.http.port>
                         <default.https.port>${testServerHttpsPort}</default.https.port>
                     </bootstrapProperties>
+                    <!-- tag::skipTestServer[] -->
                     <skipTestServer>true</skipTestServer>
+                    <!-- end::skipTestServer[] -->
                 </configuration>
                 <executions>
                     <execution>

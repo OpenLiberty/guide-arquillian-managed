@@ -77,9 +77,9 @@ The code for the microservices is in the `src/main/java/io/openliberty/guides` d
 ----
 
 InventoryArquillianTests.java
-[source, Java, linenums, indent=0, role="code_column"]
+[source, Java, linenums, indent=0, role='code_column hide_tags=copyright']
 ----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java[tags=**;!copyright;]
+include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java[]
 ----
 
 Notice that the JUnit Arquillian runner runs the tests instead of the standard JUnit runner.
@@ -155,9 +155,9 @@ First, configure your test build with Maven. All of the Maven configuration take
 place in the [hotspot]`pom.xml` file, which is provided for you.
 
 pom.xml
-[source, xml, linenums, indent=0, role="code_column"]
+[source, xml, linenums, indent=0, role='code_column']
 ----
-include::finish/pom.xml[tags=**;]
+include::finish/pom.xml[]
 ----
 
 Let's look into each of the required elements for this configuration.
@@ -186,7 +186,7 @@ and enables you to customize your Arquillian container configuration directly in
 You can learn more about the [hotspot=configure-arquillian]`configure-arquillian` goal in its
 https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
 
-Notice in the `liberty-maven-plugin` configuration that the [hotspot=194]`skipTestServer` element is set to
+Notice in the `liberty-maven-plugin` configuration that the [hotspot=skipTestServer]`skipTestServer` element is set to
 `true` to skip the `test-start-server`
 and `test-stop-server` goals defined in the [hotspot=liberty-maven-app-parent]`liberty-maven-app-parent` parent configuration.
 The test server configuration is skipped because Arquillian is managing the
@@ -201,9 +201,9 @@ the [hotspot]`server.xml` file.
 Take a look at the [hotspot]`server.xml` file.
 
 server.xml
-[source, xml, linenums, indent=0, role="code_column"]
+[source, xml, linenums, indent=0, role='code_column']
 ----
-include::finish/src/main/liberty/config/server.xml[tags=**;]
+include::finish/src/main/liberty/config/server.xml[]
 ----
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty
