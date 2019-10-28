@@ -77,21 +77,21 @@ The code for the microservices is in the `src/main/java/io/openliberty/guides` d
 ----
 
 InventoryArquillianTests.java
-[source, Java, linenums, indent=0, role="code_column"]
+[source, Java, linenums, indent=0, role='code_column hide_tags=copyright']
 ----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java[tags=**;!copyright;]
+include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java[]
 ----
 
 Notice that the JUnit Arquillian runner runs the tests instead of the standard JUnit runner.
-The [hotspot=29]`@RunWith` annotation preceding the class tells JUnit to run the tests by using Arquillian.
+The [hotspot=RunWith]`@RunWith` annotation preceding the class tells JUnit to run the tests by using Arquillian.
 
-The method annotated by [hotspot=36-41]`@Deployment` defines the content of the
+The method annotated by [hotspot=Deployment]`@Deployment` defines the content of the
 web archive, which is going to be deployed onto the Open Liberty server.
 The tests are either run on or against the server.
-The [hotspot=36]`testable = true` attribute enables the deployment to
+The [hotspot=Testable]`testable = true` attribute enables the deployment to
 run the tests "in container", that is the tests are run on the server.
 
-Notice the [hotspot=32 hotspot=38]`arquillian-managed.war` name that is used for the web
+Notice the [hotspot=warName hotspot=WebArchive]`arquillian-managed.war` name that is used for the web
 archive. This name is necessary if you don't want a randomly generated web archive name.
 
 The ShrinkWrap API is used to create the web archive.
@@ -101,18 +101,18 @@ the code compiles successfully but fails at runtime when the injection of the
 You can learn about the ShrinkWrap archive configuration in this
 http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide^].
 
-The [hotspot=43]`@ArquillianResource` annotation is used to retrieve the
+The [hotspot=ArquillianResource]`@ArquillianResource` annotation is used to retrieve the
 `\http://localhost:9080/arquillian-managed/` base URL for this web service.
 The annotation provides the host name, port number and web archive
 information for this service, so you don't need to hardcode these values
 in the test case. The `arquillian-managed` path in the URL comes
 from the WAR name you specified when you created the web archive in the
-[hotspot=36-41]`@Deployment` annotated method.
+[hotspot=Deployment]`@Deployment` annotated method.
 It's needed when the `inventory` service communicates
 with the `system` service to get the system properties.
 
-The [hotspot=52-82]`testInventoryEndpoints` method is an integration
-test to test the `inventory` service endpoints. The [hotspot=50]`@RunAsClient`
+The [hotspot=testInventoryEndpoints]`testInventoryEndpoints` method is an integration
+test to test the `inventory` service endpoints. The [hotspot=RunAsClient]`@RunAsClient`
 annotation added in this test case indicates that this test case is to be run
 on the client side. By running the tests on the client side,
 the tests are run against the managed container.
@@ -127,18 +127,18 @@ that the host is `localhost`. The test also verifies that the system property
 stored in the inventory for the local and service JVM match.
 
 Contexts and Dependency Injection (CDI) is used to inject an instance of the
-[hotspot=46-47]`InventoryResource` class into this test class.
+[hotspot=InventoryResource]`InventoryResource` class into this test class.
 You can learn more about CDI in the
 https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices^] guide.
 
-The injected [hotspot=46-47]`InventoryResource` instance is then tested
-by the [hotspot=86-97]`testInventoryResourceFunctions` method.
-This test case calls the [hotspot=89]`listContents()` method to get all systems
+The injected [hotspot=InventoryResource]`InventoryResource` instance is then tested
+by the [hotspot=testInventoryResourceFunctions]`testInventoryResourceFunctions` method.
+This test case calls the [hotspot=listContents]`listContents()` method to get all systems
 that are stored in this inventory
 and verifies that `localhost` is the only system being found.
 Notice the functional test case doesn't store any system in the inventory,
 the `localhost` system is from the endpoint test case that ran before this test case.
-The [hotspot=51 hotspot=85]`@InSequence` Arquillian annotation guarantees the test sequence.
+The [hotspot=InSequence1 hotspot=InSequence2]`@InSequence` Arquillian annotation guarantees the test sequence.
 The sequence is important for the two tests, as the results in the first test impact the second one.
 
 The test cases are ready to run.
@@ -155,40 +155,40 @@ First, configure your test build with Maven. All of the Maven configuration take
 place in the [hotspot]`pom.xml` file, which is provided for you.
 
 pom.xml
-[source, xml, linenums, indent=0, role="code_column"]
+[source, xml, linenums, indent=0, role='code_column']
 ----
-include::finish/pom.xml[tags=**;]
+include::finish/pom.xml[]
 ----
 
 Let's look into each of the required elements for this configuration.
-You need the [hotspot=7-11]`liberty-maven-app-parent` block,
+You need the [hotspot=liberty-maven-app-parent]`liberty-maven-app-parent` block,
 which configures the Liberty Maven plug-in with the default executions necessary
 for setting up your managed Liberty server.
 
-You also need the [hotspot=39-45]`arquillian-bom` Bill of Materials.
+You also need the [hotspot=arquillian-bom]`arquillian-bom` Bill of Materials.
 It's a Maven artifact that defines the versions of Arquillian dependencies to
 make dependency management easier.
 
-The [hotspot=115-121]`arquillian-liberty-managed-junit` dependency bundle,
+The [hotspot=arquillian-liberty-managed-junit]`arquillian-liberty-managed-junit` dependency bundle,
 which includes all the core dependencies, is required to run the Arquillian tests on a
 managed Liberty container that uses JUnit. You can learn more about the
 https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles^].
-The [hotspot=122-126]`shrinkwrap-api` dependency allows you to create your test
+The [hotspot=shrinkwrap-api]`shrinkwrap-api` dependency allows you to create your test
 archive, which is packaged into a WAR file and deployed to the Open Liberty server.
 
-The [hotspot=140-173]`maven-failsafe-plugin` artifact runs your Arquillian integration tests by using JUnit.
+The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` artifact runs your Arquillian integration tests by using JUnit.
 
-Lastly, specify the [hotspot=174-219]`liberty-maven-plugin`
+Lastly, specify the [hotspot=liberty-maven-plugin]`liberty-maven-plugin`
 configuration that defines your Open Liberty runtime configuration and use
-the [hotspot=215]`configure-arquillian` goal to configure your Arquillian container.
+the [hotspot=configure-arquillian]`configure-arquillian` goal to configure your Arquillian container.
 This goal automatically retrieves core server parameters from the `liberty-maven-plugin` configuration
 and enables you to customize your Arquillian container configuration directly in your POM file if necessary.
-You can learn more about the [hotspot=215]`configure-arquillian` goal in its
+You can learn more about the [hotspot=configure-arquillian]`configure-arquillian` goal in its
 https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
 
-Notice in the `liberty-maven-plugin` configuration that the [hotspot=194]`skipTestServer` element is set to
+Notice in the `liberty-maven-plugin` configuration that the [hotspot=skipTestServer]`skipTestServer` element is set to
 `true` to skip the `test-start-server`
-and `test-stop-server` goals defined in the [hotspot=7-11]`liberty-maven-app-parent` parent configuration.
+and `test-stop-server` goals defined in the [hotspot=liberty-maven-app-parent]`liberty-maven-app-parent` parent configuration.
 The test server configuration is skipped because Arquillian is managing the
 server lifecycle when it runs the tests.
 
@@ -201,14 +201,14 @@ the [hotspot]`server.xml` file.
 Take a look at the [hotspot]`server.xml` file.
 
 server.xml
-[source, xml, linenums, indent=0, role="code_column"]
+[source, xml, linenums, indent=0, role='code_column']
 ----
-include::finish/src/main/liberty/config/server.xml[tags=**;]
+include::finish/src/main/liberty/config/server.xml[]
 ----
 
-The [hotspot=9]`localConnector` feature is required by the Arquillian Liberty
+The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty
 Managed container to connect to and communicate with the Open Liberty runtime.
-The [hotspot=10]`servlet` feature is required during the deployment of the
+The [hotspot=Servlet]`servlet` feature is required during the deployment of the
 Arquillian tests in which servlets are created to perform the in-container testing.
 
 
@@ -242,12 +242,12 @@ You should then get a message indicating that the build and tests are successful
 [INFO    ] CWWKF0007I: Feature update started.
 [AUDIT   ] CWWKZ0058I: Monitoring dropins for applications.
 [INFO    ] CWWKO0219I: TCP Channel defaultHttpEndpoint has been started and is now listening for requests on host localhost  (IPv4: 127.0.0.1) port 9080.
-[INFO    ] CWWKZ0018I: Starting application microservices-arquillian-managed-test.
+[INFO    ] CWWKZ0018I: Starting application guide-arquillian-managed.
 ...
-[INFO    ] SRVE0169I: Loading Web Module: microservices-arquillian-managed-test.
-[INFO    ] SRVE0250I: Web Module microservices-arquillian-managed-test has been bound to default_host.
+[INFO    ] SRVE0169I: Loading Web Module: guide-arquillian-managed.
+[INFO    ] SRVE0250I: Web Module guide-arquillian-managed has been bound to default_host.
 [AUDIT   ] CWWKT0016I: Web application available (default_host): http://localhost:9080/
-[AUDIT   ] CWWKZ0001I: Application microservices-arquillian-managed-test started in 4.276 seconds.
+[AUDIT   ] CWWKZ0001I: Application guide-arquillian-managed started in 4.276 seconds.
 [INFO    ] SESN0176I: A new session context will be created for application key default_host/
 [INFO    ] CWWKZ0018I: Starting application arquillian-managed.
 ...
@@ -262,7 +262,7 @@ You should then get a message indicating that the build and tests are successful
 [INFO    ] Setting the server's publish address to be /inventory/
 [INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.inventory.InventoryApplication]: Initialization successful.
 [INFO    ] Setting the server's publish address to be /system/
-[INFO    ] SRVE0242I: [microservices-arquillian-managed-test] [/] [io.openliberty.guides.system.SystemApplication]: Initialization successful.
+[INFO    ] SRVE0242I: [guide-arquillian-managed] [/] [io.openliberty.guides.system.SystemApplication]: Initialization successful.
 [INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Initialization successful.
 [AUDIT   ] CWWKT0017I: Web application removed (default_host): http://localhost:9080/arquillian-managed/
 [INFO    ] SRVE0253I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Destroy successful.

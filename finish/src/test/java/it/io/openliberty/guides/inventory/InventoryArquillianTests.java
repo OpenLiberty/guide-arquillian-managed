@@ -38,29 +38,48 @@ import io.openliberty.guides.inventory.InventoryResource;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
+// tag::RunWith[]
 @RunWith(Arquillian.class)
+// end::RunWith[]
 public class InventoryArquillianTests {
 
+    // tag::warName[]
     private final static String WARNAME = "arquillian-managed.war";
+    // end::warName[]
     private final String INVENTORY_SYSTEMS = "inventory/systems";
     private Client client = ClientBuilder.newClient();
 
+    // tag::Deployment[]
+    // tag::Testable[]
     @Deployment(testable = true)
+    // end::Testable[]
     public static WebArchive createDeployment() {
+        // tag::WebArchive[]
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
+        // end::WebArchive[]
                                        .addPackages(true, "io.openliberty.guides");
         return archive;
     }
+    // end::Deployment[]
 
+    // tag::ArquillianResource[]
     @ArquillianResource
+    // end::ArquillianResource[]
     private URL baseURL;
 
+    // tag::InventoryResource[]
     @Inject
     InventoryResource invSrv;
+    // end::InventoryResource[]
 
     @Test
+    // tag::RunAsClient[]
     @RunAsClient
+    // end::RunAsClient[]
+    // tag::InSequence1[]
     @InSequence(1)
+    // end::InSequence1[]
+    // tag::testInventoryEndpoints[]
     public void testInventoryEndpoints() throws Exception {
         String localhosturl = baseURL + INVENTORY_SYSTEMS + "/localhost";
 
@@ -92,13 +111,19 @@ public class InventoryArquillianTests {
                             expected, actual);
         localhostresponse.close();
     }
+    // end::testInventoryEndpoints[]
 
     @Test
+    // tag::InSequence2[]
     @InSequence(2)
+    // end::InSequence2[]
+    // tag::testInventoryResourceFunctions[]
     public void testInventoryResourceFunctions() {
 
         // Listing the inventory contents that were stored in the previous test
+        // tag::listContents[]
         InventoryList invList = invSrv.listContents();
+        // end::listContents[]
         Assert.assertEquals(1, invList.getTotal());
 
         List<SystemData> systemDataList = invList.getSystems();
@@ -107,4 +132,5 @@ public class InventoryArquillianTests {
         Assert.assertTrue(systemDataList.get(0).getProperties().get("os.name")
                                         .equals(System.getProperty("os.name")));
     }
+    // end::testInventoryResourceFunctions[]
 }
