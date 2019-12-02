@@ -41,7 +41,7 @@ import io.openliberty.guides.inventory.model.SystemData;
 // tag::RunWith[]
 @RunWith(Arquillian.class)
 // end::RunWith[]
-public class InventoryArquillianTests {
+public class InventoryArquillianIT {
 
     // tag::warName[]
     private final static String WARNAME = "arquillian-managed.war";
