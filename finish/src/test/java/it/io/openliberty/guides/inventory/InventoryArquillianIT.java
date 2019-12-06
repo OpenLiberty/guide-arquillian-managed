@@ -81,6 +81,7 @@ public class InventoryArquillianIT {
     // end::InSequence1[]
     // tag::testInventoryEndpoints[]
     public void testInventoryEndpoints() throws Exception {
+        System.out.println("PRINT baseURL: " + baseURL);
         String localhosturl = baseURL + INVENTORY_SYSTEMS + "/localhost";
 
         client.register(JsrJsonpProvider.class);
@@ -119,7 +120,7 @@ public class InventoryArquillianIT {
     // end::InSequence2[]
     // tag::testInventoryResourceFunctions[]
     public void testInventoryResourceFunctions() {
-
+        System.out.println("PRINT baseURL: " + baseURL);
         // Listing the inventory contents that were stored in the previous test
         // tag::listContents[]
         InventoryList invList = invSrv.listContents();

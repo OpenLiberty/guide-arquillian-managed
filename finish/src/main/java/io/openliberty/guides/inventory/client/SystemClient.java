@@ -22,19 +22,25 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.util.Properties;
 import java.net.URI;
+import javax.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @RequestScoped
 public class SystemClient {
 
     // Constants for building URI to the system service.
-    private final int DEFAULT_PORT = Integer.valueOf(System.getProperty("default.http.port"));
+    //private final int DEFAULT_PORT = 9080; //Integer.valueOf(System.getProperty("default.http.port"));
     private final String SYSTEM_PROPERTIES = "/system/properties";
     private final String PROTOCOL = "http";
-
+    
+    @Inject
+    @ConfigProperty(name = "default.http.port")
+    String DEFAULT_PORT;
+    
     // Wrapper function that gets properties
     public Properties getProperties(String hostname) {
         String url;
-        url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, SYSTEM_PROPERTIES);
+        url = buildUrl(PROTOCOL, hostname, Integer.valueOf(DEFAULT_PORT), SYSTEM_PROPERTIES);
         Builder clientBuilder = buildClientBuilder(url);
         return getPropertiesHelper(clientBuilder);
     }

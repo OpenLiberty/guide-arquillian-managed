@@ -46,15 +46,16 @@ public class SystemArquillianIT {
                                        .addPackages(true, "io.openliberty.guides.system");
         return archive;
     }
-
-    @ArquillianResource
-    private URL baseURL;
+    
+    @ArquillianResource 
+    private URL baseURL; 
 
     @Inject
     SystemResource system;
 
     @Test
     public void testGetPropertiesFromFunction() throws Exception {
+        System.out.println("PRINT baseURL: " + baseURL);
         Properties prop = system.getProperties();
         String expectedOS = System.getProperty("os.name");
         String serviceOS = prop.getProperty("os.name");
@@ -67,7 +68,8 @@ public class SystemArquillianIT {
     @Test
     @RunAsClient
     public void testGetPropertiesFromEndpoint() throws Exception {
-        Client client = ClientBuilder.newClient();
+        System.out.println("PRINT baseURL: " + baseURL);
+    Client client = ClientBuilder.newClient();
         client.register(JsrJsonpProvider.class);
 
         WebTarget target = client.target(baseURL + "/system/properties");

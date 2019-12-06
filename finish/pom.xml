@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -27,11 +28,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.openliberty.features</groupId>
+                <artifactId>features-bom</artifactId>
+                <version>RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- tag::arquillian-bom[] -->
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.5.0.Final</version>
+                <version>1.4.0.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -40,13 +48,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-          <groupId>io.openliberty.arquillian</groupId>
-          <artifactId>arquillian-liberty-managed-junit</artifactId>
-          <version>1.0</version>
-          <type>pom</type>
-          <scope>test</scope>
-        </dependency>
         <!-- Provided dependencies -->
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
@@ -54,12 +55,12 @@
             <version>3.0</version>
             <type>pom</type>
             <scope>provided</scope>
-          </dependency>
+        </dependency>
         <!-- For tests -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.5.2</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -86,6 +87,21 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.2.11</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
         <!-- tag::arquillian-liberty-managed-junit[] -->
         <dependency>
             <groupId>io.openliberty.arquillian</groupId>
@@ -110,40 +126,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>${version.maven-war-plugin}</version>
+                <version>3.2.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <packagingExcludes>pom.xml</packagingExcludes>
+                </configuration>
             </plugin>
             <!-- tag::maven-failsafe-plugin[] -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${version.maven-failsafe-plugin}</version>
-            <!--    <executions>
-                    <execution>
-                        <id>failsafe-integration-test</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                        <configuration>
-                            <includes>
-                                <include>**/it/**/*.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>failsafe-verify</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions> -->
-                <configuration>
-                    <systemPropertyVariables>
-                        <default.http.port>${liberty.var.default.http.port}</default.http.port>
-                        <default.https.port>${liberty.var.default.https.port}</default.https.port>
-                    </systemPropertyVariables>
-                </configuration>
             </plugin>
             <!-- end::maven-failsafe-plugin[] -->
             <!-- tag::liberty-maven-plugin[] -->
@@ -151,31 +144,16 @@
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>${version.liberty-maven-plugin}</version>
-                <extensions>true</extensions>
-                <!-- Specify configuration, executions for liberty-maven-plugin -->
                 <configuration>
-                    <serverName>ArquillianManagedServer</serverName>
-                    <!-- tag::skipTestServer[] -->
-                    <skipTestServer>true</skipTestServer>
-                    <!-- end::skipTestServer[] -->
-                    <!-- begin configure-arquillian -->
-		                <arquillianProperties>
-			                   <verifyApps>arquillian-test</verifyApps>
-		                </arquillianProperties>
-		                <skipIfArquillianXmlExists>true</skipIfArquillianXmlExists>
-		                <!-- end configure-arquillian -->
+                    <bootstrapProperties>
+                        <default.http.port>${liberty.var.default.http.port}</default.http.port>
+                        <default.https.port>${liberty.var.default.https.port}</default.https.port>
+                    </bootstrapProperties>
+                    <arquillianProperties>
+                        <verifyApps>guide-arquillian-managed</verifyApps>
+                        <allowConnectingToRunningServer>true</allowConnectingToRunningServer>
+                    </arquillianProperties>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>configure-arquillian-xml</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <!-- tag::configure-arquillian[] -->
-                            <goal>configure-arquillian</goal>
-                            <!-- end::configure-arquillian[] -->
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <!-- end::liberty-maven-plugin[] -->
         </plugins>
