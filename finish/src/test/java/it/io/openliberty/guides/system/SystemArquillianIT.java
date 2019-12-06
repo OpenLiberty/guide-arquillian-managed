@@ -55,7 +55,6 @@ public class SystemArquillianIT {
 
     @Test
     public void testGetPropertiesFromFunction() throws Exception {
-        System.out.println("PRINT baseURL: " + baseURL);
         Properties prop = system.getProperties();
         String expectedOS = System.getProperty("os.name");
         String serviceOS = prop.getProperty("os.name");
@@ -68,8 +67,7 @@ public class SystemArquillianIT {
     @Test
     @RunAsClient
     public void testGetPropertiesFromEndpoint() throws Exception {
-        System.out.println("PRINT baseURL: " + baseURL);
-    Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient();
         client.register(JsrJsonpProvider.class);
 
         WebTarget target = client.target(baseURL + "/system/properties");

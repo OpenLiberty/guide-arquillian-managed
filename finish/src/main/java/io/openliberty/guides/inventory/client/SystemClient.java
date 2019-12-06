@@ -29,7 +29,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class SystemClient {
 
     // Constants for building URI to the system service.
-    //private final int DEFAULT_PORT = 9080; //Integer.valueOf(System.getProperty("default.http.port"));
     private final String SYSTEM_PROPERTIES = "/system/properties";
     private final String PROTOCOL = "http";
     
