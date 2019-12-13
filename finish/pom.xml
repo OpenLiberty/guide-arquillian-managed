@@ -28,13 +28,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>io.openliberty.features</groupId>
-                <artifactId>features-bom</artifactId>
-                <version>RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <!-- tag::arquillian-bom[] -->
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
@@ -145,14 +138,15 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>${version.liberty-maven-plugin}</version>
                 <configuration>
+                    <!-- bootstrap peroperties required by the configure-arquillian goal -->
                     <bootstrapProperties>
                         <default.http.port>${liberty.var.default.http.port}</default.http.port>
                         <default.https.port>${liberty.var.default.https.port}</default.https.port>
                     </bootstrapProperties>
-                    <arquillianProperties>
-                        <verifyApps>guide-arquillian-managed</verifyApps>
-                        <allowConnectingToRunningServer>true</allowConnectingToRunningServer>
-                    </arquillianProperties>
+                    <!-- <arquillianProperties>
+                         <verifyApps>guide-arquillian-managed</verifyApps>
+                         <allowConnectingToRunningServer>true</allowConnectingToRunningServer>
+                    </arquillianProperties> -->
                 </configuration>
             </plugin>
             <!-- end::liberty-maven-plugin[] -->
