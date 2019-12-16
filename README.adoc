@@ -61,14 +61,14 @@ The code for the microservices is in the `src/main/java/io/openliberty/guides` d
 
 [role="code_command", subs="quotes"]
 ----
-#Create the `InventoryArquillianTests` test class.#
-`src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java`
+#Create the `InventoryArquillianIT` test class.#
+`src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianIT.java`
 ----
 
-InventoryArquillianTests.java
+InventoryArquillianIT.java
 [source, Java, linenums, indent=0, role='code_column hide_tags=copyright']
 ----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java[]
+include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianIT.java[]
 ----
 
 Notice that the JUnit Arquillian runner runs the tests instead of the standard JUnit runner.
