@@ -169,7 +169,7 @@ configuration that defines your Open Liberty runtime configuration.
 The `configure-arquillian` goal configures your Arquillian container.
 This goal automatically retrieves core server parameters from the `liberty-maven-plugin` configuration
 and enables you to customize your Arquillian container configuration directly in your POM file if necessary.
-You can learn more about the [hotspot=configure-arquillian]`configure-arquillian` goal in its
+You can learn more about the `configure-arquillian` goal in its
 https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
 
 
