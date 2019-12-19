@@ -81,16 +81,6 @@
             <version>2.2.11</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.2.11</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.2.11</version>
-        </dependency>
-        <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
@@ -138,15 +128,11 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>${version.liberty-maven-plugin}</version>
                 <configuration>
-                    <!-- bootstrap peroperties required by the configure-arquillian goal -->
+                    <!-- bootstrap peroperties are required by the configure-arquillian goal -->
                     <bootstrapProperties>
                         <default.http.port>${liberty.var.default.http.port}</default.http.port>
                         <default.https.port>${liberty.var.default.https.port}</default.https.port>
                     </bootstrapProperties>
-                    <!-- <arquillianProperties>
-                         <verifyApps>guide-arquillian-managed</verifyApps>
-                         <allowConnectingToRunningServer>true</allowConnectingToRunningServer>
-                    </arquillianProperties> -->
                 </configuration>
             </plugin>
             <!-- end::liberty-maven-plugin[] -->

@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import io.openliberty.guides.system.SystemResource;
 
 @RunWith(Arquillian.class)
-public class SystemArquillianTests {
+public class SystemArquillianIT {
 
     private final static String WARNAME = "arquillian-managed.war";
 
@@ -46,9 +46,9 @@ public class SystemArquillianTests {
                                        .addPackages(true, "io.openliberty.guides.system");
         return archive;
     }
-    
-    @ArquillianResource 
-    private URL baseURL; 
+
+    @ArquillianResource
+    private URL baseURL;
 
     @Inject
     SystemResource system;
