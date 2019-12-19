@@ -6,7 +6,7 @@
         <feature>cdi-2.0</feature>
         <feature>mpConfig-1.3</feature>
 
-        <!-- Enable the following features to run tests with Arquillian managed container -->
+        <!--Enable the following features to run tests with Arquillian managed container-->
         <!-- tag::localConnector[] -->
         <feature>localConnector-1.0</feature>
         <!-- end::localConnector[] -->
