@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -128,10 +129,15 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>${version.liberty-maven-plugin}</version>
                 <configuration>
-                    <!-- bootstrap peroperties are required by the configure-arquillian goal -->
+                    <!-- bootstrap peroperties are required by the 
+                    configure-arquillian goal -->
                     <bootstrapProperties>
-                        <default.http.port>${liberty.var.default.http.port}</default.http.port>
-                        <default.https.port>${liberty.var.default.https.port}</default.https.port>
+                        <default.http.port>
+                            ${liberty.var.default.http.port}
+                        </default.http.port>
+                        <default.https.port>
+                            ${liberty.var.default.https.port}
+                        </default.https.port>
                     </bootstrapProperties>
                 </configuration>
             </plugin>
