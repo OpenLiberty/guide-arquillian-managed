@@ -12,6 +12,9 @@
 // end::copyright[]
 package it.io.openliberty.guides.system;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.net.URL;
 import java.util.Properties;
 
@@ -29,8 +32,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import io.openliberty.guides.system.SystemResource;
@@ -59,9 +61,8 @@ public class SystemArquillianIT {
         String expectedOS = System.getProperty("os.name");
         String serviceOS = prop.getProperty("os.name");
 
-        Assert.assertNotNull(serviceOS);
-        Assert.assertEquals("The system property for the local and service JVM should match",
-                            expectedOS, serviceOS);
+        assertNotNull(serviceOS);
+        assertEquals(expectedOS, serviceOS, "The system property for the local and service JVM should match");
     }
 
     @Test
@@ -73,12 +74,10 @@ public class SystemArquillianIT {
         WebTarget target = client.target(baseURL + "/system/properties");
         Response response = target.request().get();
 
-        Assert.assertEquals("Incorrect response code from " + baseURL, 200,
-                            response.getStatus());
+        assertEquals(200, response.getStatus(),"Incorrect response code from " + baseURL);
 
         JsonObject obj = response.readEntity(JsonObject.class);
-        Assert.assertEquals("The system property for the local and remote JVM should match",
-                            System.getProperty("os.name"), obj.getString("os.name"));
+        assertEquals(System.getProperty("os.name"), obj.getString("os.name"), "The system property for the local and remote JVM should match");
         response.close();
     }
 }
