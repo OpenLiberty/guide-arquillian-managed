@@ -5,11 +5,35 @@ before_script:
 - chmod +x ../scripts/travisTest.sh
 script:
 - ../scripts/travisTest.sh
-- serverName=$(target/liberty/wlp/bin/server list | cut -d '.' -f2| tr -d '\n');
-- cd target/liberty/wlp/usr/servers/"$serverName"/logs/; repo_name=$(echo "$TRAVIS_REPO_SLUG"
-  | sed -e "s/\//-/g"); if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then result="passed";
-  else result="failed"; fi; serverlogsarchive="$repo_name-$TRAVIS_BUILD_NUMBER-$result.zip";zip
-  -r "$serverlogsarchive" .; curl -H "$JFROG_TOKEN" -T "$serverlogsarchive" "https://na.artifactory.swg-devops.com/artifactory/hyc-openliberty-guides-files-generic-local/";
+after_script:
+- logsPath=$(find . -name "console.log" | sed "s/console.log//g");
+- build=$(grep "Open Liberty" $logsPath/console.log | cut -d" " -f5 | cut -d")" -f1 );
+- release=$( echo "$build" | cut -d'/' -f1); 
+- number=$(echo "$build" | cut -d'/' -f2); 
+- ol_jv=$(grep -i "version" $logsPath/console.log);
+- jv=$(printf '%s\n' "${ol_jv//$' on '/$'\n'}" | sed '2q;d'); 
+- echo -e "\n"; \
+  echo -e "\033[1;34m Open Liberty release:\033[0m\033[1;36m $release \033[0m \n"; \
+  echo -e "\033[1;34m Open Liberty build number:\033[0m\033[1;36m $number \033[0m \n"; \
+  echo -e "\033[1;34m Java version:\033[0m\033[1;36m $jv \033[0m \n";
+- cd $logsPath;
+- repo_name=$(echo "$TRAVIS_REPO_SLUG" | sed -e "s/\//-/g"); 
+- if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then result="passed"; else result="failed"; fi; 
+- serverlogsarchive="$repo_name-$TRAVIS_BUILD_NUMBER-$result.zip";
+- zip -r "$serverlogsarchive" .;
+- curl -H "$JFROG_TOKEN" -T "$serverlogsarchive" "https://na.artifactory.swg-devops.com/artifactory/hyc-openliberty-guides-files-generic-local/";
+notifications:
+  slack:
+    template:
+    - 'Build: <%{build_url}| %{build_number}> | Commit (<%{compare_url}|%{commit}>):
+      %{commit_message}'
+    - 'Repo@Branch: %{repository_slug}@%{branch}'
+    - 'Author: %{author}'
+    - 'Summary: %{result} in %{duration}'
+    rooms:
+      secure: wsZpmDhsBtVkL7qlGkW6MJ3hI30FS3WMweedMbIQPA3TLKq8U+1aM2Wpfot1dx9iMAXjnrwXIFUOmEjeSFwbO4GuHi0vVRYkF2DSu+yXnKeHPocWKnl18MJs4LG4uEI8+GaovtZT3buJkvRZS/c+bnDCbRRzI81c/Ww9bcNnp4+c/8NQ79A8IRui6Rs/G1k9VnypzaThPPJD9Hy1QPp+zlD/PfY7nEgMu8Pb//JOug5qF9v+EJHwvFDYIkeO6XOefzJW1oVZJRLtRk2fTic2ta4C1oIGXqbkN/9sgVka4QyIexwsyAPzHgUOeDYE8HHBXTbZQr6ZpmP4A4kPSwW63WOre2JvkvFVLb/vOQbklZPwy/wy2ygNPmYiOAJmcfI6BWZpWgdhJQZ4wtGo6GvLl5gft+Ymi6yFTIRf17a3mEplGbL3TjVpYS4OoFEOzLI7L2CsSP96k5oODGJylw87skXJsOKxxI202iBrb4eteZCRpDGKYI/efVz/zbSENrXRp4Jj6x7bTamcqDEiVN9uFqZEK7k+cI1D8Xbyx8lXv9iwbE61MCf5N6G0xeAeFSXRpxw7/xERs4yvOJVhiLhJYLAmwHN8Rpi8pR1hkXsyD0gjLJmOdmNFa38smwPsSxNrf/wbUV3XRpAv3mlVr2q7rvNmqXcL4q/1/UjL1vhQyD8=
+    on_success: never
+    on_failure: always
 branches:
   only:
   - master
