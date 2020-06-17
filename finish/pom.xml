@@ -16,9 +16,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
         <!-- Plugin versions -->
-        <version.liberty-maven-plugin>3.1</version.liberty-maven-plugin>
+        <version.liberty-maven-plugin>3.2.2</version.liberty-maven-plugin>
         <version.maven-failsafe-plugin>2.22.2</version.maven-failsafe-plugin>
         <version.maven-war-plugin>3.2.2</version.maven-war-plugin>
         <version.maven-surefire-plugin>2.22.2</version.maven-surefire-plugin>
@@ -44,9 +43,15 @@
     <dependencies>
         <!-- Provided dependencies -->
         <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>8.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
-            <version>3.0</version>
+            <version>3.3</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
@@ -112,7 +117,6 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
                     <packagingExcludes>pom.xml</packagingExcludes>
                 </configuration>
             </plugin>
@@ -120,26 +124,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${version.maven-failsafe-plugin}</version>
+                <version>2.22.2</version>
             </plugin>
             <!-- end::maven-failsafe-plugin[] -->
             <!-- tag::liberty-maven-plugin[] -->
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>${version.liberty-maven-plugin}</version>
-                <configuration>
-                    <!-- bootstrap peroperties are required by the 
-                    configure-arquillian goal -->
-                    <bootstrapProperties>
-                        <default.http.port>
-                            ${liberty.var.default.http.port}
-                        </default.http.port>
-                        <default.https.port>
-                            ${liberty.var.default.https.port}
-                        </default.https.port>
-                    </bootstrapProperties>
-                </configuration>
+                <version>3.2.2</version>
             </plugin>
             <!-- end::liberty-maven-plugin[] -->
         </plugins>
