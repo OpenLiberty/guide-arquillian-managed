@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2017, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,22 +44,6 @@ public class SystemClient {
         return getPropertiesHelper(clientBuilder);
     }
 
-    // tag::doc[]
-    /**
-     * Builds the URI string to the system service for a particular host.
-     * 
-     * @param protocol
-     *            - http or https.
-     * @param host
-     *            - name of host.
-     * @param port
-     *            - port number.
-     * @param path
-     *            - Note that the path needs to start with a slash!!!
-     * @return String representation of the URI to the system properties
-     *         service.
-     */
-    // end::doc[]
     protected String buildUrl(String protocol, String host, int port, String path) {
         try {
             URI uri = new URI(protocol, null, host, port, path, null, null);
