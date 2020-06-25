@@ -197,9 +197,9 @@ Arquillian tests in which servlets are created to perform the in-container testi
 
 It's now time to build and run your Arquillian tests.
 Navigate to the `start` directory. First, run the Maven command to package the application.
-Then, run the `liberty-maven-plugin` goals to create the application server, install the features
+Then, run the `liberty-maven-plugin` goals to create the application server, install the features, 
 and deploy the application to the server. The `configure-arquillian` goal configures
-your Arquillian container.
+your Arquillian container:
 
 [role="command"]
 ```
