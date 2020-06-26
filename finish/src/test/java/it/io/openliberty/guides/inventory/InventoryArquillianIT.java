@@ -41,7 +41,7 @@ import io.openliberty.guides.inventory.model.SystemData;
 // tag::RunWith[]
 @RunWith(Arquillian.class)
 // end::RunWith[]
-public class InventoryArquillianTests {
+public class InventoryArquillianIT {
 
     // tag::warName[]
     private final static String WARNAME = "arquillian-managed.war";
@@ -119,7 +119,6 @@ public class InventoryArquillianTests {
     // end::InSequence2[]
     // tag::testInventoryResourceFunctions[]
     public void testInventoryResourceFunctions() {
-
         // Listing the inventory contents that were stored in the previous test
         // tag::listContents[]
         InventoryList invList = invSrv.listContents();
