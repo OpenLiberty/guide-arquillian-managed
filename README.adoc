@@ -50,17 +50,6 @@ your tests on Open Liberty with the Arquillian Liberty Managed container.
 [role="command"]
 include::{common-includes}/gitclone.adoc[]
 
-=== Try what you'll build
-
-To try out the finished Arquillian tests, first navigate to the `finish` directory and then run
-the following Maven goal to build the application and run the tests on Open Liberty:
-
-[role="command"]
-```
-mvn install
-```
-
-In the console output, you can see that the build was successful and the tests passed.
 
 == Developing Arquillian tests
 
@@ -72,14 +61,14 @@ The code for the microservices is in the `src/main/java/io/openliberty/guides` d
 
 [role="code_command", subs="quotes"]
 ----
-#Create the `InventoryArquillianTests` test class.#
-`src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java`
+#Create the `InventoryArquillianIT` test class.#
+`src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianIT.java`
 ----
 
-InventoryArquillianTests.java
+InventoryArquillianIT.java
 [source, Java, linenums, indent=0, role='code_column hide_tags=copyright']
 ----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianTests.java[]
+include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquillianIT.java[]
 ----
 
 Notice that the JUnit Arquillian runner runs the tests instead of the standard JUnit runner.
@@ -161,11 +150,8 @@ include::finish/pom.xml[]
 ----
 
 Let's look into each of the required elements for this configuration.
-You need the [hotspot=liberty-maven-app-parent]`liberty-maven-app-parent` block,
-which configures the Liberty Maven plug-in with the default executions necessary
-for setting up your managed Liberty server.
 
-You also need the [hotspot=arquillian-bom]`arquillian-bom` Bill of Materials.
+You need the [hotspot=arquillian-bom]`arquillian-bom` Bill of Materials.
 It's a Maven artifact that defines the versions of Arquillian dependencies to
 make dependency management easier.
 
@@ -179,18 +165,13 @@ archive, which is packaged into a WAR file and deployed to the Open Liberty serv
 The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` artifact runs your Arquillian integration tests by using JUnit.
 
 Lastly, specify the [hotspot=liberty-maven-plugin]`liberty-maven-plugin`
-configuration that defines your Open Liberty runtime configuration and use
-the [hotspot=configure-arquillian]`configure-arquillian` goal to configure your Arquillian container.
+configuration that defines your Open Liberty runtime configuration.
+The `configure-arquillian` goal configures your Arquillian container.
 This goal automatically retrieves core server parameters from the `liberty-maven-plugin` configuration
 and enables you to customize your Arquillian container configuration directly in your POM file if necessary.
-You can learn more about the [hotspot=configure-arquillian]`configure-arquillian` goal in its
+You can learn more about the `configure-arquillian` goal in its
 https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
 
-Notice in the `liberty-maven-plugin` configuration that the [hotspot=skipTestServer]`skipTestServer` element is set to
-`true` to skip the `test-start-server`
-and `test-stop-server` goals defined in the [hotspot=liberty-maven-app-parent]`liberty-maven-app-parent` parent configuration.
-The test server configuration is skipped because Arquillian is managing the
-server lifecycle when it runs the tests.
 
 === Configuring the server.xml file
 
@@ -215,11 +196,23 @@ Arquillian tests in which servlets are created to perform the in-container testi
 == Running the tests
 
 It's now time to build and run your Arquillian tests.
-Run the Maven build command in the `start` directory.
+Navigate to the `start` directory. First, run the Maven command to package the application.
+Then, run the `liberty-maven-plugin` goals to create the application server, install the features, 
+and deploy the application to the server. The `configure-arquillian` goal configures
+your Arquillian container:
 
 [role="command"]
 ```
-mvn install
+mvn clean package
+mvn liberty:create liberty:install-feature liberty:deploy
+mvn liberty:configure-arquillian
+```
+
+Now, you can run your Arquillian tests with the Maven `integration-test` goal:
+
+[role="command"]
+```
+mvn failsafe:integration-test
 ```
 
 In the test output, you can see that the application server launched, and that the web archive,
@@ -235,29 +228,38 @@ You should then get a message indicating that the build and tests are successful
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
-[INFO] Running it.io.openliberty.guides.inventory.InventoryArquillianTests
+[INFO] Running it.io.openliberty.guides.system.SystemArquillianIT
 ...
-[AUDIT   ] CWWKE0001I: The server ArquillianManagedServer has been launched.
-[INFO    ] CWWKE0002I: The kernel started after 2.069 seconds
+[AUDIT   ] CWWKE0001I: The server defaultServer has been launched.
+[AUDIT   ] CWWKG0093A: Processing configuration drop-ins resource: guide-arquillian-managed/finish/target/liberty/wlp/usr/servers/defaultServer/configDropins/overrides/liberty-plugin-variable-config.xml
+[INFO    ] CWWKE0002I: The kernel started after 0.854 seconds
 [INFO    ] CWWKF0007I: Feature update started.
 [AUDIT   ] CWWKZ0058I: Monitoring dropins for applications.
-[INFO    ] CWWKO0219I: TCP Channel defaultHttpEndpoint has been started and is now listening for requests on host localhost  (IPv4: 127.0.0.1) port 9080.
+[INFO    ] Aries Blueprint packages not available. So namespaces will not be registered
 [INFO    ] CWWKZ0018I: Starting application guide-arquillian-managed.
 ...
 [INFO    ] SRVE0169I: Loading Web Module: guide-arquillian-managed.
 [INFO    ] SRVE0250I: Web Module guide-arquillian-managed has been bound to default_host.
 [AUDIT   ] CWWKT0016I: Web application available (default_host): http://localhost:9080/
-[AUDIT   ] CWWKZ0001I: Application guide-arquillian-managed started in 4.276 seconds.
 [INFO    ] SESN0176I: A new session context will be created for application key default_host/
+[INFO    ] SESN0172I: The session manager is using the Java default SecureRandom implementation for session ID generation.
+[AUDIT   ] CWWKZ0001I: Application guide-arquillian-managed started in 1.126 seconds.
+[INFO    ] CWWKO0219I: TCP Channel defaultHttpEndpoint has been started and is now listening for requests on host localhost  (IPv4: 127.0.0.1) port 9080.
+[AUDIT   ] CWWKF0012I: The server installed the following features: [cdi-2.0, jaxrs-2.1, jaxrsClient-2.1, jndi-1.0, jsonp-1.1, localConnector-1.0, mpConfig-1.3, servlet-4.0].
+[INFO    ] CWWKF0008I: Feature update completed in 2.321 seconds.
+[AUDIT   ] CWWKF0011I: The defaultServer server is ready to run a smarter planet. The defaultServer server started in 3.175 seconds.
 [INFO    ] CWWKZ0018I: Starting application arquillian-managed.
-...
-[AUDIT   ] CWWKF0011I: The server ArquillianManagedServer is ready to run a smarter planet.
 ...
 [INFO    ] SRVE0169I: Loading Web Module: arquillian-managed.
 [INFO    ] SRVE0250I: Web Module arquillian-managed has been bound to default_host.
 [AUDIT   ] CWWKT0016I: Web application available (default_host): http://localhost:9080/arquillian-managed/
 ...
-[AUDIT   ] CWWKZ0001I: Application arquillian-managed started in 0.957 seconds.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.133 s - in it.io.openliberty.guides.system.SystemArquillianIT
+[INFO] Running it.io.openliberty.guides.inventory.InventoryArquillianIT
+[INFO    ] CWWKZ0018I: Starting application arquillian-managed.
+[INFO    ] CWWKZ0136I: The arquillian-managed application is using the archive file at the guide-arquillian-managed/finish/target/liberty/wlp/usr/servers/defaultServer/dropins/arquillian-managed.war location.
+[INFO    ] SRVE0169I: Loading Web Module: arquillian-managed.
+[INFO    ] SRVE0250I: Web Module arquillian-managed has been bound to default_host.
 ...
 [INFO    ] Setting the server's publish address to be /inventory/
 [INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.inventory.InventoryApplication]: Initialization successful.
@@ -268,14 +270,22 @@ You should then get a message indicating that the build and tests are successful
 [INFO    ] SRVE0253I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Destroy successful.
 [INFO    ] SRVE0253I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.inventory.InventoryApplication]: Destroy successful.
 [AUDIT   ] CWWKZ0009I: The application arquillian-managed has stopped successfully.
+[INFO    ] SRVE9103I: A configuration file for a web server plugin was automatically generated for this server at guide-arquillian-managed/finish/target/liberty/wlp/usr/servers/defaultServer/logs/state/plugin-cfg.xml.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.297 s - in it.io.openliberty.guides.inventory.InventoryArquillianIT
 ...
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.355 s - in it.io.openliberty.guides.inventory.InventoryArquillianTests
+Stopping server defaultServer.
 ...
+Server defaultServer stopped.
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  25.875 s
-[INFO] Finished at: 2019-02-12T14:40:43-05:00
+[INFO] Total time:  12.018 s
+[INFO] Finished at: 2020-06-23T12:40:32-04:00
 [INFO] ------------------------------------------------------------------------
 ----
 

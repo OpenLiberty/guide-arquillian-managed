@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2019 IBM Corporation and others.
+ * Copyright (c) 2019, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import io.openliberty.guides.system.SystemResource;
 
 @RunWith(Arquillian.class)
-public class SystemArquillianTests {
+public class SystemArquillianIT {
 
     private final static String WARNAME = "arquillian-managed.war";
 
