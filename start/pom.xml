@@ -125,7 +125,7 @@
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.3</version>
             </plugin>
             <!-- end::liberty-maven-plugin[] -->
         </plugins>
