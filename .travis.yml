@@ -19,8 +19,8 @@ after_script:
 - if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then RESULT="passed"; else RESULT="failed"; fi;
 - echo -e "\033[1;34m result:\033[0m\033[1;36m $RESULT \033[0m \n"
 - serverlogsarchive="$repo_name-$TRAVIS_BUILD_NUMBER-$RESULT.zip";
-- if [ "$TRAVIS_TEST_RESULT" -eq 1 ]; then echo skipped to zip $serverlogsarchive; else zip -r "$serverlogsarchive" .; fi;
-- if [ "$TRAVIS_TEST_RESULT" -eq 1 ]; then echo skipped upload; else curl -H "$JFROG_TOKEN" -T "$serverlogsarchive" "https://na.artifactory.swg-devops.com/artifactory/hyc-openliberty-guides-files-generic-local/"; fi;
+- if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then echo skipped to zip $serverlogsarchive; else zip -r "$serverlogsarchive" .; fi;
+- if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then echo skipped upload; else curl -H "$JFROG_TOKEN" -T "$serverlogsarchive" "https://na.artifactory.swg-devops.com/artifactory/hyc-openliberty-guides-files-generic-local/"; fi;
 notifications:
   slack:
     template:
