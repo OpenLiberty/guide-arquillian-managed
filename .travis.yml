@@ -4,6 +4,7 @@ before_script:
 - cd finish
 - chmod +x ../scripts/travisTest.sh
 script:
+- echo test travis.com
 - ../scripts/travisTest.sh
 after_script:
 - logsPath=$(find . -name "messages.log" | sed "s/messages.log//g");
