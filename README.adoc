@@ -178,7 +178,7 @@ the context root of the application will be assigned as same as the war file nam
 Through the [hotspot=arquillianProperties]`arquillianProperties` configuration, 
 you can pass the context root information to the application and configure the container.
 You can learn more about the `arquillianProperties` configuration in the
-https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md[Arquillian Liberty Managed Documentation^].
+https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md#configuration[Arquillian Liberty Managed Documentation^].
 // The `configure-arquillian` goal configures your Arquillian container.
 // This goal automatically retrieves core server parameters from the `liberty-maven-plugin` configuration
 // and enables you to customize your Arquillian container configuration directly in your POM file if necessary.
