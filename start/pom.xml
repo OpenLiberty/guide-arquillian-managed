@@ -125,9 +125,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                    <systemPropertyVariables>
-                        <arquillian.war.name>${arquillian.war.name}.war</arquillian.war.name>
-                    </systemPropertyVariables>
+                  <systemPropertyVariables>
+                    <arquillian.war.name>${arquillian.war.name}.war</arquillian.war.name>
+                  </systemPropertyVariables>
                 </configuration>
             </plugin>
             <!-- end::maven-failsafe-plugin[] -->
@@ -137,12 +137,12 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.2.3</version>
                 <configuration>
-                    <!-- tag::arquillianProperties[] -->
-                    <arquillianProperties>
-                        <javaVmArguments>
-                            -Dsystem.context.root=/${arquillian.war.name}
-                        </javaVmArguments>
-                    </arquillianProperties>
+                  <!-- tag::arquillianProperties[] -->
+                  <arquillianProperties>
+                    <javaVmArguments>
+                      -Dsystem.context.root=/${arquillian.war.name}
+                    </javaVmArguments>
+                  </arquillianProperties>
                     <!-- end::arquillianProperties[] -->
                 </configuration>
             </plugin>
