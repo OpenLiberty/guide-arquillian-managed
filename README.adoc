@@ -179,11 +179,6 @@ Through the [hotspot=arquillianProperties]`arquillianProperties` configuration,
 you can pass the context root information to the application and customize the container.
 You can learn more about the `arquillianProperties` configuration in the
 https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md#configuration[Arquillian Liberty Managed Documentation^].
-// The `configure-arquillian` goal configures your Arquillian container.
-// This goal automatically retrieves core server parameters from the `liberty-maven-plugin` configuration
-// and enables you to customize your Arquillian container configuration directly in your POM file if necessary.
-// You can learn more about the `configure-arquillian` goal in its
-// https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
 
 
 === Configuring the server.xml file
