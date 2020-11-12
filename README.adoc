@@ -273,7 +273,7 @@ You should then get a message indicating that the build and tests are successful
 [INFO    ] Setting the server's publish address to be /inventory/
 [INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.inventory.InventoryApplication]: Initialization successful.
 [INFO    ] Setting the server's publish address to be /system/
-[INFO    ] SRVE0242I: [guide-arquillian-managed] [/] [io.openliberty.guides.system.SystemApplication]: Initialization successful.
+[INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.system.SystemApplication]: Initialization successful.
 [INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Initialization successful.
 [AUDIT   ] CWWKT0017I: Web application removed (default_host): http://localhost:9080/arquillian-managed/
 [INFO    ] SRVE0253I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Destroy successful.
