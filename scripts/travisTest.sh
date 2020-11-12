@@ -2,15 +2,15 @@
 set -euxo pipefail
 
 # Test without liberty:deploy
-mvn clean package
-mvn liberty:create liberty:install-feature
-mvn liberty:configure-arquillian
+mvn -q clean package
+mvn -q liberty:create liberty:install-feature
+mvn -q liberty:configure-arquillian
 mvn failsafe:integration-test
 mvn failsafe:verify
 
 # Test with liberty:deploy
-mvn clean package
-mvn liberty:create liberty:install-feature liberty:deploy
-mvn liberty:configure-arquillian
+mvn -q clean package
+mvn -q liberty:create liberty:install-feature liberty:deploy
+mvn -q liberty:configure-arquillian
 mvn failsafe:integration-test
 mvn failsafe:verify
