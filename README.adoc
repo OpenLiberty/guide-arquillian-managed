@@ -176,7 +176,7 @@ configuration that defines your Open Liberty runtime configuration.
 When the application runs in the Arquillian Liberty managed container, 
 the context root of the application will be assigned as same as the war file name.
 Through the [hotspot=arquillianProperties]`arquillianProperties` configuration, 
-you can pass the context root information to the application and configure the container.
+you can pass the context root information to the application and customize the container.
 You can learn more about the `arquillianProperties` configuration in the
 https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md#configuration[Arquillian Liberty Managed Documentation^].
 // The `configure-arquillian` goal configures your Arquillian container.
@@ -212,7 +212,8 @@ It's now time to build and run your Arquillian tests.
 Navigate to the `start` directory. First, run the Maven command to package the application.
 Then, run the `liberty-maven-plugin` goals to create the application server, install the features, 
 and deploy the application to the server. The `configure-arquillian` goal configures
-your Arquillian container:
+your Arquillian container. You can learn more about the `configure-arquillian` goal in its
+https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
 
 [role="command"]
 ```
