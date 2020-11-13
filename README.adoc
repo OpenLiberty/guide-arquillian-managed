@@ -86,9 +86,9 @@ pom.xml
 include::finish/pom.xml[]
 ----
 
-Notice the [hotspot=warName hotspot=WebArchive file=0]`WARNAME` war file name that is used for the web
-archive and is defined in the [hotspot=ArquillianWarName file=1]`pom.xml` file.
-This name is necessary if you don't want a randomly generated web archive name. 
+The [hotspot=warName hotspot=WebArchive file=0]`WARNAME` variable is used to name the web archive 
+and is defined in the [hotspot=ArquillianWarName file=1]`pom.xml` file.
+This name is necessary if you don't want a randomly generated web archive name.
 
 The ShrinkWrap API is used to create the web archive.
 All of the packages in the `inventory` service must be added to the web archive; otherwise,
