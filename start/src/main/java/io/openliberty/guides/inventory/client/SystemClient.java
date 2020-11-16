@@ -31,15 +31,19 @@ public class SystemClient {
     // Constants for building URI to the system service.
     private final String SYSTEM_PROPERTIES = "/system/properties";
     private final String PROTOCOL = "http";
-
+    
+    @Inject
+    @ConfigProperty(name = "system.context.root", defaultValue="")
+    String SYSTEM_CONTEXT_ROOT;
+    
     @Inject
     @ConfigProperty(name = "default.http.port")
     String DEFAULT_PORT;
-
+    
     // Wrapper function that gets properties
     public Properties getProperties(String hostname) {
         String url;
-        url = buildUrl(PROTOCOL, hostname, Integer.valueOf(DEFAULT_PORT), SYSTEM_PROPERTIES);
+        url = buildUrl(PROTOCOL, hostname, Integer.valueOf(DEFAULT_PORT), SYSTEM_CONTEXT_ROOT + SYSTEM_PROPERTIES);
         Builder clientBuilder = buildClientBuilder(url);
         return getPropertiesHelper(clientBuilder);
     }

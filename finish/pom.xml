@@ -19,6 +19,10 @@
         <!-- Liberty configuration -->
         <liberty.var.default.http.port>9080</liberty.var.default.http.port>
         <liberty.var.default.https.port>9443</liberty.var.default.https.port>
+        <!-- arquillian configuration -->
+        <!-- tag::ArquillianWarName[] -->
+        <arquillian.war.name>arquillian-managed</arquillian.war.name>
+        <!-- end::ArquillianWarName[] -->
     </properties>
 
     <dependencyManagement>
@@ -120,6 +124,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
+                <configuration>
+                  <systemPropertyVariables>
+                    <arquillian.war.name>${arquillian.war.name}.war</arquillian.war.name>
+                  </systemPropertyVariables>
+                </configuration>
             </plugin>
             <!-- end::maven-failsafe-plugin[] -->
             <!-- tag::liberty-maven-plugin[] -->
@@ -127,6 +136,15 @@
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.2.3</version>
+                <configuration>
+                  <!-- tag::arquillianProperties[] -->
+                  <arquillianProperties>
+                    <javaVmArguments>
+                      -Dsystem.context.root=/${arquillian.war.name}
+                    </javaVmArguments>
+                  </arquillianProperties>
+                    <!-- end::arquillianProperties[] -->
+                </configuration>
             </plugin>
             <!-- end::liberty-maven-plugin[] -->
         </plugins>

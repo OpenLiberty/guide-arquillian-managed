@@ -1,4 +1,4 @@
-// Copyright (c) 2019 IBM Corporation and others.
+// Copyright (c) 2019, 2020 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -72,16 +72,23 @@ include::finish/src/test/java/it/io/openliberty/guides/inventory/InventoryArquil
 ----
 
 Notice that the JUnit Arquillian runner runs the tests instead of the standard JUnit runner.
-The [hotspot=RunWith]`@RunWith` annotation preceding the class tells JUnit to run the tests by using Arquillian.
+The [hotspot=RunWith file=0]`@RunWith` annotation preceding the class tells JUnit to run the tests by using Arquillian.
 
-The method annotated by [hotspot=Deployment]`@Deployment` defines the content of the
+The method annotated by [hotspot=Deployment file=0]`@Deployment` defines the content of the
 web archive, which is going to be deployed onto the Open Liberty server.
 The tests are either run on or against the server.
-The [hotspot=Testable]`testable = true` attribute enables the deployment to
+The [hotspot=Testable file=0]`testable = true` attribute enables the deployment to
 run the tests "in container", that is the tests are run on the server.
 
-Notice the [hotspot=warName hotspot=WebArchive]`arquillian-managed.war` name that is used for the web
-archive. This name is necessary if you don't want a randomly generated web archive name.
+pom.xml
+[source, xml, linenums, indent=0, role='code_column']
+----
+include::finish/pom.xml[]
+----
+
+The [hotspot=warName hotspot=WebArchive file=0]`WARNAME` variable is used to name the web archive 
+and is defined in the [hotspot=ArquillianWarName file=1]`pom.xml` file.
+This name is necessary if you don't want a randomly generated web archive name.
 
 The ShrinkWrap API is used to create the web archive.
 All of the packages in the `inventory` service must be added to the web archive; otherwise,
@@ -90,18 +97,18 @@ the code compiles successfully but fails at runtime when the injection of the
 You can learn about the ShrinkWrap archive configuration in this
 http://arquillian.org/guides/shrinkwrap_introduction/[Arquillian guide^].
 
-The [hotspot=ArquillianResource]`@ArquillianResource` annotation is used to retrieve the
+The [hotspot=ArquillianResource file=0]`@ArquillianResource` annotation is used to retrieve the
 `\http://localhost:9080/arquillian-managed/` base URL for this web service.
 The annotation provides the host name, port number and web archive
 information for this service, so you don't need to hardcode these values
 in the test case. The `arquillian-managed` path in the URL comes
 from the WAR name you specified when you created the web archive in the
-[hotspot=Deployment]`@Deployment` annotated method.
+[hotspot=Deployment file=0]`@Deployment` annotated method.
 It's needed when the `inventory` service communicates
 with the `system` service to get the system properties.
 
-The [hotspot=testInventoryEndpoints]`testInventoryEndpoints` method is an integration
-test to test the `inventory` service endpoints. The [hotspot=RunAsClient]`@RunAsClient`
+The [hotspot=testInventoryEndpoints file=0]`testInventoryEndpoints` method is an integration
+test to test the `inventory` service endpoints. The [hotspot=RunAsClient file=0]`@RunAsClient`
 annotation added in this test case indicates that this test case is to be run
 on the client side. By running the tests on the client side,
 the tests are run against the managed container.
@@ -116,18 +123,18 @@ that the host is `localhost`. The test also verifies that the system property
 stored in the inventory for the local and service JVM match.
 
 Contexts and Dependency Injection (CDI) is used to inject an instance of the
-[hotspot=InventoryResource]`InventoryResource` class into this test class.
+[hotspot=InventoryResource file=0]`InventoryResource` class into this test class.
 You can learn more about CDI in the
 https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices^] guide.
 
-The injected [hotspot=InventoryResource]`InventoryResource` instance is then tested
-by the [hotspot=testInventoryResourceFunctions]`testInventoryResourceFunctions` method.
-This test case calls the [hotspot=listContents]`listContents()` method to get all systems
+The injected [hotspot=InventoryResource file=0]`InventoryResource` instance is then tested
+by the [hotspot=testInventoryResourceFunctions file=0]`testInventoryResourceFunctions` method.
+This test case calls the [hotspot=listContents file=0]`listContents()` method to get all systems
 that are stored in this inventory
 and verifies that `localhost` is the only system being found.
 Notice the functional test case doesn't store any system in the inventory,
 the `localhost` system is from the endpoint test case that ran before this test case.
-The [hotspot=InSequence1 hotspot=InSequence2]`@InSequence` Arquillian annotation guarantees the test sequence.
+The [hotspot=InSequence1 hotspot=InSequence2 file=0]`@InSequence` Arquillian annotation guarantees the test sequence.
 The sequence is important for the two tests, as the results in the first test impact the second one.
 
 The test cases are ready to run.
@@ -166,11 +173,11 @@ The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` artifact runs your Ar
 
 Lastly, specify the [hotspot=liberty-maven-plugin]`liberty-maven-plugin`
 configuration that defines your Open Liberty runtime configuration.
-The `configure-arquillian` goal configures your Arquillian container.
-This goal automatically retrieves core server parameters from the `liberty-maven-plugin` configuration
-and enables you to customize your Arquillian container configuration directly in your POM file if necessary.
-You can learn more about the `configure-arquillian` goal in its
-https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[documentation^].
+When the application runs in an Arquillian Liberty managed container,
+the name of the war file is used as the context root of the application.
+You can pass context root information to the application and customize the container 
+by using the [hotspot=arquillianProperties]`arquillianProperties` configuration.
+To learn more about the `arquillianProperties` configuration, see the https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
 
 
 === Configuring the server.xml file
@@ -199,12 +206,12 @@ It's now time to build and run your Arquillian tests.
 Navigate to the `start` directory. First, run the Maven command to package the application.
 Then, run the `liberty-maven-plugin` goals to create the application server, install the features, 
 and deploy the application to the server. The `configure-arquillian` goal configures
-your Arquillian container:
+your Arquillian container. You can learn more about this goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[configure-arquillian goal documentation^].
 
 [role="command"]
 ```
 mvn clean package
-mvn liberty:create liberty:install-feature liberty:deploy
+mvn liberty:create liberty:install-feature
 mvn liberty:configure-arquillian
 ```
 
@@ -264,7 +271,7 @@ You should then get a message indicating that the build and tests are successful
 [INFO    ] Setting the server's publish address to be /inventory/
 [INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.inventory.InventoryApplication]: Initialization successful.
 [INFO    ] Setting the server's publish address to be /system/
-[INFO    ] SRVE0242I: [guide-arquillian-managed] [/] [io.openliberty.guides.system.SystemApplication]: Initialization successful.
+[INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [io.openliberty.guides.system.SystemApplication]: Initialization successful.
 [INFO    ] SRVE0242I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Initialization successful.
 [AUDIT   ] CWWKT0017I: Web application removed (default_host): http://localhost:9080/arquillian-managed/
 [INFO    ] SRVE0253I: [arquillian-managed] [/arquillian-managed] [ArquillianServletRunner]: Destroy successful.
