@@ -38,7 +38,7 @@ import io.openliberty.guides.system.SystemResource;
 @RunWith(Arquillian.class)
 public class SystemArquillianIT {
 
-    private final static String WARNAME = "arquillian-managed.war";
+    private final static String WARNAME = System.getProperty("arquillian.war.name");
 
     @Deployment(testable = true)
     public static WebArchive createSystemEndpointTestDeployment() {
