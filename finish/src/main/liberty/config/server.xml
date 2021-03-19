@@ -23,4 +23,6 @@
         httpsPort="${default.https.port}" />
     <webApplication location="guide-arquillian-managed.war"
         context-root="/" />
+
+    <applicationMonitor updateTrigger="mbean"/>
 </server>

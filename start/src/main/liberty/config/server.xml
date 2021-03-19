@@ -6,13 +6,8 @@
         <feature>cdi-2.0</feature>
         <feature>mpConfig-1.4</feature>
 
-        <!-- Enable the following features to run tests with Arquillian managed container -->
-        <!-- tag::localConnector[] -->
         <feature>localConnector-1.0</feature>
-        <!-- end::localConnector[] -->
-        <!-- tag::Servlet[] -->
         <feature>servlet-4.0</feature>
-        <!-- end::Servlet[] -->
 
     </featureManager>
 
@@ -23,4 +18,6 @@
         httpsPort="${default.https.port}" />
     <webApplication location="guide-arquillian-managed.war"
         context-root="/" />
+
+    <applicationMonitor updateTrigger="mbean"/>
 </server>
