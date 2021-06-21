@@ -169,7 +169,8 @@ https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Libert
 The [hotspot=shrinkwrap-api]`shrinkwrap-api` dependency allows you to create your test
 archive, which is packaged into a WAR file and deployed to the Open Liberty server.
 
-The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` artifact runs your Arquillian integration tests by using JUnit.
+The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` 
+artifact runs your Arquillian integration tests by using JUnit.
 
 Lastly, specify the [hotspot=liberty-maven-plugin]`liberty-maven-plugin`
 configuration that defines your Open Liberty runtime configuration.
@@ -177,7 +178,8 @@ When the application runs in an Arquillian Liberty managed container,
 the name of the war file is used as the context root of the application.
 You can pass context root information to the application and customize the container 
 by using the [hotspot=arquillianProperties]`arquillianProperties` configuration.
-To learn more about the `arquillianProperties` configuration, see the https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
+To learn more about the `arquillianProperties` configuration, 
+see the https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
 
 
 === Configuring the server.xml file
@@ -206,7 +208,8 @@ It's now time to build and run your Arquillian tests.
 Navigate to the `start` directory. First, run the Maven command to package the application.
 Then, run the `liberty-maven-plugin` goals to create the application server, install the features, 
 and deploy the application to the server. The `configure-arquillian` goal configures
-your Arquillian container. You can learn more about this goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[configure-arquillian goal documentation^].
+your Arquillian container. 
+You can learn more about this goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[configure-arquillian goal documentation^].
 
 [role="command"]
 ```
