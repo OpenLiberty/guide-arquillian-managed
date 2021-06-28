@@ -1,4 +1,4 @@
-// Copyright (c) 2019, 2020 IBM Corporation and others.
+// Copyright (c) 2019, 2021 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -16,7 +16,7 @@
 :page-tags: ['Maven']
 :page-related-guides: ['cdi-intro','rest-intro']
 :page-permalink: /guides/{projectid}
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
 :page-seo-title: Testing microservices with Arquillian managed container
 :page-seo-description: A tutorial on how to test your microservices with the Arquillian managed container for Open Liberty
 = Testing microservices with the Arquillian managed container
@@ -177,7 +177,7 @@ When the application runs in an Arquillian Liberty managed container,
 the name of the war file is used as the context root of the application.
 You can pass context root information to the application and customize the container 
 by using the [hotspot=arquillianProperties]`arquillianProperties` configuration.
-To learn more about the `arquillianProperties` configuration, see the https://github.com/OpenLiberty/liberty-arquillian/blob/master/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
+To learn more about the `arquillianProperties` configuration, see the https://github.com/OpenLiberty/liberty-arquillian/blob/main/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
 
 
 === Configuring the server.xml file
@@ -206,7 +206,7 @@ It's now time to build and run your Arquillian tests.
 Navigate to the `start` directory. First, run the Maven command to package the application.
 Then, run the `liberty-maven-plugin` goals to create the application server, install the features, 
 and deploy the application to the server. The `configure-arquillian` goal configures
-your Arquillian container. You can learn more about this goal in the https://github.com/WASdev/ci.maven/blob/master/docs/configure-arquillian.md[configure-arquillian goal documentation^].
+your Arquillian container. You can learn more about this goal in the https://github.com/OpenLiberty/ci.maven/blob/main/docs/configure-arquillian.md[configure-arquillian goal documentation^].
 
 [role="command"]
 ```
