@@ -156,6 +156,10 @@ pom.xml
 include::finish/pom.xml[]
 ----
 
+ifdef::cloud-hosted[]
+From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/pom.xml
+endif::[]
+
 Let's look into each of the required elements for this configuration.
 
 You need the [hotspot=arquillian-bom]`arquillian-bom` Bill of Materials.
@@ -195,6 +199,10 @@ server.xml
 ----
 include::finish/src/main/liberty/config/server.xml[]
 ----
+
+ifdef::cloud-hosted[]
+From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/src/main/liberty/config/server.xml
+endif::[]
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty
 Managed container to connect to and communicate with the Open Liberty runtime.
@@ -302,9 +310,7 @@ Server defaultServer stopped.
 
 == Great work! You're done!
 
-You just built some functional and integration tests with the
-Arquillian managed container and ran the tests for your microservices
-on Open Liberty.
+You just built some functional and integration tests with the Arquillian managed container and ran the tests for your microservices on Open Liberty.
 
 Try one of the related guides to learn more about the
 technologies that you come across in this guide.
