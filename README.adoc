@@ -54,6 +54,12 @@ include::{common-includes}/gitclone.adoc[]
 == Developing Arquillian tests
 
 Navigate to the `start` directory to begin.
+ifdef::cloud-hosted[]
+```
+cd /home/project/guide-arquillian-managed/start
+```
+{: codeblock}
+endif::[]
 
 You'll develop tests that use Arquillian and JUnit to verify the `inventory` microservice as an endpoint
 and the functions of the `InventoryResource` class.
@@ -219,13 +225,23 @@ and deploy the application to the server. The `configure-arquillian` goal config
 your Arquillian container. 
 You can learn more about this goal in the https://github.com/OpenLiberty/ci.maven/blob/main/docs/configure-arquillian.md[configure-arquillian goal documentation^].
 
-
+ifndef::cloud-hosted[]
 [role="command"]
 ```
 mvn clean package
 mvn liberty:create liberty:install-feature
 mvn liberty:configure-arquillian
 ```
+endif::[]
+ifdef::cloud-hosted[]
+```
+cd /home/project/guide-arquillian-managed/start
+mvn clean package
+mvn liberty:create liberty:install-feature
+mvn liberty:configure-arquillian
+```
+{: codeblock}
+endif::[]
 
 Now, you can run your Arquillian tests with the Maven `integration-test` goal:
 
