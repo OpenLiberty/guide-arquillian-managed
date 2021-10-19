@@ -229,7 +229,6 @@ You can learn more about this goal in the https://github.com/OpenLiberty/ci.mave
 ifndef::cloud-hosted[]
 [role="command"]
 ```
-cd /home/project/guide-arquillian-managed/start
 mvn clean package
 mvn liberty:create liberty:install-feature
 mvn liberty:configure-arquillian
