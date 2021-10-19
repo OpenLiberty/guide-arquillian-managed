@@ -54,6 +54,7 @@ include::{common-includes}/gitclone.adoc[]
 == Developing Arquillian tests
 
 Navigate to the `start` directory to begin.
+// cloud hosted instructions
 ifdef::cloud-hosted[]
 ```
 cd /home/project/guide-arquillian-managed/start
@@ -233,6 +234,7 @@ mvn liberty:create liberty:install-feature
 mvn liberty:configure-arquillian
 ```
 endif::[]
+// cloud hosted instructions
 ifdef::cloud-hosted[]
 ```
 cd /home/project/guide-arquillian-managed/start
