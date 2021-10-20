@@ -208,7 +208,7 @@ include::finish/src/main/liberty/config/server.xml[]
 ----
 
 ifdef::cloud-hosted[]
-From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/src/main/liberty/config/server.xml
+> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/src/main/liberty/config/server.xml
 endif::[]
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty
