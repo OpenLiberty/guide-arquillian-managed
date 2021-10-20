@@ -164,7 +164,7 @@ include::finish/pom.xml[]
 ----
 
 ifdef::cloud-hosted[]
-From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/pom.xml
+> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/pom.xml
 endif::[]
 
 Let's look into each of the required elements for this configuration.
