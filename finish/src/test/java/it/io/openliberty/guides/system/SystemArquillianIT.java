@@ -37,12 +37,12 @@ import io.openliberty.guides.system.SystemResource;
 @RunWith(Arquillian.class)
 public class SystemArquillianIT {
 
-    private final static String WARNAME = System.getProperty("arquillian.war.name");
+    private static final String WARNAME = System.getProperty("arquillian.war.name");
 
     @Deployment(testable = true)
     public static WebArchive createSystemEndpointTestDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
-                                       .addPackages(true, "io.openliberty.guides.system");
+                            .addPackages(true, "io.openliberty.guides.system");
         return archive;
     }
 
@@ -59,7 +59,8 @@ public class SystemArquillianIT {
         String serviceOS = prop.getProperty("os.name");
 
         Assert.assertNotNull(serviceOS);
-        Assert.assertEquals("The system property for the local and service JVM should match",
+        Assert.assertEquals("The system property for the local"
+                            + " and service JVM should match",
                             expectedOS, serviceOS);
     }
 
@@ -75,7 +76,8 @@ public class SystemArquillianIT {
                             response.getStatus());
 
         JsonObject obj = response.readEntity(JsonObject.class);
-        Assert.assertEquals("The system property for the local and remote JVM should match",
+        Assert.assertEquals("The system property for the local"
+                            + " and remote JVM should match",
                             System.getProperty("os.name"), obj.getString("os.name"));
         response.close();
     }

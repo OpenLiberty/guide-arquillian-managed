@@ -42,7 +42,8 @@ public class InventoryResource {
     Properties props = manager.get(hostname);
     if (props == null) {
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                     .entity("ERROR: Unknown hostname or the system service may not be running on "
+                     .entity("ERROR: Unknown hostname or the"
+                        + " system service may not be running on "
                          + hostname)
                      .build();
     }

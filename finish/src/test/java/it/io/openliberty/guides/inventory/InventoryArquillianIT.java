@@ -43,7 +43,7 @@ import io.openliberty.guides.inventory.model.SystemData;
 public class InventoryArquillianIT {
 
     // tag::warName[]
-    private final static String WARNAME = System.getProperty("arquillian.war.name");
+    private static final String WARNAME = System.getProperty("arquillian.war.name");
     // end::warName[]
     private final String INVENTORY_SYSTEMS = "inventory/systems";
     private Client client = ClientBuilder.newClient();

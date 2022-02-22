@@ -32,7 +32,8 @@ public class InventoryManager {
     @Inject
     private SystemClient systemClient;
 
-    private List<SystemData> systems = Collections.synchronizedList(new ArrayList<SystemData>());
+    private List<SystemData> systems =
+            Collections.synchronizedList(new ArrayList<SystemData>());
 
     public Properties get(String hostname) {
         return systemClient.getProperties(hostname);
