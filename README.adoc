@@ -43,10 +43,9 @@ include::{common-includes}/gitclone.adoc[]
 Navigate to the `start` directory to begin.
 // cloud hosted instructions
 ifdef::cloud-hosted[]
-```
+```bash
 cd /home/project/guide-arquillian-managed/start
 ```
-{: codeblock}
 endif::[]
 
 You'll develop tests that use Arquillian and JUnit to verify the `inventory` microservice as an endpoint and the functions of the `InventoryResource` class. The code for the microservices is in the `src/main/java/io/openliberty/guides` directory.
@@ -102,7 +101,9 @@ include::finish/pom.xml[]
 ----
 
 ifdef::cloud-hosted[]
-> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/pom.xml
+> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/pom.xml, or click the following button
+
+::openFile{path="/home/project/guide-arquillian-managed/start/pom.xml"}
 endif::[]
 
 Let's look into each of the required elements for this configuration.
@@ -129,7 +130,9 @@ include::finish/src/main/liberty/config/server.xml[]
 ----
 
 ifdef::cloud-hosted[]
-> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/src/main/liberty/config/server.xml
+> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/src/main/liberty/config/server.xml, or click the following button
+
+::openFile{path="/home/project/guide-arquillian-managed/start/src/main/liberty/config/server.xml"}
 endif::[]
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty Managed container to connect to and communicate with the Open Liberty runtime. The [hotspot=Servlet]`servlet` feature is required during the deployment of the Arquillian tests in which servlets are created to perform the in-container testing.
@@ -149,13 +152,12 @@ mvn liberty:configure-arquillian
 endif::[]
 // cloud hosted instructions
 ifdef::cloud-hosted[]
-```
+```bash
 cd /home/project/guide-arquillian-managed/start
 mvn clean package
 mvn liberty:create liberty:install-feature
 mvn liberty:configure-arquillian
 ```
-{: codeblock}
 endif::[]
 
 Now, you can run your Arquillian tests with the Maven `integration-test` goal:
