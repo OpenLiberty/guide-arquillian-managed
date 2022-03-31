@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2019, 2020 IBM Corporation and others.
+ * Copyright (c) 2019, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,13 @@ package it.io.openliberty.guides.system;
 import java.net.URL;
 import java.util.Properties;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.Response;
 
-import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -38,17 +37,17 @@ import io.openliberty.guides.system.SystemResource;
 @RunWith(Arquillian.class)
 public class SystemArquillianIT {
 
-    private final static String WARNAME = System.getProperty("arquillian.war.name");
+    private static final String WARNAME = System.getProperty("arquillian.war.name");
 
     @Deployment(testable = true)
     public static WebArchive createSystemEndpointTestDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
-                                       .addPackages(true, "io.openliberty.guides.system");
+                            .addPackages(true, "io.openliberty.guides.system");
         return archive;
     }
-    
-    @ArquillianResource 
-    private URL baseURL; 
+
+    @ArquillianResource
+    private URL baseURL;
 
     @Inject
     SystemResource system;
@@ -60,7 +59,8 @@ public class SystemArquillianIT {
         String serviceOS = prop.getProperty("os.name");
 
         Assert.assertNotNull(serviceOS);
-        Assert.assertEquals("The system property for the local and service JVM should match",
+        Assert.assertEquals("The system property for the local"
+                            + " and service JVM should match",
                             expectedOS, serviceOS);
     }
 
@@ -68,7 +68,6 @@ public class SystemArquillianIT {
     @RunAsClient
     public void testGetPropertiesFromEndpoint() throws Exception {
         Client client = ClientBuilder.newClient();
-        client.register(JsrJsonpProvider.class);
 
         WebTarget target = client.target(baseURL + "/system/properties");
         Response response = target.request().get();
@@ -77,7 +76,8 @@ public class SystemArquillianIT {
                             response.getStatus());
 
         JsonObject obj = response.readEntity(JsonObject.class);
-        Assert.assertEquals("The system property for the local and remote JVM should match",
+        Assert.assertEquals("The system property for the local"
+                            + " and remote JVM should match",
                             System.getProperty("os.name"), obj.getString("os.name"));
         response.close();
     }
