@@ -10,7 +10,7 @@ Please raise any bug reports in this [guide repository](../../issues). For new t
 
 A good bug report makes it easy for everyone to understand what you were trying to do and what went wrong. Provide as much context as possible so we can try to recreate the issue.
 
-## Contributions 
+## Contributions
 
 Contributing to an Open Liberty guide is simple. All you need to do is create your own branch to include your contribution and open a pull request to the `staging` (quality assurance) branch.
 
@@ -20,7 +20,7 @@ If you are contributing text or content changes via a pull request, you need to 
 
 Add a line to the end of the Git commit message to sign your work:
 
-```
+```text
 Signed-off-by: Jane Williams <jane.williams@gmail.com>
 ```
 
@@ -47,8 +47,8 @@ After we obtain the signed CLA, you are welcome to open a pull request against t
 
 1. Open a pull request against the `staging` branch.
 2. A "CLA signed" label will be manually added by the team.
-3. The team will be notified and will review your change(s). 
-    - If there are further changes to be made, the team will request changes on the pull request. 
+3. The team will be notified and will review your change(s).
+    - If there are further changes to be made, the team will request changes on the pull request.
     - If the team does not agree with the change, the PR will be closed with an explanation and suggestion for follow-up.
 4. If the team approves, a full Open Liberty site build will be run.
 5. Based on the results of the build:
