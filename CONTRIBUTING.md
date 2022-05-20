@@ -2,7 +2,7 @@
 
 Anyone can contribute to the Open Liberty guides and we welcome your contributions!
 
-There are multiple ways to contribute: report bugs, fix bugs, contribute code, improve upon documentation, etc. 
+There are multiple ways to contribute: report bugs, fix bugs, contribute code, improve upon documentation, etc.
 
 ## Raising issues
 
@@ -26,7 +26,7 @@ Signed-off-by: Jane Williams <jane.williams@gmail.com>
 
 The sign-off is just a line at the end of the commit message that certifies that you wrote it or otherwise have the right to pass it on as an open source patch.
 
-Use your real name when you sign. We can't accept pseudonyms or anonymous contributions. 
+Use your real name when you sign. We can't accept pseudonyms or anonymous contributions.
 
 Many Git UI tools have support for adding the `Signed-off-by` line to the end of your commit message. This line can be automatically added by the `git commit` command by using the `-s` option.
 
@@ -37,11 +37,11 @@ If reviewers agree with your change, your change will be merged to the `master` 
 If you are contributing trivial code changes such as typos, redundant spaces, or minor formatting and spelling errors, follow the instructions under [Text or content contributions](./CONTRIBUTING.md#text-or-content-contributions).
 
 If you are contributing code changes via a pull request for non-trivial changes, you must sign off on the [Individual Contributor License Agreement](https://github.com/OpenLiberty/open-liberty/blob/master/cla/open-liberty-cla-individual.pdf). An example of a non-trivial change could be adding a new
-microservice to the backend application of the guide. 
+microservice to the backend application of the guide.
 
 If you are contributing changes as part of your job, you may also wish to have your employer sign a [Corporate Contributor License Agreement](https://github.com/OpenLiberty/open-liberty/blob/master/cla/open-liberty-cla-corporate.pdf).
 
-Instructions for how to sign and submit these agreements are located at the top of each document. 
+Instructions for how to sign and submit these agreements are located at the top of each document.
 
 After we obtain the signed CLA, you are welcome to open a pull request against the `staging` branch, and the team will be notified for review. We ask you follow these steps through the submission process:
 
@@ -52,7 +52,7 @@ After we obtain the signed CLA, you are welcome to open a pull request against t
     - If the team does not agree with the change, the PR will be closed with an explanation and suggestion for follow-up.
 4. If the team approves, a full Open Liberty site build will be run.
 5. Based on the results of the build:
-    - If further review is needed, we will let you know about a pending review from our team and discuss any necessary improvements that need to be made to your change(s). 
+    - If further review is needed, we will let you know about a pending review from our team and discuss any necessary improvements that need to be made to your change(s).
     - If everything is successful, the team will merge your PR.
 
 ## Questions and concerns
