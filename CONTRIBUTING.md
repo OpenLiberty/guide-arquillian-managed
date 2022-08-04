@@ -39,7 +39,7 @@ If you are contributing trivial code changes such as typos, redundant spaces, or
 If you are contributing code changes via a pull request for non-trivial changes, you must sign off on the [Individual Contributor License Agreement](https://github.com/OpenLiberty/open-liberty/blob/release/cla/open-liberty-cla-individual.pdf). An example of a non-trivial change could be adding a new
 microservice to the backend application of the guide.
 
-If you are contributing changes as part of your job, you may also wish to have your employer sign a [Corporate Contributor License Agreement](https://github.com/OpenLiberty/open-liberty/blob/master/cla/open-liberty-cla-corporate.pdf).
+If you are contributing changes as part of your job, you may also wish to have your employer sign a [Corporate Contributor License Agreement](https://github.com/OpenLiberty/open-liberty/blob/release/cla/open-liberty-cla-corporate.pdf).
 
 Instructions for how to sign and submit these agreements are located at the top of each document.
 
