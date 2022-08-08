@@ -30,7 +30,7 @@ Use your real name when you sign. We can't accept pseudonyms or anonymous contri
 
 Many Git UI tools have support for adding the `Signed-off-by` line to the end of your commit message. This line can be automatically added by the `git commit` command by using the `-s` option.
 
-If reviewers agree with your change, your change will be merged to the `release` branch for publishing.
+If reviewers agree with your change, your change will be merged to the `prod` branch for publishing.
 
 ### Code contributions
 
