@@ -6,7 +6,7 @@ There are multiple ways to contribute: report bugs, fix bugs, contribute code, i
 
 ## Raising issues
 
-Please raise any bug reports in the individual guide repository. For new topics, large updates to existing guides, or general suggestions and ideas, report your issue in the [Open Liberty common guides repository](https://github.com/OpenLiberty/guides-common/issues). Be sure to search the list of open issues to see if your issue has already been raised.
+Please raise any bug reports in this [guide repository](../../issues). For new topics, large updates to existing guides, or general suggestions and ideas, report your issue in the [Open Liberty common guides repository](https://github.com/OpenLiberty/guides-common/issues). Be sure to search the list of open issues to see if your issue has already been raised.
 
 A good bug report makes it easy for everyone to understand what you were trying to do and what went wrong. Provide as much context as possible so we can try to recreate the issue.
 
