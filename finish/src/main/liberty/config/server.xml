@@ -1,10 +1,10 @@
 <server description="new server">
 
     <featureManager>
-        <feature>restfulWS-3.0</feature>
-        <feature>jsonb-2.0</feature>
-        <feature>jsonp-2.0</feature>
-        <feature>cdi-3.0</feature>
+        <feature>restfulWS-3.1</feature>
+        <feature>jsonb-3.0</feature>
+        <feature>jsonp-2.1</feature>
+        <feature>cdi-4.0</feature>
         <feature>mpConfig-3.0</feature>
 
         <!--Enable the following features to run tests with Arquillian managed container-->
@@ -12,7 +12,7 @@
         <feature>localConnector-1.0</feature>
         <!-- end::localConnector[] -->
         <!-- tag::Servlet[] -->
-        <feature>servlet-5.0</feature>
+        <feature>servlet-6.0</feature>
         <!-- end::Servlet[] -->
         
     </featureManager>
