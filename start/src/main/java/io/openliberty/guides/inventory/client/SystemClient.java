@@ -32,7 +32,7 @@ public class SystemClient {
     private final String PROTOCOL = "http";
 
     @Inject
-    @ConfigProperty(name = "system.context.root", defaultValue = "")
+    @ConfigProperty(name = "system.context.root", defaultValue = "/")
     String SYSTEM_CONTEXT_ROOT;
 
     @Inject
