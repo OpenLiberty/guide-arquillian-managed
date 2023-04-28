@@ -1,12 +1,13 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017, 2023 IBM Corporation and others.
+ * Copyright (c) 2017, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-2.0/
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * SPDX-License-Identifier: EPL-2.0
+ * Contributors:
+ *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
 package io.openliberty.guides.inventory.client;
@@ -32,7 +33,7 @@ public class SystemClient {
     private final String PROTOCOL = "http";
 
     @Inject
-    @ConfigProperty(name = "system.context.root", defaultValue = "/")
+    @ConfigProperty(name = "system.context.root", defaultValue = "")
     String SYSTEM_CONTEXT_ROOT;
 
     @Inject
@@ -59,7 +60,7 @@ public class SystemClient {
     private Builder getBuilder(String hostname, Client client) throws Exception {
         URI uri = new URI(
                       PROTOCOL, null, hostname, Integer.valueOf(DEFAULT_PORT),
-                      SYSTEM_PROPERTIES, null, null);
+                      SYSTEM_CONTEXT_ROOT + SYSTEM_PROPERTIES, null, null);
         String urlString = uri.toString();
         Builder builder = client.target(urlString).request();
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
