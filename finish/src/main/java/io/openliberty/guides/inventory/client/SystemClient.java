@@ -32,7 +32,7 @@ public class SystemClient {
     private final String PROTOCOL = "http";
 
     @Inject
-    @ConfigProperty(name = "system.context.root", defaultValue = "/")
+    @ConfigProperty(name = "system.context.root", defaultValue = "")
     String SYSTEM_CONTEXT_ROOT;
 
     @Inject
@@ -59,7 +59,7 @@ public class SystemClient {
     private Builder getBuilder(String hostname, Client client) throws Exception {
         URI uri = new URI(
                       PROTOCOL, null, hostname, Integer.valueOf(DEFAULT_PORT),
-                      SYSTEM_PROPERTIES, null, null);
+                      SYSTEM_CONTEXT_ROOT + SYSTEM_PROPERTIES, null, null);
         String urlString = uri.toString();
         Builder builder = client.target(urlString).request();
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
