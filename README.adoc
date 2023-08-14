@@ -84,7 +84,7 @@ Contexts and Dependency Injection (CDI) is used to inject an instance of the [ho
 
 The injected [hotspot=InventoryResource file=0]`InventoryResource` instance is then tested by the [hotspot=testInventoryResourceFunctions file=0]`testInventoryResourceFunctions` method. This test case calls the [hotspot=listContents file=0]`listContents()` method to get all systems that are stored in this inventory and verifies that `localhost` is the only system being found. Notice the functional test case doesn't store any system in the inventory, the `localhost` system is from the endpoint test case that ran before this test case. The [hotspot=InSequence1 hotspot=InSequence2 file=0]`@InSequence` Arquillian annotation guarantees the test sequence. The sequence is important for the two tests, as the results in the first test impact the second one.
 
-The test cases are ready to run. You will configure the Maven build and the Liberty's configuration to run them.
+The test cases are ready to run. You will configure the Maven build and the Liberty configuration to run them.
 
 == Configuring Arquillian with Liberty
 
