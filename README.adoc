@@ -117,7 +117,7 @@ The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` artifact runs your Ar
 Lastly, specify the [hotspot=liberty-maven-plugin]`liberty-maven-plugin` configuration that defines your Open Liberty runtime configuration. When the application runs in an Arquillian Liberty managed container, the name of the war file is used as the context root of the application. You can pass context root information to the application and customize the container by using the [hotspot=arquillianProperties]`arquillianProperties` configuration. To learn more about the `arquillianProperties` configuration, see the https://github.com/OpenLiberty/liberty-arquillian/blob/main/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
 
 
-=== Configuring the Liberty server.xml configuration file
+=== Configuring Liberty's `server.xml` configuration file
 
 Now that you're done configuring your Maven build, set up your Open Liberty to run your test cases by configuring the [hotspot]`server.xml` configuration file.
 
