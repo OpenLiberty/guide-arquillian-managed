@@ -61,6 +61,7 @@ You will see the following output:
 [INFO] Running it.io.openliberty.guides.system.SystemArquillianIT
 ...
 [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.133 s - in it.io.openliberty.guides.system.SystemArquillianIT
+[INFO] Running it.io.openliberty.guides.inventory.InventoryArquillianIT
 ...
 [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.297 s - in it.io.openliberty.guides.
 ...
@@ -179,7 +180,7 @@ endif::[]
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty Managed container to connect to and communicate with the Open Liberty runtime. The [hotspot=Servlet]`servlet` feature is required during the deployment of the Arquillian tests in which servlets are created to perform the in-container testing.
 
-Open another command-line session and run the following commands at the `start` directory to set up the arquillian configuration.
+Open another command-line session and run the `configure-arquillian` goal at the `start` directory to integrate Arquillian and the Arquillian Liberty managed and remote containers with your existing project.
 
 [role="command"]
 ```
@@ -196,6 +197,7 @@ Because you started Open Liberty in dev mode, all the changes were automatically
 [INFO] Running it.io.openliberty.guides.system.SystemArquillianIT
 ...
 [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.133 s - in it.io.openliberty.guides.system.SystemArquillianIT
+[INFO] Running it.io.openliberty.guides.inventory.InventoryArquillianIT
 ...
 [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.297 s - in it.io.openliberty.guides.
 ...
