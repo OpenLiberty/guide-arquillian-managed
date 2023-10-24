@@ -203,16 +203,12 @@ Because you started Open Liberty in dev mode, all the changes were automatically
 [INFO]
 [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 ...
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-...
 ----
 
 
 == Running the tests
 
-It's now time to build and run your Arquillian tests outside of dev mode. Exit dev mode by pressing `CTRL+C` in the command-line session where you ran the Liberty. 
+It's now time to build and run your Arquillian tests outside of dev mode. Exit dev mode by pressing `CTRL+C` in the command-line session where you ran the Liberty in the previous section.
 
 Run the Maven command to package the application. Then, run the `liberty-maven-plugin` goals to create the Liberty instance, install the features, and deploy the application to the instance. The `configure-arquillian` goal configures your Arquillian container. You can learn more about this goal in the https://github.com/OpenLiberty/ci.maven/blob/main/docs/configure-arquillian.md[configure-arquillian goal documentation^].
 
