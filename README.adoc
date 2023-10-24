@@ -153,7 +153,10 @@ The [hotspot=arquillian-liberty-managed-junit]`arquillian-liberty-managed-junit`
 
 The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` artifact runs your Arquillian integration tests by using JUnit.
 
-Lastly, specify the [hotspot=liberty-maven-plugin]`liberty-maven-plugin` configuration that defines your Open Liberty runtime configuration. When the application runs in an Arquillian Liberty managed container, the name of the war file is used as the context root of the application. You can pass context root information to the application and customize the container by using the [hotspot=arquillianProperties]`arquillianProperties` configuration. To learn more about the `arquillianProperties` configuration, see the https://github.com/OpenLiberty/liberty-arquillian/blob/main/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
+Lastly, specify the [hotspot=liberty-maven-plugin]`liberty-maven-plugin` configuration that defines your Open Liberty runtime configuration. When the application runs in an Arquillian Liberty managed container, the name of the war file is used as the context root of the application. You can pass context root information to the application and customize the container by using the [hotspot=arquillianProperties]`arquillianProperties` configuration. To allow connecting to the running Liberty in dev mode, set [hotspot=allowConnectingToRunningServer]`allowConnectingToRunningServer` to `true`.
+
+
+To learn more about the `arquillianProperties` configuration, see the https://github.com/OpenLiberty/liberty-arquillian/blob/main/liberty-managed/README.md#configuration[Arquillian Liberty Managed documentation^].
 
 
 === Configuring Liberty's `server.xml` configuration file
@@ -176,10 +179,44 @@ endif::[]
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty Managed container to connect to and communicate with the Open Liberty runtime. The [hotspot=Servlet]`servlet` feature is required during the deployment of the Arquillian tests in which servlets are created to perform the in-container testing.
 
+Open another command-line session and run the following commands at the `start` directory to set up the arquillian configuration.
+
+[role="command"]
+```
+mvn liberty:configure-arquillian
+```
+
+Because you started Open Liberty in dev mode, all the changes were automatically picked up. You can run the tests by pressing the `enter/return` key from the command-line session where you started dev mode. You will see the following output:
+
+[source, role="no_copy"]
+----
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.io.openliberty.guides.system.SystemArquillianIT
+...
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.133 s - in it.io.openliberty.guides.system.SystemArquillianIT
+...
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.297 s - in it.io.openliberty.guides.
+...
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+...
+----
+
 
 == Running the tests
 
-It's now time to build and run your Arquillian tests. Navigate to the `start` directory. First, run the Maven command to package the application. Then, run the `liberty-maven-plugin` goals to create the Liberty instance, install the features, and deploy the application to the instance. The `configure-arquillian` goal configures your Arquillian container. You can learn more about this goal in the https://github.com/OpenLiberty/ci.maven/blob/main/docs/configure-arquillian.md[configure-arquillian goal documentation^].
+To test outside of dev mode, 
+
+It's now time to build and run your Arquillian tests outside of dev mode. Exit dev mode by pressing `CTRL+C` in the command-line session where you ran the Liberty. 
+
+Now, run the Maven command to package the application. Then, run the `liberty-maven-plugin` goals to create the Liberty instance, install the features, and deploy the application to the instance. The `configure-arquillian` goal configures your Arquillian container. You can learn more about this goal in the https://github.com/OpenLiberty/ci.maven/blob/main/docs/configure-arquillian.md[configure-arquillian goal documentation^].
 
 ifndef::cloud-hosted[]
 [role="command"]

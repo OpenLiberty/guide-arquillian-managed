@@ -142,8 +142,10 @@
                     <javaVmArguments>
                       -Dsystem.context.root=/${arquillian.war.name}
                     </javaVmArguments>
+                    <!-- tag::allowConnectingToRunningServer[] -->
                     <allowConnectingToRunningServer>true</allowConnectingToRunningServer>
-                  </arquillianProperties>
+                    <!-- end::allowConnectingToRunningServer[] -->
+                </arquillianProperties>
                     <!-- end::arquillianProperties[] -->
                 </configuration>
             </plugin>
