@@ -34,9 +34,45 @@ You will develop Arquillian tests that use JUnit as the runner and build your te
 
 You will work with an `inventory` microservice, which stores information about various systems. The `inventory` service communicates with the `system` service on a particular host to retrieve its system properties and store them. You will develop functional and integration tests for the microservices. You will also learn about the Maven and Liberty configurations so that you can run your tests on Open Liberty with the Arquillian Liberty Managed container.
 
+// Getting Started
 [role="command"]
 include::{common-includes}/gitclone.adoc[]
 
+=== Try what you'll build
+
+To try out the application, navigate to the `finish` directory and run the following commands:
+
+[role="command"]
+----
+cd finish
+mvn clean package
+mvn liberty:create liberty:install-feature
+mvn liberty:configure-arquillian
+mvn failsafe:integration-test
+----
+
+You will see the following output:
+
+[source, role="no_copy"]
+----
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.io.openliberty.guides.system.SystemArquillianIT
+...
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.133 s - in it.io.openliberty.guides.system.SystemArquillianIT
+...
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.297 s - in it.io.openliberty.guides.
+...
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+...
+----
 
 == Developing Arquillian tests
 
