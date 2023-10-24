@@ -86,6 +86,9 @@ endif::[]
 
 You'll develop tests that use Arquillian and JUnit to verify the `inventory` microservice as an endpoint and the functions of the `InventoryResource` class. The code for the microservices is in the `src/main/java/io/openliberty/guides` directory.
 
+[role='command']
+include::{common-includes}/devmode-lmp33-start.adoc[]
+
 [role="code_command", subs="quotes"]
 ----
 #Create the `InventoryArquillianIT` test class.#
