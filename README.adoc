@@ -180,7 +180,7 @@ endif::[]
 
 The [hotspot=localConnector]`localConnector` feature is required by the Arquillian Liberty Managed container to connect to and communicate with the Open Liberty runtime. The [hotspot=Servlet]`servlet` feature is required during the deployment of the Arquillian tests in which servlets are created to perform the in-container testing.
 
-Open another command-line session and run the `configure-arquillian` goal at the `start` directory to integrate Arquillian and the Arquillian Liberty managed and remote containers with your existing project.
+Open another command-line session and run the `configure-arquillian` goal from the `start` directory to integrate Arquillian and the Arquillian Liberty managed and remote containers with your existing project.
 
 [role="command"]
 ```
