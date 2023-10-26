@@ -51,7 +51,7 @@ mvn liberty:configure-arquillian
 mvn failsafe:integration-test
 ----
 
-You will see the following output:
+Look for the following output:
 
 [source, role="no_copy"]
 ----
