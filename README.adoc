@@ -44,7 +44,6 @@ To try out the application, navigate to the `finish` directory and run the follo
 
 [role="command"]
 ----
-cd finish
 mvn clean package
 mvn liberty:create liberty:install-feature
 mvn liberty:configure-arquillian
