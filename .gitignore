@@ -6,6 +6,7 @@ bin/
 .classpath
 .factorypath
 .idea/
+*.iml
 .DS_Store
 build/
 .gradle
