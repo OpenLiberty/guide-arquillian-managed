@@ -23,21 +23,22 @@ import jakarta.ws.rs.core.Response;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.openliberty.guides.inventory.InventoryResource;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
 // tag::RunWith[]
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 // end::RunWith[]
 public class InventoryArquillianIT {
 
@@ -84,28 +85,28 @@ public class InventoryArquillianIT {
         WebTarget localhosttarget = client.target(localhosturl);
         Response localhostresponse = localhosttarget.request().get();
 
-        Assert.assertEquals("Incorrect response code from " + localhosturl, 200,
-                            localhostresponse.getStatus());
+        assertEquals(200, localhostresponse.getStatus(),
+                "Incorrect response code from " + localhosturl);
 
         JsonObject localhostobj = localhostresponse.readEntity(JsonObject.class);
-        Assert.assertEquals("The system property for the local and remote JVM "
-                        + "should match", System.getProperty("os.name"),
-                            localhostobj.getString("os.name"));
+        assertEquals(System.getProperty("os.name"), localhostobj.getString("os.name"),
+                "The system property for the local and remote JVM "
+                        + "should match");
 
         String invsystemsurl = baseURL + INVENTORY_SYSTEMS;
 
         WebTarget invsystemstarget = client.target(invsystemsurl);
         Response invsystemsresponse = invsystemstarget.request().get();
 
-        Assert.assertEquals("Incorrect response code from " + localhosturl, 200,
-                            invsystemsresponse.getStatus());
+        assertEquals(200, invsystemsresponse.getStatus(),
+                "Incorrect response code from " + localhosturl);
 
         JsonObject invsystemsobj = invsystemsresponse.readEntity(JsonObject.class);
 
         int expected = 1;
         int actual = invsystemsobj.getInt("total");
-        Assert.assertEquals("The inventory should have one entry for localhost",
-                            expected, actual);
+        assertEquals(expected, actual,
+                "The inventory should have one entry for localhost");
         localhostresponse.close();
     }
     // end::testInventoryEndpoints[]
@@ -120,12 +121,12 @@ public class InventoryArquillianIT {
         // tag::listContents[]
         InventoryList invList = invSrv.listContents();
         // end::listContents[]
-        Assert.assertEquals(1, invList.getTotal());
+        assertEquals(1, invList.getTotal());
 
         List<SystemData> systemDataList = invList.getSystems();
-        Assert.assertTrue(systemDataList.get(0).getHostname().equals("localhost"));
+        assertTrue(systemDataList.get(0).getHostname().equals("localhost"));
 
-        Assert.assertTrue(systemDataList.get(0).getProperties().get("os.name")
+        assertTrue(systemDataList.get(0).getProperties().get("os.name")
                                         .equals(System.getProperty("os.name")));
     }
     // end::testInventoryResourceFunctions[]

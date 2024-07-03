@@ -7,6 +7,7 @@ bin/
 .factorypath
 .idea/
 .DS_Store
+*.iml
 build/
 .gradle
 MANIFEST.MF
