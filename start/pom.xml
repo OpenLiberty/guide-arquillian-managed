@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
     http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -56,9 +55,15 @@
         </dependency>
         <!-- For tests -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit5</groupId>
+            <artifactId>arquillian-junit5-container</artifactId>
+            <version>1.7.0.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -125,9 +130,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                  <systemPropertyVariables>
-                    <arquillian.war.name>${arquillian.war.name}.war</arquillian.war.name>
-                  </systemPropertyVariables>
+                    <systemPropertyVariables>
+                        <arquillian.war.name>${arquillian.war.name}.war</arquillian.war.name>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <!-- end::maven-failsafe-plugin[] -->
@@ -137,13 +142,13 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.10.3</version>
                 <configuration>
-                  <!-- tag::arquillianProperties[] -->
-                  <arquillianProperties>
-                    <javaVmArguments>
-                      -Dsystem.context.root=/${arquillian.war.name}
-                    </javaVmArguments>
-                    <allowConnectingToRunningServer>true</allowConnectingToRunningServer>
-                  </arquillianProperties>
+                    <!-- tag::arquillianProperties[] -->
+                    <arquillianProperties>
+                        <javaVmArguments>
+                            -Dsystem.context.root=/${arquillian.war.name}
+                        </javaVmArguments>
+                        <allowConnectingToRunningServer>true</allowConnectingToRunningServer>
+                    </arquillianProperties>
                     <!-- end::arquillianProperties[] -->
                 </configuration>
             </plugin>
