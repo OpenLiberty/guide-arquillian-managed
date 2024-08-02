@@ -99,13 +99,6 @@
             <scope>test</scope>
         </dependency>
         <!-- end::arquillian-liberty-managed-junit[] -->
-        <!-- tag::shrinkwrap-api[] -->
-        <dependency>
-            <groupId>org.jboss.shrinkwrap</groupId>
-            <artifactId>shrinkwrap-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::shrinkwrap-api[] -->
     </dependencies>
 
     <build>
