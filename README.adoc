@@ -14,7 +14,7 @@
 :page-guide-category: none
 :page-description: Learn how to test your microservices with the Arquillian managed container and JUnit on Open Liberty.
 :guide-author: Open Liberty
-:page-tags: ['Maven']
+:page-tags: ['maven']
 :page-related-guides: ['cdi-intro','rest-intro']
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
