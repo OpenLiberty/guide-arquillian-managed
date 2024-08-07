@@ -1,4 +1,4 @@
-// Copyright (c) 2019, 2023 IBM Corporation and others.
+// Copyright (c) 2019, 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -14,7 +14,7 @@
 :page-guide-category: none
 :page-description: Learn how to test your microservices with the Arquillian managed container and JUnit on Open Liberty.
 :guide-author: Open Liberty
-:page-tags: ['Maven']
+:page-tags: ['maven']
 :page-related-guides: ['cdi-intro','rest-intro']
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
@@ -151,7 +151,7 @@ Let's look into each of the required elements for this configuration.
 
 You need the [hotspot=arquillian-bom]`arquillian-bom` Bill of Materials. It's a Maven artifact that defines the versions of Arquillian dependencies to make dependency management easier.
 
-The [hotspot=arquillian-liberty-managed-junit]`arquillian-liberty-managed-junit` dependency bundle, which includes all the core dependencies, is required to run the Arquillian tests on a managed Liberty container that uses JUnit. You can learn more about the https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles^]. The [hotspot=shrinkwrap-api]`shrinkwrap-api` dependency allows you to create your test archive, which is packaged into a WAR file and deployed to the Open Liberty.
+The [hotspot=arquillian-liberty-managed-junit]`arquillian-liberty-managed-junit` dependency bundle, which includes all the core dependencies, is required to run the Arquillian tests on a managed Liberty container that uses JUnit. You can learn more about the https://github.com/OpenLiberty/arquillian-liberty-dependencies[Arquillian Liberty dependency bundles^].
 
 The [hotspot=maven-failsafe-plugin]`maven-failsafe-plugin` artifact runs your Arquillian integration tests by using JUnit.
 
