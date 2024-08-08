@@ -31,7 +31,7 @@
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.8.0.Final</version>
+                <version>1.9.1.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -99,13 +99,6 @@
             <scope>test</scope>
         </dependency>
         <!-- end::arquillian-liberty-managed-junit[] -->
-        <!-- tag::shrinkwrap-api[] -->
-        <dependency>
-            <groupId>org.jboss.shrinkwrap</groupId>
-            <artifactId>shrinkwrap-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::shrinkwrap-api[] -->
     </dependencies>
 
     <build>
@@ -123,7 +116,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.5</version>
+                <version>3.3.1</version>
                 <configuration>
                   <systemPropertyVariables>
                     <arquillian.war.name>${arquillian.war.name}.war</arquillian.war.name>
