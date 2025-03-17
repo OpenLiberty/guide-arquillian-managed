@@ -1,4 +1,4 @@
-// Copyright (c) 2019, 2024 IBM Corporation and others.
+// Copyright (c) 2019, 2025 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -142,7 +142,7 @@ include::finish/pom.xml[]
 ----
 
 ifdef::cloud-hosted[]
-> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/pom.xml, or click the following button
+> From the menu of the IDE, select ***File*** > ***Open*** > guide-arquillian-managed/start/pom.xml, or click the following button
 
 ::openFile{path="/home/project/guide-arquillian-managed/start/pom.xml"}
 endif::[]
@@ -174,7 +174,7 @@ include::finish/src/main/liberty/config/server.xml[]
 ----
 
 ifdef::cloud-hosted[]
-> From the menu of the IDE, select **File** > **Open** > guide-arquillian-managed/start/src/main/liberty/config/server.xml, or click the following button
+> From the menu of the IDE, select ***File*** > ***Open*** > guide-arquillian-managed/start/src/main/liberty/config/server.xml, or click the following button
 
 ::openFile{path="/home/project/guide-arquillian-managed/start/src/main/liberty/config/server.xml"}
 endif::[]
