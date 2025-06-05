@@ -41,16 +41,47 @@ include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
+The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
+
 Run the following commands to navigate to the `finish` directory and run the tests:
 
-[role="command"]
-----
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+[role='command']
+```
 cd finish
-mvn clean package
-mvn liberty:create liberty:install-feature
-mvn liberty:configure-arquillian
-mvn failsafe:integration-test
-----
+mvnw.cmd clean package
+mvnw.cmd liberty:create liberty:install-feature
+mvnw.cmd liberty:configure-arquillian
+mvnw.cmd failsafe:integration-test
+```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+cd finish
+./mvnw clean package
+./mvnw liberty:create liberty:install-feature
+./mvnw liberty:configure-arquillian
+./mvnw failsafe:integration-test
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+cd finish
+./mvnw clean package
+./mvnw liberty:create liberty:install-feature
+./mvnw liberty:configure-arquillian
+./mvnw failsafe:integration-test
+```
+--
 
 Look for the following output:
 
@@ -89,7 +120,7 @@ endif::[]
 You'll develop tests that use Arquillian and JUnit to verify the `inventory` microservice as an endpoint and the functions of the `InventoryResource` class. The code for the microservices is in the `src/main/java/io/openliberty/guides` directory.
 
 [role='command']
-include::{common-includes}/devmode-lmp33-start.adoc[]
+include::{common-includes}/devmode-mvnw-start.adoc[]
 
 [role="code_command", subs="quotes"]
 ----
@@ -184,16 +215,37 @@ The [hotspot=localConnector]`localConnector` feature is required by the Arquilli
 Open another command-line session and run the `configure-arquillian` goal from the `start` directory to integrate Arquillian and the Arquillian Liberty managed and remote containers with your existing project.
 
 ifndef::cloud-hosted[]
-[role="command"]
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+[role='command']
 ```
-mvn liberty:configure-arquillian
+mvnw.cmd liberty:configure-arquillian
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw liberty:configure-arquillian
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw liberty:configure-arquillian
+```
+--
 endif::[]
 
 ifdef::cloud-hosted[]
 ```bash
 cd /home/project/guide-arquillian-managed/start
-mvn liberty:configure-arquillian
+./mvnw liberty:configure-arquillian
 ```
 endif::[]
 
@@ -225,29 +277,75 @@ It's now time to build and run your Arquillian tests outside of dev mode. Exit d
 Run the Maven command to package the application. Then, run the Liberty Maven Plugin goals to create the Liberty instance, install the features, and deploy the application to the instance. The `configure-arquillian` goal configures your Arquillian container. You can learn more about this goal in the https://github.com/OpenLiberty/ci.maven/blob/main/docs/configure-arquillian.md[configure-arquillian goal documentation^].
 
 ifndef::cloud-hosted[]
-[role="command"]
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+[role='command']
 ```
-mvn clean package
-mvn liberty:create liberty:install-feature
-mvn liberty:configure-arquillian
+mvnw.cmd clean package
+mvnw.cmd liberty:create liberty:install-feature
+mvnw.cmd liberty:configure-arquillian
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw clean package
+./mvnw liberty:create liberty:install-feature
+./mvnw liberty:configure-arquillian
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw clean package
+./mvnw liberty:create liberty:install-feature
+./mvnw liberty:configure-arquillian
+```
+--
 endif::[]
 // cloud hosted instructions
 ifdef::cloud-hosted[]
 ```bash
 cd /home/project/guide-arquillian-managed/start
-mvn clean package
-mvn liberty:create liberty:install-feature
-mvn liberty:configure-arquillian
+./mvnw clean package
+./mvnw liberty:create liberty:install-feature
+./mvnw liberty:configure-arquillian
 ```
 endif::[]
 
 Now, you can run your Arquillian tests with the Maven `integration-test` goal:
 
-[role="command"]
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+[role='command']
 ```
-mvn failsafe:integration-test
+mvnw.cmd failsafe:integration-test
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw failsafe:integration-test
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw failsafe:integration-test
+```
+--
 
 In the test output, you can see that the Liberty instance launched, and that the web archive, `arquillian-managed`, started as an application in the instance. You can also see that the tests are running and that the results are reported.
 
