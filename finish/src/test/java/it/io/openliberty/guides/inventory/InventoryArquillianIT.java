@@ -123,9 +123,9 @@ public class InventoryArquillianIT {
         Assert.assertEquals(1, invList.getTotal());
 
         List<SystemData> systemDataList = invList.getSystems();
-        Assert.assertTrue(systemDataList.get(0).getHostname().equals("localhost"));
+        Assert.assertTrue(systemDataList.getFirst().getHostname().equals("localhost"));
 
-        Assert.assertTrue(systemDataList.get(0).getProperties().get("os.name")
+        Assert.assertTrue(systemDataList.getFirst().getProperties().get("os.name")
                                         .equals(System.getProperty("os.name")));
     }
     // end::testInventoryResourceFunctions[]
